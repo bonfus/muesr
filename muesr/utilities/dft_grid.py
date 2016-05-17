@@ -5,7 +5,7 @@ from muesr.settings import config
 import numpy as np
 
  
-def dftgrid_build(sample, size, min_distance_from_atoms=1.0):
+def build(sample, size, min_distance_from_atoms=1.0):
     """
     Generates a grid of symmetry inequivalent interstitial
     positions to be used in DFT simulations.
