@@ -1,0 +1,177 @@
+# Created by the Bilbao Crystallographic Server
+# http://www.cryst.ehu.es
+# Date: 11/25/2014 17:57:17
+# Database entry: 0.2 Cd2Os2O7
+# Cif-like file for the case 0.2
+
+
+data_5yOhtAoR
+_audit_creation_date            2014-11-25
+_audit_creation_method          "Bilbao Crystallographic Server"
+
+_chemical_name_systematic
+;
+;
+_chemical_name_common                    ?
+_chemical_formula_moiety                 ?
+_chemical_formula_structural             ?
+_chemical_formula_analytical             ?
+_chemical_formula_iupac                  ?
+_chemical_formula_sum                    'Cd2 Os2 O7'
+_chemical_formula_weight                 ?
+_chemical_melting_point                  ?
+_chemical_compound_source                ?
+_chemical_absolute_configuration         .
+
+
+_citation_journal_abbrev        "PHYSICAL REVIEW LETTERS"
+_citation_journal_volume        108
+_citation_page_first            ?
+_citation_page_last             ?
+_citation_article_id            247205
+_citation_year                  2012
+_citation_DOI                   ?
+
+loop_
+_citation_author_name
+"Yamaura, J."
+
+_atomic_positions_source_database_code_ICSD   155771
+_atomic_positions_source_other               .
+
+_transition_temperature     227
+_experiment_temperature     ?
+
+loop_
+_irrep_id
+_irrep_dimension
+_irrep_small_dimension
+_irrep_direction_type
+_irrep_action
+_irrep_modes_number
+_irrep_presence
+? ? ? ? ? . .
+
+_exptl_crystal_magnetic_properties_details
+;
+RXS
+arbitrary scale of the magnetic moments
+see also: Reading et al., J. Mat. Chem. 11, 2373-2377 (2001)
+;
+
+_active_magnetic_irreps_details
+;
+1k magnetic structure
+k-maximal magnetic symmetry
+1-dim irrep active
+;
+
+_magnetic_space_group_standard_setting  'yes'
+_parent_space_group.name_H-M              'F d -3m'
+_parent_space_group.IT_number             227
+
+loop_
+_magnetic_propagation_vector_seq_id
+_magnetic_propagation_vector_kxkykz
+k1 0,0,0
+
+_magnetic_space_group.transform_from_parent_Pp_abc  'a,b,c;0,0,0'
+_magnetic_space_group.transform_to_standard_Pp_abc  'a,b,c;0,0,0'
+
+loop_
+_magnetic_atom_site_moment_symmetry_constraints_label
+_atom_site_magnetic_moment_symmetry_constraints_mxmymz
+Os1 mx,mx,mx
+
+_space_group.magn_number_BNS   227.131
+_space_group.magn_name_BNS     "F d -3m' "
+_space_group.magn_point_group "m-3m'"
+_space_group.magn_point_group_number "32.4.121"
+_cell_length_a                 10.1670
+_cell_length_b                 10.1670
+_cell_length_c                 10.1670
+_cell_angle_alpha              90.0000
+_cell_angle_beta               90.0000
+_cell_angle_gamma              90.0000
+
+loop_
+_space_group_symop.magn_id
+_space_group_symop.magn_operation_xyz
+_space_group_symop.magn_operation_mxmymz
+1 x,y,z,+1 mx,my,mz
+2 x,-y+1/4,-z+1/4,+1 mx,-my,-mz
+3 -x+1/4,y,-z+1/4,+1 -mx,my,-mz
+4 -x+1/4,-y+1/4,z,+1 -mx,-my,mz
+5 z,x,y,+1 mz,mx,my
+6 y,z,x,+1 my,mz,mx
+7 -y+1/4,z,-x+1/4,+1 -my,mz,-mx
+8 -z+1/4,-x+1/4,y,+1 -mz,-mx,my
+9 -y+1/4,-z+1/4,x,+1 -my,-mz,mx
+10 z,-x+1/4,-y+1/4,+1 mz,-mx,-my
+11 y,-z+1/4,-x+1/4,+1 my,-mz,-mx
+12 -z+1/4,x,-y+1/4,+1 -mz,mx,-my
+13 -x,-y,-z,+1 mx,my,mz
+14 -x,y+1/4,z+1/4,+1 mx,-my,-mz
+15 x+1/4,-y,z+1/4,+1 -mx,my,-mz
+16 x+1/4,y+1/4,-z,+1 -mx,-my,mz
+17 -z,-x,-y,+1 mz,mx,my
+18 -y,-z,-x,+1 my,mz,mx
+19 y+1/4,-z,x+1/4,+1 -my,mz,-mx
+20 z+1/4,x+1/4,-y,+1 -mz,-mx,my
+21 y+1/4,z+1/4,-x,+1 -my,-mz,mx
+22 -z,x+1/4,y+1/4,+1 mz,-mx,-my
+23 -y,z+1/4,x+1/4,+1 my,-mz,-mx
+24 z+1/4,-x,y+1/4,+1 -mz,mx,-my
+25 x+1/4,-z,y+1/4,-1 -mx,mz,-my
+26 x+1/4,z+1/4,-y,-1 -mx,-mz,my
+27 z+1/4,y+1/4,-x,-1 -mz,-my,mx
+28 -z,y+1/4,x+1/4,-1 mz,-my,-mx
+29 -y,x+1/4,z+1/4,-1 my,-mx,-mz
+30 y+1/4,-x,z+1/4,-1 -my,mx,-mz
+31 y+1/4,x+1/4,-z,-1 -my,-mx,mz
+32 -y,-x,-z,-1 my,mx,mz
+33 -x,z+1/4,y+1/4,-1 mx,-mz,-my
+34 -x,-z,-y,-1 mx,mz,my
+35 z+1/4,-y,x+1/4,-1 -mz,my,-mx
+36 -z,-y,-x,-1 mz,my,mx
+37 -x+1/4,z,-y+1/4,-1 -mx,mz,-my
+38 -x+1/4,-z+1/4,y,-1 -mx,-mz,my
+39 -z+1/4,-y+1/4,x,-1 -mz,-my,mx
+40 z,-y+1/4,-x+1/4,-1 mz,-my,-mx
+41 y,-x+1/4,-z+1/4,-1 my,-mx,-mz
+42 -y+1/4,x,-z+1/4,-1 -my,mx,-mz
+43 -y+1/4,-x+1/4,z,-1 -my,-mx,mz
+44 y,x,z,-1 my,mx,mz
+45 x,-z+1/4,-y+1/4,-1 mx,-mz,-my
+46 x,z,y,-1 mx,mz,my
+47 -z+1/4,y,-x+1/4,-1 -mz,my,-mx
+48 z,y,x,-1 mz,my,mx
+
+loop_
+_space_group_symop.magn_centering_id
+_space_group_symop.magn_centering_xyz
+_space_group_symop.magn_centering_mxmymz
+1 x,y,z,+1 mx,my,mz
+2 x,y+1/2,z+1/2,+1 mx,my,mz
+3 x+1/2,y,z+1/2,+1 mx,my,mz
+4 x+1/2,y+1/2,z,+1 mx,my,mz
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+Cd1 Cd 0.50000 0.50000 0.50000 1
+Os1 Os 0.00000 0.00000 0.00000 1
+O1_1 O 0.32023 0.12500 0.12500 1
+O2_1 O 0.37500 0.37500 0.37500 1
+
+loop_
+_atom_site_moment_label
+_atom_site_moment_crystalaxis_x
+_atom_site_moment_crystalaxis_y
+_atom_site_moment_crystalaxis_z
+Os1 0.6 0.6 0.6
+

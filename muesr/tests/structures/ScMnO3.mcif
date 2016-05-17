@@ -1,0 +1,141 @@
+# Created by the Bilbao Crystallographic Server
+# http://www.cryst.ehu.es
+# Date: 11/25/2014 17:57:43
+# Database entry: 0.7 ScMnO3
+# Cif-like file for the case 0.7
+
+
+data_5yOhtAoR
+_audit_creation_date            2014-11-25
+_audit_creation_method          "Bilbao Crystallographic Server"
+
+_chemical_name_systematic
+;
+;
+_chemical_name_common                    ?
+_chemical_formula_moiety                 ?
+_chemical_formula_structural             ?
+_chemical_formula_analytical             ?
+_chemical_formula_iupac                  ?
+_chemical_formula_sum                    'Sc Mn O3'
+_chemical_formula_weight                 ?
+_chemical_melting_point                  ?
+_chemical_compound_source                ?
+_chemical_absolute_configuration         .
+
+
+_citation_journal_abbrev        "Phys. Rev. B"
+_citation_journal_volume        62
+_citation_page_first            9498
+_citation_page_last             ?
+_citation_article_id            .
+_citation_year                  2000
+_citation_DOI                   ?
+
+loop_
+_citation_author_name
+"Munoz, A"
+
+_atomic_positions_source_database_code_ICSD   50694
+_atomic_positions_source_other               .
+
+_transition_temperature     129
+_experiment_temperature     89.4
+
+loop_
+_irrep_id
+_irrep_dimension
+_irrep_small_dimension
+_irrep_direction_type
+_irrep_action
+_irrep_modes_number
+_irrep_presence
+mGM2 1 1 . primary . .
+
+_exptl_crystal_magnetic_properties_details
+;
+NPD
+Lattice and nuclear structure taken from room temperature structure
+results
+a second magnetic phase below 75K
+;
+
+_active_magnetic_irreps_details
+;
+1k magnetic structure
+k-maximal magnetic symmetry (4 possible)
+;
+
+_magnetic_space_group_standard_setting  'yes'
+_parent_space_group.name_H-M              'P 6_3c m'
+_parent_space_group.IT_number             185
+
+loop_
+_magnetic_propagation_vector_seq_id
+_magnetic_propagation_vector_kxkykz
+k1 0,0,0
+
+_magnetic_space_group.transform_from_parent_Pp_abc  'a,b,c;0,0,0'
+_magnetic_space_group.transform_to_standard_Pp_abc  'a,b,c;0,0,0'
+
+loop_
+_magnetic_atom_site_moment_symmetry_constraints_label
+_atom_site_magnetic_moment_symmetry_constraints_mxmymz
+Mn1 mx,0,mz
+
+_space_group.magn_number_BNS   185.201
+_space_group.magn_name_BNS     "P 6_3c' m' "
+_space_group.magn_point_group "6m'm'"
+_space_group.magn_point_group_number "25.4.94"
+_cell_length_a                 5.83338
+_cell_length_b                 5.83338
+_cell_length_c                 11.16862
+_cell_angle_alpha              90.0000
+_cell_angle_beta               90.0000
+_cell_angle_gamma              120.0000
+
+loop_
+_space_group_symop.magn_id
+_space_group_symop.magn_operation_xyz
+_space_group_symop.magn_operation_mxmymz
+1 x,y,z,+1 mx,my,mz
+2 x-y,x,z+1/2,+1 mx-my,mx,mz
+3 -y,x-y,z,+1 -my,mx-my,mz
+4 -x,-y,z+1/2,+1 -mx,-my,mz
+5 -x+y,-x,z,+1 -mx+my,-mx,mz
+6 y,-x+y,z+1/2,+1 my,-mx+my,mz
+7 -x+y,y,z+1/2,-1 -mx+my,my,mz
+8 -y,-x,z+1/2,-1 -my,-mx,mz
+9 x,x-y,z+1/2,-1 mx,mx-my,mz
+10 -x,-x+y,z,-1 -mx,-mx+my,mz
+11 x-y,-y,z,-1 mx-my,-my,mz
+12 y,x,z,-1 my,mx,mz
+
+loop_
+_space_group_symop.magn_centering_id
+_space_group_symop.magn_centering_xyz
+_space_group_symop.magn_centering_mxmymz
+1 x,y,z,+1 mx,my,mz
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+Sc1 Sc 0.00000 0.00000 0.27470 1
+Sc2 Sc 0.33333 0.66667 0.23080 1
+Mn1 Mn 0.33160 0.00000 0.00000 1
+O1 O 0.30180 0.00000 0.16800 1
+O2 O 0.63570 0.00000 0.33290 1
+O3 O 0.00000 0.00000 0.46780 1
+O4 O 0.33333 0.66667 0.02380 1
+
+loop_
+_atom_site_moment_label
+_atom_site_moment_crystalaxis_x
+_atom_site_moment_crystalaxis_y
+_atom_site_moment_crystalaxis_z
+Mn1 -3.03 0.0 0.0
+
