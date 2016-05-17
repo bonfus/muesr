@@ -235,7 +235,7 @@ void INCASS(const double *in_positions,
 
 #pragma omp parallel shared(SDip,CDip,SLor,CLor) 
 {    
-#pragma omp for collapse(3) private(i,j,k,a,r,n,refatmpos,atmpos,sk,isk,phi,R,c,s,m,u,onebrcube,Ahelix,Bhelix)
+#pragma omp for collapse(3) private(i,j,k,a,r,n,refatmpos,atmpos,phi,c,s,u,onebrcube,Ahelix,Bhelix)
     for (i = 0; i < scx; ++i)
     {
         for (j = 0; j < scy; ++j)

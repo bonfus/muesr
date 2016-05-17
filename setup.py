@@ -41,7 +41,7 @@ setup(name='muesr',
                                       'muesr/engines/LFCExt/LFCExt.c'],
                                       libraries=['m'],
                                       include_dirs=numpy_include_dir,
-                                      extra_compile_args=['-std=c99',],
+                                      extra_compile_args=['-std=c99','-fopenmp'],
                                       define_macros=[('_EXTENSION',None),])],
      package_dir={'muesr': 'muesr' },
      install_requires=[
