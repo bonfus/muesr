@@ -1,0 +1,112 @@
+# Created by the Bilbao Crystallographic Server
+# http://www.cryst.ehu.es
+# Date: 20/02/2015 16:21:34
+# 4107570.cif
+
+data_5yOhtAoR
+_audit_creation_date            2015-02-20
+_audit_creation_method          "Bilbao Crystallographic Server"
+
+_citation_journal_abbrev        ?
+_citation_journal_volume        ?
+_citation_page_first            ?
+_citation_page_last             ?
+_citation_article_id            ?
+_citation_year                  ?
+_citation_DOI                   ?
+
+loop_
+_citation_author_name
+?
+
+_atomic_positions_source_database_code_ICSD  ?
+_atomic_positions_source_other               ?
+
+_Neel_temperature         ?
+_magn_diffrn_temperature  ?
+
+loop_
+_irrep_id
+_irrep_dimension
+_irrep_small_dimension
+_irrep_direction_type
+_irrep_action
+_irrep_modes_number
+_irrep_presence
+?  ?  ?  ?  ?  ?  ?
+
+_exptl_crystal_magnetic_properties_details
+;
+;
+
+_active_magnetic_irreps_details
+;
+;
+
+_magnetic_space_group_standard_setting  'no'
+_parent_space_group.name_H-M              'P 4/n m m'
+_parent_space_group.IT_number             129 
+
+loop_
+_magnetic_propagation_vector_seq_id
+_magnetic_propagation_vector_kxkykz
+k1 '0.5,0.5,0'
+
+_magnetic_space_group.transform_from_parent_Pp_abc  '2a,2b,c;0,0,0'
+_magnetic_space_group.transform_to_standard_Pp_abc  '1/2a-1/2b,-c,1/2a+1/2b;0,0,0'
+
+loop_
+_magnetic_atom_site_moment_symmetry_constraints_label
+_atom_site_magnetic_moment_symmetry_constraints_mxmymz
+Fe1 mx,mx,0
+
+
+_space_group.magn_number_BNS 54.350
+_space_group.magn_name_BNS "P_B c c a"
+_cell_length_a             8.07070
+_cell_length_b             8.07070
+_cell_length_c             8.74090
+_cell_angle_alpha          90.00
+_cell_angle_beta           90.00
+_cell_angle_gamma          90.00
+
+loop_
+_space_group_symop.magn_id
+_space_group_symop.magn_operation_xyz
+_space_group_symop.magn_operation_mxmymz
+1 x,y,z,+1 mx,my,mz
+2 -y+1/2,-x,-z,+1 -my,-mx,-mz
+3 -x+1/4,-y+1/4,z,+1 -mx,-my,mz
+4 y+1/4,x+3/4,-z,+1 my,mx,-mz
+5 -x,-y,-z,+1 mx,my,mz
+6 y+1/2,x,z,+1 -my,-mx,-mz
+7 x+1/4,y+1/4,-z,+1 -mx,-my,mz
+8 -y+1/4,-x+3/4,z,+1 my,mx,-mz
+
+loop_
+_space_group_symop.magn_centering_id
+_space_group_symop.magn_centering_xyz
+_space_group_symop.magn_centering_mxmymz
+1 x,y,z,+1 mx,my,mz
+2 x+1/2,y+1/2,z,+1 mx,my,mz
+3 x+1/2,y,z,-1 -mx,-my,-mz
+4 x,y+1/2,z,-1 -mx,-my,-mz
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+La1 La  0.12500 0.12500 0.14154 
+Fe1 Fe  0.37500 0.12500 0.50000 
+As1 As  0.12500 0.12500 0.65120 
+O1 O  0.37500 0.12500 0.00000 
+
+loop_
+_atom_site_moment_label
+_atom_site_moment_crystalaxis_x
+_atom_site_moment_crystalaxis_y
+_atom_site_moment_crystalaxis_z
+Fe1 0.70711 0.70711 0.00000
+
