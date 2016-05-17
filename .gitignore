@@ -1,0 +1,8 @@
+__pycache__
+*.pyc
+dist
+MANIFEST
+build
+muesr/engines/LFCExt/oldstuff
+muesr.egg-info
+docs/_build/
