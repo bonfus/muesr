@@ -42,6 +42,7 @@ setup(name='muesr',
                                       libraries=['m'],
                                       include_dirs=numpy_include_dir,
                                       extra_compile_args=['-std=c99','-fopenmp'],
+                                      extra_link_args=['-lgomp'])
                                       define_macros=[('_EXTENSION',None),])],
      package_dir={'muesr': 'muesr' },
      install_requires=[
