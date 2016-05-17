@@ -6,20 +6,29 @@ Muesr is a tool for quickly evaluating local fields at the muon sites in Muon Sp
 Requirements
 ------------
 
+Muesr works with the following minimal requirements:
+
 | package | version    | url        |
 |---------|------------|------------|
 | python  | 2.7+ or 3  | python.org |
 | numpy   | 1.6        | numpy.org  |
 
-Optional:
 
-pyspglib.spglib : library for finding lattice structure symmetries
-XCrysden
+Optional dependencies are:
+
+| package  | version    | url        | provides |
+|----------|------------|------------|----------|
+| spglib   | 1.8        |            |  library for finding lattice structure symmetries        |
+| XCrysden | any        |            |          |
+| sympy    | | | |
+
+pyspglib.spglib : 
+
 
 Install and Usage
 -----------------
 
-See the documentation at www.readthedocs.org
+See the documentation at http://muesr.readthedocs.io
 
 
 Notes
