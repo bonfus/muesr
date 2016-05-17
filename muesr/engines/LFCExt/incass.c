@@ -310,6 +310,7 @@ void INCASS(const double *in_positions,
                         printf("SDip %d to be added : %e %e %e\n", a, tmp.x, tmp.y, tmp.z);
 #endif
                         // Dipolar
+#pragma omp critical
                         CDip[a] = vec3_add(
                                         CDip[a],
                                         vec3_add(
@@ -317,6 +318,7 @@ void INCASS(const double *in_positions,
                                             vec3_muls( s * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Bhelix[a],u),u), Bhelix[a]))
                                         )
                                     );
+#pragma omp critical
                         SDip[a] = vec3_add(
                                         SDip[a],
                                         vec3_sub(
@@ -325,6 +327,7 @@ void INCASS(const double *in_positions,
                                         )
                                     );
                         // Lorentz
+#pragma omp critical
                         CLor[a] = vec3_add(
                                         CLor[a],
                                         vec3_add(
@@ -332,6 +335,7 @@ void INCASS(const double *in_positions,
                                             vec3_muls( s , Bhelix[a])
                                         )
                                     );
+#pragma omp critical
                         SLor[a] = vec3_add(
                                         SLor[a],
                                         vec3_sub(
@@ -341,13 +345,14 @@ void INCASS(const double *in_positions,
                                     );
 						// Contact
 						if (n < cont_radius) {
+#pragma omp critical
 							pile_add_element(&CCont, pow(n,CONT_SCALING_POWER), 
 															vec3_add(
 																vec3_muls( stagmom[a] * c , Ahelix[a]),
 																vec3_muls( stagmom[a] * s , Bhelix[a])
 															)							
 											);
-											
+#pragma omp critical
 							pile_add_element(&SCont, pow(n,CONT_SCALING_POWER), 
 															vec3_sub(
 																vec3_muls( stagmom[a]* s , Ahelix[a]),
