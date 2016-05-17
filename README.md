@@ -6,8 +6,10 @@ Muesr is a tool for quickly evaluating local fields at the muon sites in Muon Sp
 Requirements
 ------------
 
-python 2.7+ or 3 : both python 2 and python 3 should be supported
-numpy            : numerical python, available on most linux distributions
+| package | version    | url        |
+|---------|------------|------------|
+| python  | 2.7+ or 3  | python.org |
+| numpy   | 1.6        | numpy.org  |
 
 Optional:
 
@@ -18,3 +20,10 @@ Install and Usage
 -----------------
 
 See the documentation at www.readthedocs.org
+
+
+Notes
+-----
+
+Part of the code in this repository is from the ASE
+(https://wiki.fysik.dtu.dk/ase/index.html) project. 
