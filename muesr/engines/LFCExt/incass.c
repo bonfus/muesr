@@ -233,9 +233,9 @@ void INCASS(const double *in_positions,
         
     }
 
-#pragma omp parallel shared(SDip,CDip,SLor,CLor) 
+#pragma omp parallel shared(SDip,CDip,SLor,CLor,SCont,CCont) 
 {    
-#pragma omp for collapse(3) private(i,j,k,a,r,n,refatmpos,atmpos,phi,c,s,u,onebrcube,Ahelix,Bhelix)
+#pragma omp for collapse(3) private(i,j,k,a,r,n,c,s,u,crysvec,onebrcube,atmpos) // firstprivate(refatmpos,atmpos,phi,Ahelix,Bhelix)
     for (i = 0; i < scx; ++i)
     {
         for (j = 0; j < scy; ++j)
@@ -361,9 +361,7 @@ void INCASS(const double *in_positions,
                         printf("SDip %d is now : %e %e %e\n", a, SDip[a].x, SDip[a].y, SDip[a].z);
 #endif
                     }                    
-
                 }
-                
             }
         }
     }
