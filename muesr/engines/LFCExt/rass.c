@@ -147,7 +147,8 @@ void RASS(const double *in_positions,
                     if (n < radius)
                     {
                         // calculate magnetic moment
-#ifndef _EXTENSION                        
+#ifndef _EXTENSION                      
+                        printf("ERROR!!! If you see this the extension compilation went wrong!\n");  
                          sk.x = in_fc[6*a];   sk.y = in_fc[6*a+1]; sk.z = in_fc[6*a+2];
                         isk.x = in_fc[6*a+3];isk.y = in_fc[6*a+4];isk.z = in_fc[6*a+5];
 #else

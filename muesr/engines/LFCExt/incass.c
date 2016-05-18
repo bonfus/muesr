@@ -200,6 +200,7 @@ void INCASS(const double *in_positions,
         
         // now B
 #ifndef _EXTENSION
+        printf("ERROR!!! If you see this the extension compilation went wrong!\n");
         tmp.x = in_fc[6*a+3]; 
         tmp.y = in_fc[6*a+4]; 
         tmp.z = in_fc[6*a+5];
@@ -313,7 +314,7 @@ void INCASS(const double *in_positions,
                         printf("SDip %d to be added : %e %e %e\n", a, tmp.x, tmp.y, tmp.z);
 #endif
                         // sum all data
-                        #pragma omp critical
+                        #pragma omp critical(dipolar)
                         {
                             // Dipolar
                             CDip[a] = vec3_add(
@@ -331,6 +332,9 @@ void INCASS(const double *in_positions,
                                                 vec3_muls( c * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Bhelix[a],u),u), Bhelix[a]))
                                             )
                                         );
+                        }
+                        #pragma omp critical(lorentz)
+                        {                                        
                             // Lorentz
                             CLor[a] = vec3_add(
                                             CLor[a],
@@ -349,7 +353,7 @@ void INCASS(const double *in_positions,
                         }
 						// Contact
 						if (n < cont_radius) {
-                            #pragma omp critical
+                            #pragma omp critical(contact)
                             {
                                 pile_add_element(&CCont, pow(n,CONT_SCALING_POWER), 
 							  								vec3_add(
@@ -461,7 +465,7 @@ void INCASS(const double *in_positions,
                 NofM++;
             } else {
                 printf("Something VERY odd ! ranks 1: %e ranks 2: %e \n", CCont.ranks[i] , SCont.ranks[i] );
-            }	
+            }
         }
             
         // (2 magnetic_constant/3)⋅1bohr_magneton   = ((2 ⋅ magnetic_constant) ∕ 3) ⋅ (1 ⋅ bohr_magneton)

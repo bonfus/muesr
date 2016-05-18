@@ -138,6 +138,7 @@ void  ASS(const double *in_positions,
         
         printf("Atom pos (cart): %e %e %e\n",atmpos.x,atmpos.y,atmpos.z);
 #ifndef _EXTENSION
+        printf("ERROR!!! If you see this the extension compilation went wrong!\n");
         printf("FC (real, imag): %e %e %e %e %e %e\n",in_fc[6*a],in_fc[6*a+1],in_fc[6*a+2],in_fc[6*a+3],in_fc[6*a+4],in_fc[6*a+5]);
 #else
         printf("FC (real, imag): %e %e %e %e %e %e\n",in_fc[6*a],in_fc[6*a+2],in_fc[6*a+4],in_fc[6*a+1],in_fc[6*a+3],in_fc[6*a+5]);
@@ -152,7 +153,7 @@ void  ASS(const double *in_positions,
     BLor = vec3_zero();
     pile_init(&MCont, nnn_for_cont);
     
-#pragma omp parallel shared(MCont)
+#pragma omp parallel shared(MCont) // remember data race!
 {    
 #pragma omp for collapse(3) private(i,j,k,a,r,n,atmpos,sk,isk,phi,R,c,s,m,u,onebrcube) reduction(+:Bx,By,Bz,BLorx,BLory,BLorz)
     for (i = 0; i < scx; ++i)
@@ -185,6 +186,7 @@ void  ASS(const double *in_positions,
                     {
                         // calculate magnetic moment
 #ifndef _EXTENSION
+                        printf("ERROR!!! If you see this the extension compilation went wrong!\n");
                          sk.x = in_fc[6*a];   sk.y = in_fc[6*a+1]; sk.z = in_fc[6*a+2];
                         isk.x = in_fc[6*a+3];isk.y = in_fc[6*a+4];isk.z = in_fc[6*a+5];
 #else
@@ -221,7 +223,10 @@ void  ASS(const double *in_positions,
 #ifdef _DEBUG                      
 							printf("Adding moment to Cont: n: %e, m: %e %e %e! (Total: %d)\n", n, m.x,m.y,m.z,nnn_for_cont);
 #endif						// We add the moment multiplied by r^3 and then devide by Sum ^N r^3
-							pile_add_element(&MCont, pow(n,CONT_SCALING_POWER), vec3_muls(1./pow(n,CONT_SCALING_POWER),m));
+                            #pragma omp critical
+                            {
+                                pile_add_element(&MCont, pow(n,CONT_SCALING_POWER), vec3_muls(1./pow(n,CONT_SCALING_POWER),m));
+                            }
 						}
                         
                         
