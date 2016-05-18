@@ -18,11 +18,9 @@ Optional dependencies are:
 
 | package  | version    | url        | provides |
 |----------|------------|------------|----------|
-| spglib   | 1.8        |            |  library for finding lattice structure symmetries        |
-| XCrysden | any        |            |          |
-| sympy    | | | |
-
-pyspglib.spglib : 
+| spglib   | 1.8        | http://atztogo.github.io/spglib |  library for finding lattice structure symmetries |
+| XCrysden | any        | http://www.xcrysden.org | tool for showing lattice and magnetic structures |
+| sympy    | 1.0        | sympy.org | for symbolic Fourier components definition |
 
 
 Install and Usage
