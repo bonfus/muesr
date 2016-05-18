@@ -1,4 +1,4 @@
-Magnetic Structure and mUon Embedding Site Refinement
+Magnetic structure and mUon Embedding Site Refinement
 =====================================================
 
 Muesr is a tool for quickly evaluating local fields at the muon sites in Muon Spin Rotation and Relaxation experiments (muSR).
@@ -28,6 +28,15 @@ Install and Usage
 
 See the documentation at http://muesr.readthedocs.io
 
+Known problems
+--------------
+
+- Non-standard spacegroup settings can cause some tedious problems when 
+  using the spglib functions. Pay attention!
+
+
+Please not that the code is still under heavy development. 
+You'll probably find bugs so please report them!
 
 Notes
 -----
