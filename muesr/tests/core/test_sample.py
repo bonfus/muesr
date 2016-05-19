@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:
-    import StringIO
-except ImportError:
-    from io import StringIO
 
 import sys
 import unittest
@@ -26,11 +22,11 @@ class TestSample(unittest.TestCase):
         self._sample = Sample()
         
     def _set_a_cell(self):
-        self._sample.cell = Atoms(symbols=['C'],
+        self._sample.cell = Atoms(symbols=['Co'],
                                   scaled_positions=[[0,0,0]],
                                   cell=[[3.,0,0],
                                         [0,3.,0],
-                                        [0,0,3.]])           
+                                        [0,0,3.]])
         
     def test_name_property(self):
         
