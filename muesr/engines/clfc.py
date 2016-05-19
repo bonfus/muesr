@@ -8,11 +8,7 @@ from muesr.core.parsers import *
 from muesr.core.nprint  import nprint, nprintmsg
 from muesr.core.ninput  import ninput, ninput_mt
 
-
-try:
-    import lfcext 
-except:
-    print("LFC Extension not found!")
+import lfcext
 
 
 class LocalFields(object):
@@ -190,6 +186,9 @@ def find_largest_sphere(sample, supercell):
             raise ValueError("Wrong supercell definition")
     else:
         raise TypeError("Argument supercell must be list of numpy array")
+    
+    if np.min(supercell) < 1:
+        raise ValueError("Unit cell repetitions must be strictly positive!")
     
     # build supercell, only diagonal
     cell = sample._cell.get_cell()
