@@ -334,7 +334,7 @@ void INCASS(const double *in_positions,
                                         );
                         }
                         #pragma omp critical(lorentz)
-                        {                                        
+                        {
                             // Lorentz
                             CLor[a] = vec3_add(
                                             CLor[a],
