@@ -41,7 +41,7 @@ XCrysDen  >= 1.0    :mod:`muesr.io.xsf.xsf.show_cell` ,             http://www.x
 To compile the python extension you also need the build tools appropriate
 for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
 
-If you do not want to compile 
+If you do not want to compile you can use these wheels:
 
 Installation
 ------------

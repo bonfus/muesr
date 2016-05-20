@@ -10,4 +10,5 @@ Symmetry is not correctly recognized by spglib!
    a bug at spglib.sf.net .
    
 How do I convert the hyperfine filed to reasonable units?
+
    See ContactTerm

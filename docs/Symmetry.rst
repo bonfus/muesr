@@ -1,7 +1,7 @@
 Symmetry
 ========
 
-MuESR tries to grab symmetry information from either the CIF files or 
+:mod:`muesr` tries to grab symmetry information from either the CIF files or 
 using the `spglib` routines.
 If a magnetic cif (*.mcif) is loaded, the symmetry is disregarded. 
 The symmetry equivalent sites depend indeed only on the symmetry of the 

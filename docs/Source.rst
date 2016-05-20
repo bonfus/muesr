@@ -17,7 +17,14 @@ Source documentation
    :members:
    :undoc-members:
    :show-inheritance:
-   
+
+:mod:`muesr.core.sampleErrors` -- Sample related exceptions
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. automodule:: muesr.core.sampleErrors
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 :mod:`muesr.core.cells` -- Functions for lattice
 +++++++++++++++++++++++++++++++++++++++++++++++++

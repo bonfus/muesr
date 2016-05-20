@@ -45,3 +45,15 @@ positions with the additional constraint of being sufficiently separated
 from the atoms of the hosting system.
 
 
+Understanding errors
+--------------------
+
+:mod:`muesr` raises the conventional python exceptions (mainly ValueError and
+TypeError) or other 4 specific Exceptions:
+
+ - CellError
+ 
+To see their meaning follow the links.
+
+The utility functions are mainly intented for interactive usage and report
+problems 

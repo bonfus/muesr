@@ -16,7 +16,7 @@ The value of N can strongly impact on the results. The best approximation strong
 
 
 From CGS to SI
-==============
+--------------
 
 Hyperfine couplings are often reported in mol/emu while Muesr uses :math:`{\buildrel _{\circ} \over {\mathrm{A}}}^{-3}`.
 Here's how to convert the former into the latter.
