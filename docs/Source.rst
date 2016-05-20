@@ -26,6 +26,16 @@ Source documentation
    :undoc-members:
    :show-inheritance:
 
+
+:mod:`muesr.core.atoms` -- Defined the unit cell
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. automodule:: muesr.core.atoms
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   
+
 :mod:`muesr.core.cells` -- Functions for lattice
 +++++++++++++++++++++++++++++++++++++++++++++++++
 

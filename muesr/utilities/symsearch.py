@@ -19,7 +19,7 @@ except ImportError:
 
 
         
-def sym_search(sample, precision=1e-4):
+def symsearch(sample, precision=1e-4):
     """
     Identifies symmetry operations of the unit cell using spglib and 
     update the sample definition.

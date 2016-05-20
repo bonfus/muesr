@@ -27,7 +27,7 @@ installed to use *all* features of Muesr:
 Package   Version   Required for                                    Package URL
 ========= ========= =============================================== =========================================
 YAML      >= 2.0.0  :mod:`muesr.io.sampleIO`                        http://pyyaml.org/
-Spglib    >= 1.6    :mod:`muesr.utilities.symsearch.sym_search`     http://atztogo.github.io/spglib/
+Spglib    >= 1.6    :mod:`muesr.utilities.symsearch`                http://atztogo.github.io/spglib/
 Sympy     >= 1.0    :mod:`muesr.core.magmodel.SMM`                  http://sympy.org
 appdirs   >= 1.1    :mod:`muesr.settings`               
 XCrysDen  >= 1.0    :mod:`muesr.io.xsf.xsf.show_cell` ,             http://www.xcrysden.org
