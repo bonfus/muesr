@@ -29,7 +29,7 @@ where the dots replace the :py:class:`~muesr.core.atoms.Atoms`
 class initialization arguments.
 
 However this can be tedious and error prone. Therefore you are strongly
-suggested to load the lattice informations from a file using use one of
+suggested to load the lattice information from a file using use one of
 these functions:
 
  - :py:func:`~muesr.io.cif.cif.load_cif` for Crystallographic Information Files
@@ -40,14 +40,14 @@ these functions:
    For CIF files the symmetry is automatically parsed and set from the file.
    For MCIF and XSF files it is not set and must be defined by hand or 
    with the :py:func:`~muesr.utilities.symsearch.symsearch` function 
-   (only available is `spglib` is installed).
+   (only available if `spglib` is installed).
 
 
 Defining a magnetic structure
 -----------------------------
 
 In :mod:`muesr` the magnetic structure is defined by the propagation 
-vector `k`, the Fouerier components and the phases 
+vector `k`, the Fourier components and the phases 
 (see :ref:`intro_description_of_magnetic_structures`)
 
 Propagation vector
@@ -78,7 +78,7 @@ systems:
     moment are defined by their projections along the lattice basis
     vectors.
     If we define L = {{a,0,0},{0,b,0},{0,0,c}}, then the magnetic metric
-    tensor is M = L.G.L^(-1), which is unitless.
+    tensor is M = L.G.L^(-1), which is unit-less.
     
 In practice
 +++++++++++
@@ -233,7 +233,7 @@ The function simulating local fields at the muon site is
 There are three type of simulations which are targeted to different
 types of problems:
 
-- `sum`: a simple sum of all the dipols in the Lorentz sphere.
+- `sum`: a simple sum of all the magnetic moments in the Lorentz sphere.
 - `rotate`: rotates the local moments around a given axis and perform the
   sum. This function offer great flexibility in the way local moments
   are rotated but is not computationally efficient. For incommensurate
@@ -281,5 +281,5 @@ TypeError) or other 4 specific Exceptions:
  
 To see their meaning follow the links.
 
-The utility functions are mainly intented for interactive usage and report
+The utility functions are mainly intended for interactive usage and report
 problems by printing messages on the screen.
