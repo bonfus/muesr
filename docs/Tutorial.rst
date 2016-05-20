@@ -89,12 +89,12 @@ can be specified as
 
 If proper symmetry of the sample is present in the sample definition, it
 is usually usefull to get symmetry equivalent sites.
-This can be done with the utility function :py:func:`~muesr.utilities.muon.muon_find_equiv`.
+This can be done with the utility function :py:func:`~muesr.utilities.muon.find_equiv`.
 
 .. code-block:: python
     
-    >>> from muesr.utilities.muon import muon_find_equiv
-    >>> muon_find_equiv(mysample)
+    >>> from muesr.utilities.muon import find_equiv
+    >>> find_equiv(mysample)
 
 
 Defining a magnetic structure

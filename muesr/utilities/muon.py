@@ -42,7 +42,7 @@ def muon_set_frac(sample, arg = None):
         
     
     
-def muon_find_equiv(sample, eps=1.e-3):
+def find_equiv(sample, eps=1.e-3):
     """
     Given the unit cell symmetry, finds the equivalent muon sites.
     Magnetic order is NOT considered

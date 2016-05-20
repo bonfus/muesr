@@ -52,10 +52,10 @@ def mago_set_k(sample, kvalue=None,mm=None):
             return
 
 
-def mago_add(sample, inputConvention='b-c'):
+def mago_add(sample, coordinates='b-c'):
     """
     Add a magnetic model (fourier components and K vector).
-    Fourier components are in CARTESIAN coordinates.
+    
     The order is automatically selected if succesfully added.
     
     
@@ -65,7 +65,7 @@ def mago_add(sample, inputConvention='b-c'):
     nmm = MM(sample.cell.get_number_of_atoms(),sample.cell.get_cell())
     
     mago_set_k(sample, mm=nmm)
-    mago_set_FC(sample, mm=nmm, inputConvention=inputConvention)
+    mago_set_FC(sample, mm=nmm, inputConvention=coordinates)
     sample.mm = nmm
     
 
@@ -94,7 +94,7 @@ def mago_set_FC(sample, fcs= None, atoms_types = None, mm=None, inputConvention=
         nprint('Magnetic moments in bohr magnetons and cartesian coordinates.')
         inputConvEnum = 0
         
-    elif inputConvention.lower() in ['bohr/angstrom-lattic', 'b/a-l']:
+    elif inputConvention.lower() in ['bohr/angstrom-lattice', 'b/a-l']:
         nprint('Magnetic moments in bohr magnetons/angstrom and lattice coordinates.')
         inputConvEnum = 1
         

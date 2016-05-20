@@ -8,7 +8,7 @@ import numpy as np
 
 from muesr.core.sampleErrors import CellError, MuonError
 from muesr.core.sample import Sample
-from muesr.utilities.muon import muon_set_frac, muon_find_equiv, muon_reset
+from muesr.utilities.muon import muon_set_frac, find_equiv, muon_reset
 from muesr.io.cif.cif import read_cif
 
 co_lattice = StringIO("""
@@ -314,7 +314,7 @@ class TestMuon(unittest.TestCase):
         muon_set_frac(self._sample, "0.125 0.125 0.125")
         np.testing.assert_array_almost_equal(np.array([0.125,0.125,0.125]),self._sample.muons[1])
 
-    def test_muon_find_equiv(self):
+    def test_find_equiv(self):
         # ugly way to load a lattice with its symetry
         co_lattice.seek(0)
         atoms, sym = read_cif(co_lattice,0) # selectd index 0
@@ -328,10 +328,10 @@ class TestMuon(unittest.TestCase):
         
         #tests throw error if no muon positions defined
         with self.assertRaises(MuonError):
-            muon_find_equiv(self._sample)
+            find_equiv(self._sample)
         
         muon_set_frac(self._sample, "0 0 0")
-        muon_find_equiv(self._sample)
+        find_equiv(self._sample)
         
         muon_positions = self._sample.muons
         
@@ -342,7 +342,7 @@ class TestMuon(unittest.TestCase):
         self._sample._reset(muon=True)
         
         muon_set_frac(self._sample, "0.2 0.3 0.4")
-        muon_find_equiv(self._sample)
+        find_equiv(self._sample)
         
         muon_positions = self._sample.muons
         #positions calculated with VESTA

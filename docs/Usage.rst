@@ -13,6 +13,7 @@ This is very easy! You just do: ::
 
 the :py:attr:`~muesr.core.sample.Sample.name` property is optional.
 
+
 Defining a lattice structure
 ----------------------------
 
@@ -223,6 +224,14 @@ Useful readings
 +++++++++++++++
  - http://www.neutron-sciences.org/articles/sfn/pdf/2014/01/sfn201402001.pdf
 
+
+Setting the muon position
+-------------------------
+
+The muon position can be easly set with the .
+
+If symmetry is defined, equivalent muon positions can be obtained with 
+the function :py:func:`~muesr.utilities.muon.find_equiv`
 
 Calculate local fields 
 ------------------------
