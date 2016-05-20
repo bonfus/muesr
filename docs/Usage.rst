@@ -50,13 +50,17 @@ In :mod:`muesr` the magnetic structure is defined by the propagation
 vector `k`, the Fouerier components and the phases 
 (see :ref:`intro_description_of_magnetic_structures`)
 
-The propagation vector 
+Propagation vector
+++++++++++++++++++
+
+In :mod:`muesr`, the propagation vector is always specified 
+in **reciprocal lattice units**.
+
+Fourier components
+++++++++++++++++++
 
 There are `many <http://magcryst.org/resources/magnetic-coordinates/>`_
-conventions to specify the Fourier components of a magnetic structures:
-
-
-
+conventions to specify the Fourier components of a magnetic structures.
 At the current stage :mod:`muesr` supports the following coordinate 
 systems:
 
@@ -66,7 +70,7 @@ systems:
 
 1. Bohr Magneton/Angstrom units, with x||a, y||b and z||c
     This is the reduced lattice coordinate system, where the magnetic 
-    metric tensor (M) is the same metric used for interatomic distances 
+    metric tensor (M) is the same metric used for inter-atomic distances 
     (G).
 
 2. Bohr Magneton units, with x||a, y||b and z||c
@@ -76,7 +80,143 @@ systems:
     If we define L = {{a,0,0},{0,b,0},{0,0,c}}, then the magnetic metric
     tensor is M = L.G.L^(-1), which is unitless.
     
+In practice
++++++++++++
 
+To define a new magnetic structure just do ::
+
+    >>> from muesr.core.sample import Sample
+    >>> from muesr.core.magmodel import MM
+    >>> smp = Sample()
+    >>> 
+    >>> # load a lattice structure!
+    >>>
+    >>> smp.new_mm()
+
+The newly created magnetic structure is automatically selected as the 
+current magnetic model and can be obtained with the 
+:py:attr:`~muesr.core.sample.Sample.mm` property.
+From that you can access and define all the properties of the magnetic definition ::
+
+    >>> smp.mm.k
+    ... array([0, 0, 0])
+    
+
+Plese see the :py:mod:`~muesr.core.magmodel.MM` documentation for the 
+details.
+
+To simplify the definition of the magnetic structure, the 
+:py:func:`~muesr.utilities.ms.mago_add` helper function is available.
+
+It prompts an interactive interface like the one shown below
+(for a Ti2O3 structure): ::
+
+    >>> mago_add(smp,coordinates='bohr-lattice')
+    ...      Propagation vector (w.r.t. conv. rec. cell): 0 0 0
+    ... 	 Magnetic moments in bohr magnetons and lattice coordinates.
+    ... 	 Which atom? (enter for all)Ti
+    ... 	 Lattice vectors:
+    ... 	   a    5.149000000000000    0.000000000000000    0.000000000000000
+    ... 	   b   -2.574499999999999    4.459164804086075    0.000000000000000
+    ... 	   c    0.000000000000001    0.000000000000001   13.641999999999999
+    ... 	 Atomic positions (fractional):
+    ... 	     1 Ti  0.00000000000000  0.00000000000000  0.34500000000000  47.867
+    ... 	     2 Ti  0.66666666666667  0.33333333333333  0.67833333333333  47.867
+    ... 	     3 Ti  0.33333333333333  0.66666666666667  0.01166666666667  47.867
+    ... 	     4 Ti  0.00000000000000  0.00000000000000  0.84500000000000  47.867
+    ... 	     5 Ti  0.66666666666667  0.33333333333333  0.17833333333333  47.867
+    ... 	     6 Ti  0.33333333333333  0.66666666666667  0.51166666666667  47.867
+    ... 	     7 Ti  0.00000000000000  0.00000000000000  0.15500000000000  47.867
+    ... 	     8 Ti  0.66666666666667  0.33333333333333  0.48833333333333  47.867
+    ... 	     9 Ti  0.33333333333333  0.66666666666667  0.82166666666667  47.867
+    ... 	    10 Ti  0.00000000000000  0.00000000000000  0.65500000000000  47.867
+    ... 	    11 Ti  0.66666666666667  0.33333333333333  0.98833333333333  47.867
+    ... 	    12 Ti  0.33333333333333  0.66666666666667  0.32166666666667  47.867
+    ... 	 FC for atom 1 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 2 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 3 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 4 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 5 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 6 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 7 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 8 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 9 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 10 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 11 Ti (3 real, [3 imag]): 0 1 0
+    ... 	 FC for atom 12 Ti (3 real, [3 imag]): 0 1 0
+    ... 
+    
+This produces the following Fouerier components in Cartesian coordinates ::
+
+    >>> smp.mm.fc
+    ... array([[-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j],
+    ...        [ 0.0000000+0.j,  0.0000000+0.j,  0.0000000+0.j]])
+
+Which are indeed: ::
+
+    >>> smp.mm.fcLattBM
+    ... array([[ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  1.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j],
+    ...        [ 0.+0.j,  0.+0.j,  0.+0.j]])
+
+
+The zeros in the Fourier components are from the atoms different from 
+`Ti`.
 
 
 Useful readings
@@ -134,9 +274,12 @@ Understanding errors
 :mod:`muesr` raises the conventional python exceptions (mainly ValueError and
 TypeError) or other 4 specific Exceptions:
 
- - CellError
+ - :py:class:`~muesr.core.sampleErrors.CellError`
+ - :py:class:`~muesr.core.sampleErrors.MuonError`
+ - :py:class:`~muesr.core.sampleErrors.MagDefError`
+ - :py:class:`~muesr.core.sampleErrors.SymmetryError`
  
 To see their meaning follow the links.
 
 The utility functions are mainly intented for interactive usage and report
-problems 
+problems by printing messages on the screen.
