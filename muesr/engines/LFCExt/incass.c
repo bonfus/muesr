@@ -200,6 +200,7 @@ void INCASS(const double *in_positions,
         
         // now B
 #ifndef _EXTENSION
+        printf("ERROR!!! If you see this the extension compilation went wrong!\n");
         tmp.x = in_fc[6*a+3]; 
         tmp.y = in_fc[6*a+4]; 
         tmp.z = in_fc[6*a+5];
@@ -233,9 +234,12 @@ void INCASS(const double *in_positions,
         
     }
 
+// parallel execution starts here
+// the shared variables are listed just to remember about data races!
+// other variable shaed by default: refatmpos,atmpos,phi,Ahelix,Bhelix
 #pragma omp parallel shared(SDip,CDip,SLor,CLor,SCont,CCont) 
-{    
-#pragma omp for collapse(3) private(i,j,k,a,r,n,c,s,u,crysvec,onebrcube,atmpos) // firstprivate(refatmpos,atmpos,phi,Ahelix,Bhelix)
+{
+#pragma omp for collapse(3) private(i,j,k,a,r,n,c,s,u,crysvec,onebrcube,atmpos)
     for (i = 0; i < scx; ++i)
     {
         for (j = 0; j < scy; ++j)
@@ -309,53 +313,62 @@ void INCASS(const double *in_positions,
                                         );
                         printf("SDip %d to be added : %e %e %e\n", a, tmp.x, tmp.y, tmp.z);
 #endif
-                        // Dipolar
-                        CDip[a] = vec3_add(
-                                        CDip[a],
-                                        vec3_add(
-                                            vec3_muls( c * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Ahelix[a],u),u), Ahelix[a])),
-                                            vec3_muls( s * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Bhelix[a],u),u), Bhelix[a]))
-                                        )
-                                    );
-                        SDip[a] = vec3_add(
-                                        SDip[a],
-                                        vec3_sub(
-                                            vec3_muls( s * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Ahelix[a],u),u), Ahelix[a])),
-                                            vec3_muls( c * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Bhelix[a],u),u), Bhelix[a]))
-                                        )
-                                    );
-                        // Lorentz
-                        CLor[a] = vec3_add(
-                                        CLor[a],
-                                        vec3_add(
-                                            vec3_muls( c , Ahelix[a]),
-                                            vec3_muls( s , Bhelix[a])
-                                        )
-                                    );
-                        SLor[a] = vec3_add(
-                                        SLor[a],
-                                        vec3_sub(
-                                            vec3_muls( s ,Ahelix[a]),
-                                            vec3_muls( c ,Bhelix[a])
-                                        )
-                                    );
+                        // sum all data
+                        #pragma omp critical(dipolar)
+                        {
+                            // Dipolar
+                            CDip[a] = vec3_add(
+                                            CDip[a],
+                                            vec3_add(
+                                                vec3_muls( c * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Ahelix[a],u),u), Ahelix[a])),
+                                                vec3_muls( s * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Bhelix[a],u),u), Bhelix[a]))
+                                            )
+                                        );
+                            
+                            SDip[a] = vec3_add(
+                                            SDip[a],
+                                            vec3_sub(
+                                                vec3_muls( s * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Ahelix[a],u),u), Ahelix[a])),
+                                                vec3_muls( c * onebrcube ,vec3_sub(vec3_muls(3.0*vec3_dot(Bhelix[a],u),u), Bhelix[a]))
+                                            )
+                                        );
+                        }
+                        #pragma omp critical(lorentz)
+                        {
+                            // Lorentz
+                            CLor[a] = vec3_add(
+                                            CLor[a],
+                                            vec3_add(
+                                                vec3_muls( c , Ahelix[a]),
+                                                vec3_muls( s , Bhelix[a])
+                                            )
+                                        );
+                            SLor[a] = vec3_add(
+                                            SLor[a],
+                                            vec3_sub(
+                                                vec3_muls( s ,Ahelix[a]),
+                                                vec3_muls( c ,Bhelix[a])
+                                            )
+                                        );
+                        }
 						// Contact
 						if (n < cont_radius) {
-							pile_add_element(&CCont, pow(n,CONT_SCALING_POWER), 
-															vec3_add(
-																vec3_muls( stagmom[a] * c , Ahelix[a]),
-																vec3_muls( stagmom[a] * s , Bhelix[a])
-															)							
-											);
-											
-							pile_add_element(&SCont, pow(n,CONT_SCALING_POWER), 
-															vec3_sub(
-																vec3_muls( stagmom[a]* s , Ahelix[a]),
-																vec3_muls( stagmom[a]* c , Bhelix[a])
-															)
-											);
-						}
-
+                            #pragma omp critical(contact)
+                            {
+                                pile_add_element(&CCont, pow(n,CONT_SCALING_POWER), 
+							  								vec3_add(
+							  									vec3_muls( stagmom[a] * c , Ahelix[a]),
+							  									vec3_muls( stagmom[a] * s , Bhelix[a])
+							  								)							
+                                                );
+                                pile_add_element(&SCont, pow(n,CONT_SCALING_POWER), 
+							  								vec3_sub(
+							  									vec3_muls( stagmom[a]* s , Ahelix[a]),
+							  									vec3_muls( stagmom[a]* c , Bhelix[a])
+							  								)
+                                                );
+						    }
+                        }
 #ifdef _DEBUG                      
                         printf("CDip %d is now : %e %e %e\n", a, CDip[a].x, CDip[a].y, CDip[a].z);
                         printf("SDip %d is now : %e %e %e\n", a, SDip[a].x, SDip[a].y, SDip[a].z);
@@ -371,104 +384,118 @@ void INCASS(const double *in_positions,
     struct vec3 BDip;
     struct vec3 BLor;
     struct vec3 BCont;
-    
-    
-    for (angn = 0; angn < in_nangles; ++angn)
-    {
-        angle = 2*M_PI*((float) angn / (float) in_nangles);
-        
-        //  === Dipolar Field ===
-        BDip = vec3_zero();
-        // loop over atoms
-        for (a = 0; a < size; ++a)
-        {
-            BDip =  vec3_add(BDip,
-                            vec3_muls(
-                                stagmom[a],
-                                vec3_sub(
-                                    vec3_muls(cos(angle) , CDip[a]),
-                                    vec3_muls(sin(angle) , SDip[a])
-                                )
-                            )
-                        );
-        }
-        
-        BDip = vec3_muls(0.9274009, BDip); // to tesla units
-        out_field_dip[3*angn+0] = BDip.x;
-        out_field_dip[3*angn+1] = BDip.y;
-        out_field_dip[3*angn+2] = BDip.z;        
-        
-        
-        //  === Lorentz Field ===
-        BLor = vec3_zero();
-        // loop over atoms
-        for (a = 0; a < size; ++a)
-        {
-            BLor =  vec3_add(BLor,
-                            vec3_muls(
-                                stagmom[a],
-                                vec3_sub(
-                                    vec3_muls(cos(angle) , CLor[a]),
-                                    vec3_muls(sin(angle) , SLor[a])
-                                )
-                            )
-                        );
-        }
-        
-        BLor = vec3_muls(0.33333333333*11.654064, vec3_muls(3./(4.*M_PI*pow(radius,3)),BLor));
-        out_field_lor[3*angn+0] = BLor.x;
-        out_field_lor[3*angn+1] = BLor.y;
-        out_field_lor[3*angn+2] = BLor.z;        
-        
-	}
-    
-        
-    //  === Contact Field ===
-    BCont = vec3_zero();
+
+    // for contact field evaluation
     struct vec3 CBCont = vec3_zero();
     struct vec3 SBCont = vec3_zero();
     int NofM = 0; // Number of moments considered
-    double SumOfWeights = 0;
+    double SumOfWeights = 0;    
     
-	for (i=0; i < nnn_for_cont; i++) {
-		if ((CCont.ranks[i] >= 0.0) && (fabs(CCont.ranks[i] - SCont.ranks[i])<EPS)) {
-			CBCont = vec3_add(CBCont, vec3_muls(1./CCont.ranks[i],
-												CCont.elements[i])
-								);
-			SBCont = vec3_add(SBCont, vec3_muls(1./SCont.ranks[i],
-												SCont.elements[i])
-								);
-			SumOfWeights += 1./CCont.ranks[i];
-			NofM++;
-		} else {
-			printf("Something VERY odd ! ranks 1: %e ranks 2: %e \n", CCont.ranks[i] , SCont.ranks[i] );
-		}	
-	}
-		
-	pile_free(&CCont);
-	pile_free(&SCont);
-		
-	// (2 magnetic_constant/3)⋅1bohr_magneton   = ((2 ⋅ magnetic_constant) ∕ 3) ⋅ (1 ⋅ bohr_magneton)
-	//   ≈ 7.769376E-27((g⋅m^3) ∕ (A⋅s^2))
-	//   ≈ 7.769376 T⋅Å^3
-	
-	for (angn = 0; angn < in_nangles; ++angn) {
-		
-		angle = 2*M_PI*((float) angn / (float) in_nangles);
-		
-		if (NofM >0) {
-			BCont = vec3_muls((1./SumOfWeights) * 7.769376 , 
-                                vec3_sub(
-                                    vec3_muls(cos(angle) , CBCont),
-                                    vec3_muls(sin(angle) , SBCont)
+#pragma omp parallel sections private(angn,angle,BDip,BLor,BCont,i) firstprivate(CBCont,SBCont,NofM,SumOfWeights)
+{
+    // first portion, dipolar fields and Lorentz
+    #pragma omp section
+    {
+        for (angn = 0; angn < in_nangles; ++angn)
+        {
+            angle = 2*M_PI*((float) angn / (float) in_nangles);
+            
+            //  === Dipolar Field ===
+            BDip = vec3_zero();
+            // loop over atoms
+            for (a = 0; a < size; ++a)
+            {
+                BDip =  vec3_add(BDip,
+                                vec3_muls(
+                                    stagmom[a],
+                                    vec3_sub(
+                                        vec3_muls(cos(angle) , CDip[a]),
+                                        vec3_muls(sin(angle) , SDip[a])
+                                    )
                                 )
-							 );
-		} // otherwise is zero anyway!
-		
-		out_field_cont[3*angn+0] = BCont.x;
-		out_field_cont[3*angn+1] = BCont.y;
-		out_field_cont[3*angn+2] = BCont.z;        
+                            );
+            }
+            
+            BDip = vec3_muls(0.9274009, BDip); // to tesla units
+            out_field_dip[3*angn+0] = BDip.x;
+            out_field_dip[3*angn+1] = BDip.y;
+            out_field_dip[3*angn+2] = BDip.z;        
+            
+            
+            //  === Lorentz Field ===
+            BLor = vec3_zero();
+            // loop over atoms
+            for (a = 0; a < size; ++a)
+            {
+                BLor =  vec3_add(BLor,
+                                vec3_muls(
+                                    stagmom[a],
+                                    vec3_sub(
+                                        vec3_muls(cos(angle) , CLor[a]),
+                                        vec3_muls(sin(angle) , SLor[a])
+                                    )
+                                )
+                            );
+            }
+            
+            BLor = vec3_muls(0.33333333333*11.654064, vec3_muls(3./(4.*M_PI*pow(radius,3)),BLor));
+            out_field_lor[3*angn+0] = BLor.x;
+            out_field_lor[3*angn+1] = BLor.y;
+            out_field_lor[3*angn+2] = BLor.z;        
+            
+        }
     }
+
+
+    // second portion, contact fields
+    #pragma omp section
+    {
+        //  === Contact Field ===
+        BCont = vec3_zero();
+        
+        for (i=0; i < nnn_for_cont; i++) {
+            if ((CCont.ranks[i] >= 0.0) && (fabs(CCont.ranks[i] - SCont.ranks[i])<EPS)) {
+                CBCont = vec3_add(CBCont, vec3_muls(1./CCont.ranks[i],
+                                                    CCont.elements[i])
+                                    );
+                SBCont = vec3_add(SBCont, vec3_muls(1./SCont.ranks[i],
+                                                    SCont.elements[i])
+                                    );
+                SumOfWeights += 1./CCont.ranks[i];
+                NofM++;
+            } else {
+                printf("Something VERY odd ! ranks 1: %e ranks 2: %e \n", CCont.ranks[i] , SCont.ranks[i] );
+            }
+        }
+            
+        // (2 magnetic_constant/3)⋅1bohr_magneton   = ((2 ⋅ magnetic_constant) ∕ 3) ⋅ (1 ⋅ bohr_magneton)
+        //   ≈ 7.769376E-27((g⋅m^3) ∕ (A⋅s^2))
+        //   ≈ 7.769376 T⋅Å^3
+        
+        for (angn = 0; angn < in_nangles; ++angn) {
+            
+            angle = 2*M_PI*((float) angn / (float) in_nangles);
+            
+            if (NofM >0) {
+                BCont = vec3_muls((1./SumOfWeights) * 7.769376 , 
+                                    vec3_sub(
+                                        vec3_muls(cos(angle) , CBCont),
+                                        vec3_muls(sin(angle) , SBCont)
+                                    )
+                                );
+            } // otherwise is zero anyway!
+            
+            out_field_cont[3*angn+0] = BCont.x;
+            out_field_cont[3*angn+1] = BCont.y;
+            out_field_cont[3*angn+2] = BCont.z;        
+        }
+    }
+} // end of omp parallel sections
+
+    // free stuff used for contact field
+    pile_free(&CCont);
+    pile_free(&SCont);
+
 }
 
 

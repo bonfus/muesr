@@ -33,6 +33,8 @@ Known problems
 
 - Non-standard spacegroup settings can cause some tedious problems when 
   using the spglib functions. Pay attention!
+- OpenMP implementation is EXPERIMENTAL (passes tests but needs more work)
+
 
 Please not that the code is still under heavy development. 
 You'll probably find bugs so please report them!
