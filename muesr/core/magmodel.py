@@ -246,25 +246,30 @@ class MM(object):
     @property
     def phi(self):
         """
-        The phase for each fourier component.
+        The phase for each fourier component in units of 2 PI.
 
-        :getter: Returns a numpy array of size :py:attr:`~size` with the phases.
-        :setter: Sets the phases.
+        :getter: Returns a numpy array of size :py:attr:`~size` with the 
+                 phases.
+        :setter: Sets the phases. Type can be list of numpy array.
         :type: numpy ndarray        
         """
         return self._phi.copy()
 
     @phi.setter
     def phi(self, value):
-
+        if isinstance(value, list):
+            value = np.array(value,dtype=np.float)
+        
         if isinstance(value, np.ndarray):
            
             if value.shape == self._phi.shape:
                 self._phi=value
             else:
-                raise RuntimeError
+                raise ValueError("Incorrect size of array/list. Must " +
+                                  "be a 1D list of " + str(self._size) + 
+                                  "phases.")
         else:
-            raise RuntimeError
+            raise TypeError("Must be numpy array or list.")
 
     @property
     def desc(self):
