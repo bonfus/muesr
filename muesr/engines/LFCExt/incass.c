@@ -228,7 +228,7 @@ void INCASS(const double *in_positions,
         
         if (fabs(in_phi[a]) > EPS)
         {
-            printf("ERROR!!! Phi not supported!!!!\n");
+            printf("WARNING!!! Phi not tested!!!!\n");
         }
         
     }
