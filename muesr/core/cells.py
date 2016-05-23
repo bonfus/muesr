@@ -34,6 +34,7 @@
 
 import numpy as np
 from muesr.core.atoms import Atoms
+from muesr.core.sampleErrors import MagDefError
 
 
 def get_simple_supercell(sample,  multi):
@@ -48,9 +49,19 @@ def get_simple_supercell(sample,  multi):
     
     unitcell = sample.cell
     
-    FC = sample.mm.fc
-    K = sample.mm.k 
-    PHI  = sample.mm.phi
+    have_mag_structure = True
+    
+    FC=None
+    K=None
+    PHI=None
+    
+    try:
+        FC = sample.mm.fc
+        K = sample.mm.k 
+        PHI  = sample.mm.phi
+    except MagDefError:
+        have_mag_structure = False
+        
     
     positions = unitcell.get_scaled_positions()
     numbers = unitcell.get_atomic_numbers()
@@ -61,7 +72,8 @@ def get_simple_supercell(sample,  multi):
     positions_multi = []
     numbers_multi = []
     masses_multi = []
-    if FC is None:
+    
+    if not have_mag_structure:
         magmoms_multi = None
     else:
         magmoms_multi = []
@@ -78,11 +90,13 @@ def get_simple_supercell(sample,  multi):
                                              (pos[2] + k) / multi[2] ])
                     numbers_multi.append(numbers[l])
                     masses_multi.append(masses[l])
-                    if not FC is None:
+                    
+                    
+                    if have_mag_structure:
 
                         
-                        c = np.cos ( 2.0*np.pi * np.dot(K,[float(i),float(j),float(k)]) + PHI[l] )
-                        s = np.sin ( 2.0*np.pi * np.dot(K,[float(i),float(j),float(k)]) + PHI[l] );
+                        c = np.cos ( 2.0*np.pi * (np.dot(K,[float(i),float(j),float(k)]) + PHI[l]))
+                        s = np.sin ( 2.0*np.pi * (np.dot(K,[float(i),float(j),float(k)]) + PHI[l]));
                         
                         sk = np.real(FC[l])
                         isk = np.imag(FC[l])

@@ -60,6 +60,7 @@ def show_supercell(sample, supercell=[1,1,1]):
     
     
     
+    
     try:
         ans = ninput('Are you sure?! [y/N]', parse_bool)
     except EOFError:
@@ -67,7 +68,7 @@ def show_supercell(sample, supercell=[1,1,1]):
         
         
     if ans:
-        sc = get_simple_supercell(sample, spSize)
+        sc = get_simple_supercell(sample, supercell)
 
         if not sc is None:
             write_xsf(os.path.join(config.XCrysTmp,'preview.xsf'),sc)
