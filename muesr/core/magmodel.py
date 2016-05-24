@@ -35,10 +35,14 @@ class MM(object):
         self.__isfrozen = True
             
     def __init__(self, cell_size, latt_vects=None):
+        
+        self._size = int(cell_size)
+        
         try:
-            self._size = int(cell_size)
+            assert(self._size>0)
         except:
-            TypeError("Cannot parse size of mag model. Must be int.")
+            ValueError("Cannot parse size of mag model." + 
+                      "Must be (strictly) positive int.")
 
         self._description = "No title"
                 
@@ -95,7 +99,7 @@ class MM(object):
     def k(self, value):
         if isinstance(value, np.ndarray):
             if value.shape == (3,):
-                self._k=value
+                self._k=np.asarray(value,np.float)
             else:
                 raise ValueError('Array must be a single 3D vector.')
         else:
@@ -160,7 +164,7 @@ class MM(object):
 
     @fcLattBM.setter
     def fcLattBM(self, value):
-        return self.fc_get(value, 2)
+        return self.fc_set(value,2)
 
     def fc_get(self, coord_system=0):
         """
@@ -263,7 +267,7 @@ class MM(object):
         if isinstance(value, np.ndarray):
            
             if value.shape == self._phi.shape:
-                self._phi=value
+                self._phi=np.asarray(value,np.float)
             else:
                 raise ValueError("Incorrect size of array/list. Must " +
                                   "be a 1D list of " + str(self._size) + 
@@ -378,9 +382,10 @@ if have_sympy:
             
             self._symFCexpr = sy.sympify(value) # "[[0,0,0],[x,y,0]]"
             if len(self._symFCexpr) != self.size:
-                raise ValueError("Invalid shape size: " + str(len(self._symFCexpr)) + " instead of " + str(self.size))
                 self._symFCexpr = None
                 self._symFClambda = None
+                raise ValueError("Invalid shape size: " + str(len(self._symFCexpr)) + " instead of " + str(self.size))
+
                 
             self._symFClambda = sy.lambdify(self._symbols,
                                                self._symFCexpr,
