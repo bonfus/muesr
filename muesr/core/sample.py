@@ -1,5 +1,6 @@
 
 import numpy as np
+import warnings
 
 from copy import deepcopy
 
@@ -299,6 +300,16 @@ class Sample(object):
         """
         if cell:
             self._cell = None
+            if not muon:
+                warnings.warn("Resetting cell but preserving muon " +
+                              "position! Are you sure?", RuntimeWarning)
+            if not magdefs:
+                warnings.warn("Resetting cell but preserving magnetic" +
+                              "structures! Are you sure?", RuntimeWarning)
+            if not sym:
+                warnings.warn("Resetting cell but preserving symmetry" +
+                              "details! Are you sure?", RuntimeWarning)
+            
         if magdefs:
             self._magdefs = []
             self._selected_mm = -1

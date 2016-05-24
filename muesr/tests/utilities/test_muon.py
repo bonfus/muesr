@@ -271,7 +271,10 @@ class TestMuon(unittest.TestCase):
         self._sample = Sample()
         
     def test_muon_set_frac(self):
-        # check that missing sample raises error
+        
+        self._sample._reset(cell=True,sym=True,magdefs=True,muon=True)
+        
+        # check that missing cell raises error
         with self.assertRaises(CellError):
             muon_set_frac(self._sample, "0 0 0")
         
@@ -320,7 +323,7 @@ class TestMuon(unittest.TestCase):
         atoms, sym = read_cif(co_lattice,0) # selectd index 0
     
         if atoms:
-            self._sample._reset(cell=True, muon=True, sym=True)
+            self._sample._reset(cell=True, muon=True, sym=True, magdefs=True)
             self._sample.cell = atoms
             self._sample.sym = sym
         else:

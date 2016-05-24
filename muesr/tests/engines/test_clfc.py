@@ -30,6 +30,8 @@ class TestCLFC(unittest.TestCase):
         
     def test_find_largest_sphere(self):
         
+        self.sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+        
         with self.assertRaises(CellError):
             find_largest_sphere(self.sample,[3,3,3])
         
@@ -276,7 +278,13 @@ class TestLFCExtension(unittest.TestCase):
         np.testing.assert_array_almost_equal(d, -refdr)
         np.testing.assert_array_almost_equal(l, -reflr)
         
-        #### check spin density dephased
+        #### Check spin density dephased
+        ##   
+        ##   depending on the phase different magnetic structures are 
+        ##   obtained. With k=0. only the size is modulated.
+        ##   If k = 0.25 one can obtain orders like (for example)
+        ##   + 0 - 0     or    + + - - 
+        
         p  = np.array([[0.,0.,0.]])
         fc = np.array([[0.,0.,1.j]],dtype=np.complex)
         k  = np.array([0.,0.,0.0])
@@ -328,11 +336,15 @@ class TestLFCExtension(unittest.TestCase):
         
         c,d,l = lfcext.Fields('i', p,fc,k,phi,mu,sc,latpar,r,nnn,rc,8)
         
-        # shifted by one angle (that is phase)
+        # shifted by one angle (that is the phase)
         np.testing.assert_array_almost_equal(np.take(c,range(1,9),mode='wrap',axis=0), refc)
         np.testing.assert_array_almost_equal(np.take(l,range(1,9),mode='wrap',axis=0), refl)
         np.testing.assert_array_almost_equal(np.take(d,range(1,9),mode='wrap',axis=0), refd)
         
-        
+    
+    def test_dipolar_tensor(self):
+        # TODO!
+        pass
+    
 if __name__ == '__main__':
     unittest.main()

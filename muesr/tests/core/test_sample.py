@@ -5,6 +5,7 @@
 import sys
 import unittest
 import numpy as np
+import warnings 
 
 from muesr.core.sample import Sample
 
@@ -52,14 +53,22 @@ class TestSample(unittest.TestCase):
         
     
     def test_muons_property(self):
-        pass
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+        self._set_a_cell()
+        
+        with self.assertRaises(MuonError):
+            self._sample.muons
+            
+        
+        
         
     def test_add_muon_property(self):
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+
         with self.assertRaises(CellError):
             self._sample.add_muon([0,0,0])
             
         self._set_a_cell()
-                                        
         
         self._sample.add_muon([0,0,0])
         np.testing.assert_array_equal(self._sample.muons[0], np.zeros(3))
@@ -70,7 +79,7 @@ class TestSample(unittest.TestCase):
         self._sample.add_muon([1,1,1], cartesian=True)
         np.testing.assert_array_equal(self._sample.muons[2], np.ones(3)/3.)
         
-        a = 4.0  # Gold lattice constant
+        a = 4.0  # some lattice constant
         b = a / 2
         self._sample.cell = Atoms(symbols=['Au'],
                                   positions=[0,0,0],
@@ -87,7 +96,8 @@ class TestSample(unittest.TestCase):
         
     
     def test_mm_property(self):
-        self._sample._reset(magdefs=True)
+        self._sample._reset(cell=True,magdefs=True,muon=True,sym=True)
+        
         with self.assertRaises(MagDefError):
             self._sample.mm
 
@@ -100,7 +110,7 @@ class TestSample(unittest.TestCase):
         with self.assertRaises(TypeError):
             self._sample.mm = 1
             
-        self._sample._reset(magdefs=True, cell=True)
+        self._sample._reset(magdefs=True, cell=True, muon=True, sym=True)
         self._sample.cell = Atoms(symbols=['C'],
                                   scaled_positions=[[0,0,0]],
                                   cell=[[3.,0,0],
@@ -114,7 +124,7 @@ class TestSample(unittest.TestCase):
         
 
     def test_new_mm(self):
-        self._sample._reset(magdefs=True, cell=True)
+        self._sample._reset(magdefs=True, cell=True, muon=True, sym=True)
         with self.assertRaises(CellError):
             self._sample.new_mm()
         
@@ -128,7 +138,7 @@ class TestSample(unittest.TestCase):
     
     def test_new_smm(self):
         if have_sympy:
-            self._sample._reset(magdefs=True, cell=True)
+            self._sample._reset(magdefs=True, cell=True, muon=True, sym=True)
             with self.assertRaises(CellError):
                 self._sample.new_smm("x,y,z")
             
@@ -137,7 +147,7 @@ class TestSample(unittest.TestCase):
             pass
             
     def test_current_mm_idx_property(self):
-        self._sample._reset(magdefs=True, cell=True)
+        self._sample._reset(magdefs=True, cell=True,muon=True, sym=True)
         self._sample.cell = Atoms(symbols=['C'],
                                   scaled_positions=[[0,0,0]],
                                   cell=[[3.,0,0],
@@ -188,7 +198,14 @@ class TestSample(unittest.TestCase):
     def test_reset(self):
         
         # test cell reset
-        self._sample._reset(cell=True)
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered.
+            warnings.simplefilter("always")
+            self._sample._reset(cell=True)
+            assert len(w) == 3
+            for wi in w:
+                assert issubclass(wi.category, RuntimeWarning)
+                
         self.assertEqual(self._sample._cell, None)
         with self.assertRaises(CellError):
             self._sample.cell
@@ -208,7 +225,7 @@ class TestSample(unittest.TestCase):
         with self.assertRaises(MuonError):
             self._sample.muons
         
-        self._sample._reset(cell=True)
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
             
         #test symmetry reset
         self._sample.sym = Spacegroup(113)
