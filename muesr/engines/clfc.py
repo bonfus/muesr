@@ -51,21 +51,28 @@ class LocalFields(object):
         self.__isfrozen = True
 
     def __init__(self, BCont, BDip, BLor, ACont=0.):
-
-        assert(type(BLor) is np.ndarray)
-        assert(type(BDip) is np.ndarray)
-        assert(type(BCont) is np.ndarray)
         
-        assert (BDip.shape == BCont.shape == BLor.shape)
+        try:
+            assert(type(BLor) is np.ndarray)
+            assert(type(BDip) is np.ndarray)
+            assert(type(BCont) is np.ndarray)
+        except AssertionError:
+            raise TypeError("Must be numpy arrays!")
+        
+        try:
+            assert (BDip.shape == BCont.shape == BLor.shape)
+        except AssertionError:
+            raise ValueError("Must have the same shape!")
         
         
-        self._BLor = BLor
-        self._BDip = BDip
-        self._BCont = BCont
+        self._BLor = np.asarray(BLor,np.float)
+        self._BDip = np.asarray(BDip,np.float)
+        self._BCont = np.asarray(BCont,np.float)
+        
         try:
             self._ACont = np.float(ACont)
         except:
-            raise TypeError( "Cannot set value for ACont" )
+            raise TypeError( "Cannot set value for ACont. Must be float." )
         
         self._freeze() # no new attributes after this point. 
         
