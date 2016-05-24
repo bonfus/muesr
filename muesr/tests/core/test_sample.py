@@ -28,6 +28,10 @@ class TestSample(unittest.TestCase):
                                   cell=[[3.,0,0],
                                         [0,3.,0],
                                         [0,0,3.]])
+    def test_set_attribute(self):
+        with self.assertRaises(TypeError):
+            self._sample.blabla = 1
+        
         
     def test_name_property(self):
         
@@ -69,6 +73,14 @@ class TestSample(unittest.TestCase):
             self._sample.add_muon([0,0,0])
             
         self._set_a_cell()
+        
+        with self.assertRaises(TypeError):
+            self._sample.add_muon('0 0 0')
+            
+        with self.assertRaises(ValueError):
+            self._sample.add_muon([0,0,0,0])
+        with self.assertRaises(ValueError):
+            self._sample.add_muon(np.array([0,0,0,0]))
         
         self._sample.add_muon([0,0,0])
         np.testing.assert_array_equal(self._sample.muons[0], np.zeros(3))
@@ -167,20 +179,26 @@ class TestSample(unittest.TestCase):
         self._sample.current_mm_idx = 0
         self.assertEqual(self._sample.current_mm_idx,0)
         np.testing.assert_array_equal(self._sample.mm.k, np.array([0,0,1.]))
-
+        
+        with self.assertRaises(IndexError):
+            self._sample.current_mm_idx = 3
 
         
     def test_sym_property(self):
+        
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+        
         with self.assertRaises(SymmetryError):
             self._sample.sym
             
         with self.assertRaises(TypeError):
             self._sample.sym = 1
             
-        with self.assertRaises(TypeError):
-            self._sample.sym = 1
-            
         self._sample.sym = Spacegroup(113)
+        
+        self.assertEqual(self._sample.sym.no,113)
+        self.assertEqual(self._sample.sym.setting,1)
+        
 
     def test_cell_property(self): 
         #needs better testing
@@ -191,9 +209,10 @@ class TestSample(unittest.TestCase):
             self._sample.cell = 1
             
         self._set_a_cell()
-        
-        
-        
+        current_cell = self._sample.cell
+        self.assertEqual(current_cell.get_chemical_symbols(),['Co'])
+        current_cell.set_chemical_symbols(['Co'])
+        self.assertEqual(current_cell.get_chemical_symbols(),['Co'])
 
     def test_reset(self):
         
@@ -238,13 +257,63 @@ class TestSample(unittest.TestCase):
 
     # TODO
     def test_check_sym(self):
-        pass
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+        
+        with self.assertRaises(SymmetryError):
+            self._sample._check_sym()
+        
+        # vary bad from user side
+        self._sample._sym = 1
+        with self.assertRaises(SymmetryError):
+            self._sample._check_sym()
+        
+        self._sample.sym = Spacegroup(113)
+        self.assertTrue(self._sample._check_sym())
         
     def test_check_lattice(self):
-        pass
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+        
+        with self.assertRaises(CellError):
+            self._sample._check_lattice()
+        
+        self._set_a_cell()
+        self.assertTrue(self._sample._check_lattice())
+        self._sample._cell = 1
+        with self.assertRaises(CellError):
+            self._sample._check_lattice()
+        
+            
         
     def test_check_magdefs(self):
-        pass
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+        
+        with self.assertRaises(MagDefError):
+            self._sample._check_magdefs()
+            
+        self._set_a_cell()
+        self._sample.new_mm()
+        self.assertTrue(self._sample._check_magdefs())
+        
+        self._sample._magdefs = 1
+        with self.assertRaises(MagDefError):
+            self._sample._check_magdefs()        
+        
         
     def test_check_muon(self):
-        pass
+        self._sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+        
+        with self.assertRaises(MuonError):
+            self._sample._check_muon()
+
+        self._set_a_cell()
+        self._sample.add_muon(np.zeros(3))
+        self.assertTrue(self._sample._check_muon())
+        
+        self._sample.add_muon(np.zeros(3))
+        self._sample._muon[1] = 'a'
+        with self.assertRaises(MuonError):
+            self._sample._check_muon()        
+
+
+if __name__ == '__main__':
+    unittest.main()

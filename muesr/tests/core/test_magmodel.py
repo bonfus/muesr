@@ -18,10 +18,24 @@ class TestMM(unittest.TestCase):
         self._latt = np.random.rand(3,3)
         self._mm = MM(self.NUMFCS, self._latt)
         self._mmnolat = MM(self.NUMFCS)
+    
+    def test_wrong_init(self):
+        with self.assertRaises(TypeError):
+            mm = MM(None)
+        with self.assertRaises(ValueError):
+            mm = MM('a')
+        with self.assertRaises(ValueError):
+            mm = MM(-1)
         
+    
+    def test_cannot_set_anything(self):
+        with self.assertRaises(TypeError):
+            self._mm.ciao = 2
+    
     def test_size_property(self):
         
         self.assertEqual(self._mm.size,self.NUMFCS)
+        
         
     def test_lattice_params_property(self):
         
@@ -34,6 +48,16 @@ class TestMM(unittest.TestCase):
         self._mm.k = np.array([0.1,0.2,0.3])
         
         np.testing.assert_array_equal(self._mm.k, np.array([0.1,0.2,0.3]))
+        
+        with self.assertRaises(TypeError):
+            self._mm.k = 1
+        with self.assertRaises(ValueError):
+            self._mm.k = np.zeros(4)
+        with self.assertRaises(ValueError):
+            self._mm.k = np.zeros([4,4])
+        with self.assertRaises(ValueError):
+            self._mm.k = np.array(['a','a','a'])
+            
 
     def test_fc_property(self):
         
@@ -65,7 +89,41 @@ class TestMM(unittest.TestCase):
             randomfcs = self._mm.fc_get(int(conv_list[i+1]))
             
         np.testing.assert_array_almost_equal(origfcs, randomfcs)
-
+        
+        
+        self._mm.fc = randomfcs
+        np.testing.assert_array_almost_equal(randomfcs, self._mm.fc)
+        np.testing.assert_array_almost_equal(randomfcs, self._mm.fcCart)
+        
+        self._mm.fcCart = randomfcs
+        np.testing.assert_array_almost_equal(randomfcs, self._mm.fc)
+        np.testing.assert_array_almost_equal(randomfcs, self._mm.fcCart)
+        
+        self._mm.fcLattBMA = randomfcs
+        np.testing.assert_array_almost_equal(randomfcs, self._mm.fcLattBMA)
+        
+        self._mm.fcLattBM = randomfcs
+        np.testing.assert_array_almost_equal(randomfcs, self._mm.fcLattBM)
+        
+        # test wrong type
+        with self.assertRaises(ValueError):
+            self._mm.fcLattBM = np.zeros(3)
+        with self.assertRaises(ValueError):
+            self._mm.fcLattBM = np.zeros(3,dtype=np.complex)
+        with self.assertRaises(ValueError):
+            self._mm.fcLattBM = np.zeros(3,dtype=np.complex)
+            
+        with self.assertRaises(TypeError):
+            self._mm.fc_set(np.zeros([2,3],dtype=np.complex),'cart') #must be int
+        
+        
+        with self.assertRaises(ValueError):
+            self._mm.fc_set(np.zeros([2,3],dtype=np.complex),4) #must 0,1,2
+        
+        with self.assertRaises(TypeError):
+            self._mm.fc_set('a',1) #must 0,1,2
+        
+        
         
     def test_phi_property(self):
         np.testing.assert_array_equal(self._mm.phi, np.zeros(self.NUMFCS))
@@ -74,6 +132,24 @@ class TestMM(unittest.TestCase):
         self._mm.phi = randomphis
         
         np.testing.assert_array_equal(self._mm.phi, randomphis)
+        
+        randomphis = np.random.random(self.NUMFCS).tolist()
+        self._mm.phi = randomphis
+        np.testing.assert_array_equal(self._mm.phi, randomphis)
+        
+        
+        with self.assertRaises(TypeError):
+            self._mm.phi = 1
+        with self.assertRaises(ValueError):
+            self._mm.phi = np.zeros([2,3])
+
+        with self.assertRaises(ValueError):
+            self._mm.phi = ['a']
+
+        with self.assertRaises(ValueError):
+            self._mm.phi = np.array(['a','a'])
+            
+        
         
     def test_desc_property(self):
         self._mm.desc = "ciao"
@@ -193,3 +269,7 @@ if have_sympy:
         def test_isSymbolic(self):
             
             self.assertEqual(self._smm.isSymbolic,True)
+
+
+if __name__ == '__main__':
+    unittest.main()

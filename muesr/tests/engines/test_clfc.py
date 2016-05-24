@@ -16,6 +16,30 @@ from muesr.engines.clfc import *
 
 import lfcext
 
+
+class TestLocalFields(unittest.TestCase):
+    def test_init(self):
+        with self.assertRaises(TypeError):
+            LocalFields('a',2,None)
+            
+        with self.assertRaises(ValueError):
+            LocalFields(np.zeros(2),np.zeros(3),np.zeros(3))
+
+
+        with self.assertRaises(ValueError):
+            LocalFields(np.array(['a','a']),np.array(['a','a']),np.array(['a','a']))
+            
+            
+        lf = LocalFields(np.zeros(3),np.zeros(3),np.zeros(3))
+        np.testing.assert_array_equal(lf.T,np.zeros(3))
+        
+        
+        with self.assertRaises(TypeError):
+            lf.bubu = 1
+            
+    
+        
+
 class TestCLFC(unittest.TestCase):
  
     def setUp(self):
@@ -54,6 +78,9 @@ class TestCLFC(unittest.TestCase):
         self.assertEqual(find_largest_sphere(self.sample,[1,1,1]),1.5)
         self.sample.add_muon([1.,1.,1.],cartesian=True)
         self.assertEqual(find_largest_sphere(self.sample,[1,1,1]),1.)
+        
+        
+    
 
 # http://stackoverflow.com/a/6802723
 def rotation_matrix(axis, theta):
