@@ -1,10 +1,11 @@
-import os
+import os, warnings
 import numpy as np
 from muesr.core.parsers  import parse_bool
 from muesr.core.nprint   import nprint
 from muesr.core.ninput   import *
 from muesr.core.atoms    import Atoms
 from muesr.core.sample   import Sample
+from muesr.core.sampleErrors   import *
 from muesr.core.spg      import spacegroup_from_data
 from muesr.core.magmodel import MM
 
@@ -23,12 +24,13 @@ except:
 
 
 
-def save_sample(sample, filename):
+def save_sample(sample, filename, fileobj=None):
     """
     This function saves the sample provided in YAML format.
     
     :param sample: the sample object
     :param str filename: the filename used to store data.
+    :param file fileobj: a file object used in place of filename.
     :return: None
     :rtype: None
     :raises: TypeError
@@ -36,7 +38,8 @@ def save_sample(sample, filename):
     
     
     if not have_yaml:
-        warnings.warn("Warning, YAML python package not present!")
+        warnings.warn("Warning, YAML python package not present!\n" +
+                      "You cannot use this function")
         return False
 
     if not isinstance(sample, Sample):
@@ -103,27 +106,33 @@ def save_sample(sample, filename):
 
     output = dump(outdict, Dumper=Dumper)
     
-    while os.path.isfile(filename):
-        if not ninput('Do you really want to overwite ' + 
-                os.path.basename(filename) + '?', parse_bool):
-            filename = ninput('New file name: ')
-        else:
-            break
-    
-    # TODO: check overwrite and handle errors
-    with open(filename,'w') as f:
-        f.write(output)
+    if fileobj is None:
+        
+        while os.path.isfile(filename):
+            if not ninput('Do you really want to overwite ' + 
+                    os.path.basename(filename) + '?', parse_bool):
+                filename = ninput('New file name: ')
+            else:
+                break
+        
+        # TODO: check overwrite and handle errors
+        with open(filename,'w') as f:
+            f.write(output)
+    else:
+        fileobj.write(output)
 
     
-def load_sample(filename):
+def load_sample(filename, fileobj=None):
 
     """
     This function load a sample from a file in YAML format.
         
     :param str filename: the filename used to store data.
+    :param file fileobj: an optional file object. If specified, this
+                         supersede the filename input.
     :return: a sample object
     :rtype: :py:class:`~Sample` object or None
-    :raises: ValueError   
+    :raises: ValueError
     
     .. note::
        Overwrite is not checked!  
@@ -133,14 +142,24 @@ def load_sample(filename):
     # fail if YAML is not available
     if not have_yaml:
         warnings.warn("Warning, YAML python package not present!")
-        return False        
+        return
     
     sample = Sample()
     
     data = {}
-    with open(filename,'r') as f:
-        data = load(f, Loader=Loader)
-        
+    if fileobj is None:
+        with open(filename,'r') as f:
+            data = load(f, Loader=Loader)
+    else:
+        data = load(fileobj, Loader=Loader)
+
+    if not(type(data) is dict):
+        raise ValueError('Invalid data file. (problems with YAML?)')
+
+    
+    if data is None:
+        raise ValueError('Invalid/empty data file. (problems with YAML?)')
+    
     if 'Lattice' in data.keys():
         l = data['Lattice']
         
@@ -149,23 +168,28 @@ def load_sample(filename):
         if 'ScaledPositions' in l.keys():
             spos = np.array(l['ScaledPositions'])
         elif 'CartesianPositions' in l.keys():
-            cpos = np.array(l['ScaledPositions'])
-        else:
-            nprint('Cannot parse lattice positions. Giving up.','error')
-            return False
+            cpos = np.array(l['CartesianPositions'])
         
         cell = None
         if 'Cell' in l.keys():
             cell = np.array(l['Cell'])
-        else:
-            nprint('Cannot parse lattice cell. Giving up.','error')
-            return False                
             
         symbols = None
         if 'Symbols' in l.keys():
             symbols = l['Symbols']
-            
-        sample.cell = Atoms(symbols = symbols, scaled_positions = spos, cell=cell, pbc=True)
+        
+        if (cell is None) or (symbols is None):
+            warnings.warn('Cell not loaded!', RuntimeWarning)
+        else:
+            if not spos is None:
+                sample.cell = Atoms(symbols = symbols, scaled_positions = spos, cell=cell, pbc=True)
+            elif not cpos is None:
+                sample.cell = Atoms(symbols = symbols, scaled_positions = spos, cell=cell, pbc=True)
+            else:
+                warnings.warn('Cell not loaded!', RuntimeWarning)
+
+    else:
+        warnings.warn('Cell not loaded!', RuntimeWarning)
 
             
     if 'Muon' in data.keys():
@@ -173,6 +197,10 @@ def load_sample(filename):
         if 'Positions' in m:
             for p in m['Positions']:
                 sample.add_muon(p)
+        else:
+            warnings.warn('Muon positions not loaded!', RuntimeWarning)
+    else:
+        warnings.warn('Muon positions not loaded!', RuntimeWarning)
                 
     if 'Symmetry' in data.keys():
         s = data['Symmetry']
@@ -185,40 +213,50 @@ def load_sample(filename):
                                             rotations=np.array(s['Rotations']),
                                             translations=np.array(s['Translations'])) 
         else:
-            nprint('Cannot load symmetry','warn')
+            warnings.warn('Symmetry not loaded.', RuntimeWarning)
+    else:
+        warnings.warn('Symmetry not loaded!', RuntimeWarning)
             
     if 'MagneticOrders' in data.keys():
         m = data['MagneticOrders']
-        msize = int(m['Size'])
-
-        for mo in m['Orders']:
-            
-            if 'lattice' in mo.keys():                
-                n = MM(msize, \
-                        np.array(mo['lattice']))
-            else:
-                n = MM(msize)
-            
-            sample.mm = n
-            sample.mm.k = np.array(mo['k'])
-            
-            rfcs, ifcs = np.hsplit(np.array(mo['fc']),2)
-            
         
-            if mo['format'].lower() in ['bohr-cartesian', 'b-c']:
-                sample.mm.fcCart=(rfcs + 1.j*ifcs)
+        if len(m) > 0:
+        
+            msize = int(m['Size'])
+    
+            for mo in m['Orders']:
                 
-            elif mo['format'].lower() in ['bohr/angstrom-lattic', 'b/a-l']:
-                sample.mm.fcLattBMA=(rfcs + 1.j*ifcs)
+                if 'lattice' in mo.keys():                
+                    n = MM(msize, \
+                            np.array(mo['lattice']))
+                else:
+                    n = MM(msize)
                 
-            elif mo['format'].lower() in ['bohr-lattice','b-l']:
-                sample.mm.fcLattBM=(rfcs + 1.j*ifcs)
+                sample.mm = n
+                sample.mm.k = np.array(mo['k'])
                 
-            else:
-                raise ValueError('Invalid Fourier Components format specifier in YAML file.')
+                rfcs, ifcs = np.hsplit(np.array(mo['fc']),2)
+                
+            
+                if mo['format'].lower() in ['bohr-cartesian', 'b-c']:
+                    sample.mm.fcCart=(rfcs + 1.j*ifcs)
+                    
+                elif mo['format'].lower() in ['bohr/angstrom-lattic', 'b/a-l']:
+                    sample.mm.fcLattBMA=(rfcs + 1.j*ifcs)
+                    
+                elif mo['format'].lower() in ['bohr-lattice','b-l']:
+                    sample.mm.fcLattBM=(rfcs + 1.j*ifcs)
+                    
+                else:
+                    raise ValueError('Invalid Fourier Components format specifier in YAML file.')
+        else:
+            warnings.warn('Magnetic definitions not loaded!', RuntimeWarning)
+    else:
+        warnings.warn('Magnetic definitions not loaded!', RuntimeWarning)
                 
     return sample
         
         
-        
+if __name__ == '__main__':
+    unittest.main()
         
