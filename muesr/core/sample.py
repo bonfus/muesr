@@ -4,7 +4,7 @@ import warnings
 
 from copy import deepcopy
 
-from muesr.core.sampleErrors import SymmetryError, CellError, MagDefError, MuonError
+from muesr.core.sampleErrors import *
 from muesr.core.nprint import cstring
 from muesr.core.spg  import Spacegroup
 from muesr.core.atoms  import Atoms
@@ -41,19 +41,27 @@ class Sample(object):
     
     """
     
+
     __isfrozen = False       # used to prevent adding stuff
-    _name    = "No name"     # description of the sample
-    _muon    = []            # list containing the muon pos (frac. coord)
-    _magdefs = []            # list containing MM objects
-    _sym     = None          # contains symmetry object
-    _cell    = None          # contains an Atoms object
-    _selected_mm = -1        # the selected magnetic structure.
-    
+
     def __init__(self):
+        self._name    = "No name"     # description of the sample
+        self._muon    = []            # list containing the muon pos (frac. coord)
+        self._magdefs = []            # list containing MM objects
+        self._sym     = None          # contains symmetry object
+        self._cell    = None          # contains an Atoms object
+        self._selected_mm = -1        # the selected magnetic structure.        
         self._freeze()
     
     def __setattr__(self, key, value):
-        if self.__isfrozen and not hasattr(Sample, key):
+        #check if attribute is present
+        _hasattr = False
+        try:
+            _hasattr = hasattr(self, key)
+        except SampleException:
+            _hasattr = True
+            
+        if self.__isfrozen and not _hasattr:
             raise TypeError( "Cannot set attributes in this class" )
         object.__setattr__(self, key, value)
 
@@ -111,9 +119,9 @@ class Sample(object):
         
         if (type(position) is np.ndarray):
             if not position.shape == (3,):
-                raise MuonError('Invalid shape for muon position. Must be 3D vector.')
+                raise ValueError('Invalid shape for muon position. Must be 3D vector.')
         else:
-            raise MuonError('Invalid input for muon position. Must be list of numpy array.')
+            raise TypeError('Invalid input for muon position. Must be list of numpy array.')
         
         
         if cartesian:
@@ -328,7 +336,11 @@ class Sample(object):
     def _check_lattice(self):
         if self._cell is None:
             raise CellError('Crystal structure not defined')
-        return True
+        else:
+            if (isinstance(self._cell,Atoms)):
+                return True
+            else:
+                raise CellError('Crystal structure type is wrong!')
         
     def _check_magdefs(self):
         if type(self._magdefs) is list :
@@ -337,7 +349,7 @@ class Sample(object):
             else:
                 raise MagDefError('Magnetic structure not defined')
         else:
-            raise MagDefError('Magnetic structure not defined')
+            raise MagDefError('Magnetic structure type is wrong!')
         
     def _check_muon(self):
         if type(self._muon) is list:
