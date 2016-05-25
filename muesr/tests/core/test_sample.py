@@ -183,6 +183,12 @@ class TestSample(unittest.TestCase):
         with self.assertRaises(IndexError):
             self._sample.current_mm_idx = 3
 
+        with self.assertRaises(IndexError):
+            self._sample.current_mm_idx = -1
+
+            
+        self.assertEqual(s.current_mm_idx,0)
+
         
     def test_sym_property(self):
         

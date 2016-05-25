@@ -30,15 +30,61 @@ class TestLocalFields(unittest.TestCase):
             LocalFields(np.array(['a','a']),np.array(['a','a']),np.array(['a','a']))
             
             
-        lf = LocalFields(np.zeros(3),np.zeros(3),np.zeros(3))
-        np.testing.assert_array_equal(lf.T,np.zeros(3))
+        lf = LocalFields(np.zeros(3),np.ones(3),2.*np.ones(3))
+        np.testing.assert_array_equal(lf._BLor,2.*np.ones(3))
+        np.testing.assert_array_equal(lf._BCont,0.*np.ones(3))
+        np.testing.assert_array_equal(lf._BDip,np.ones(3))
         
         
         with self.assertRaises(TypeError):
             lf.bubu = 1
             
-    
+    def test_D(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        np.testing.assert_array_equal(lf.D,2.*np.ones(3))
         
+    def test_Dipolar(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        np.testing.assert_array_equal(lf.Dipolar,2.*np.ones(3))
+        
+    def test_C(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        np.testing.assert_array_equal(lf.C,0.*np.ones(3))
+        lf.ACont=1.
+        np.testing.assert_array_equal(lf.C,np.ones(3))
+        
+    def test_Contact(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        np.testing.assert_array_equal(lf.Contact,0.*np.ones(3))
+        lf.ACont=1.
+        np.testing.assert_array_equal(lf.Contact,1.*np.ones(3))
+
+    def test_L(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        np.testing.assert_array_equal(lf.L,3.*np.ones(3))
+        
+    def test_Lorentz(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        np.testing.assert_array_equal(lf.Lorentz,3.*np.ones(3))
+        
+    def test_T(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        np.testing.assert_array_equal(lf.T,5.*np.ones(3))
+        lf.ACont = 2
+        np.testing.assert_array_equal(lf.T,7.*np.ones(3))
+        
+    def test_Total(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        lf.ACont = 3
+        np.testing.assert_array_equal(lf.Total,8.*np.ones(3))
+        
+        
+    def test_ACont(self):
+        lf = LocalFields(np.ones(3),2.*np.ones(3),3.*np.ones(3))
+        lf.ACont = -5.
+        self.assertEqual(lf.ACont,-5.)
+        np.testing.assert_array_equal(lf.Total,0.*np.ones(3))
+        np.testing.assert_array_equal(lf.C,-5.*np.ones(3))
 
 class TestCLFC(unittest.TestCase):
  
@@ -369,9 +415,67 @@ class TestLFCExtension(unittest.TestCase):
         np.testing.assert_array_almost_equal(np.take(d,range(1,9),mode='wrap',axis=0), refd)
         
     
+    def test_null_by_symmetry(self):
+        p  = np.array([[0.,0.,0.]])
+        fc = np.array([[0.,0.,1.]],dtype=np.complex)
+        k  = np.array([0.,0.,0.0])
+        
+        phi= np.array([0.,])
+        
+        mu = np.array([0.5,0.5,0.5])
+        
+        sc = np.array([10,10,10],dtype=np.int32)
+        latpar = np.diag([2.,2.,2.])
+        
+        r = 10.
+        nnn = 2
+        rc=10.
+        
+        #### simple tests with phase
+        c,d,l = lfcext.Fields('s', p,fc,k,phi,mu,sc,latpar,r,nnn,rc)
+        np.testing.assert_array_almost_equal(d, np.zeros(3))
+        
+        # this works with a large grid but then unit testing is slow!
+        #  by the way, 1.9098593 is the ratio between cube and sphere
+        #  volumes.
+        #np.testing.assert_array_almost_equal(l, np.array([0.,0.,0.92740095/1.9098593]))
+        #
+        # the comparison done below is with the unconverged results that 
+        # is obtained in the 10x10x10 supercell
+        np.testing.assert_array_almost_equal(l, np.array([0.,0.,0.46741]),decimal=4)
+        
+        # (2 magnetic_constant/3)⋅1bohr_magneton   = ((2 ⋅ magnetic_constant) ∕ 3) ⋅ (1 ⋅ bohr_magneton)
+        # ≈ 7.769376E-27((g⋅m^3) ∕ (A⋅s^2))
+        # ≈ 7.769376 T⋅Å^3
+        #
+        np.testing.assert_array_almost_equal(c, np.array([0,0,7.769376]))
+        
+        
+        
+    
     def test_dipolar_tensor(self):
-        # TODO!
-        pass
+        # initial stupid test...
+        ###### TODO : do a reasonable test!!!  ######
+        p  = np.array([[0.,0.,0.]])
+        fc = np.array([[0.,0.,1.]],dtype=np.complex)
+        k  = np.array([0.,0.,0.0])
+        
+        phi= np.array([0.,])
+        
+        mu = np.array([0.5,0.5,0.5])
+        
+        sc = np.array([10,10,10],dtype=np.int32)
+        latpar = np.diag([2.,2.,2.])
+        
+        r = 10.
+        res = lfcext.DipolarTensor(p,mu,sc,latpar,r)
+        np.testing.assert_array_almost_equal(res, np.zeros([3,3]))
+        
+        mu = np.array([0.25,0.25,0.25])
+        res = lfcext.DipolarTensor(p,mu,sc,latpar,r)
+        np.testing.assert_array_almost_equal(np.trace(res), np.zeros([3]))
+        np.testing.assert_array_almost_equal(res, res.copy().T)
+        
     
 if __name__ == '__main__':
     unittest.main()

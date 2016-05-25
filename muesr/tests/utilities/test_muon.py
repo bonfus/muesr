@@ -447,3 +447,7 @@ class TestMuon(unittest.TestCase):
                                 [ 0.900000  , 0.300000  , 0.700000]])
         for p in eqpositions: 
             self.assertTrue(np.any(np.all(np.abs(muon_positions-p)<1e-10, axis=1)))
+
+
+if __name__ == '__main__':
+    unittest.main()
