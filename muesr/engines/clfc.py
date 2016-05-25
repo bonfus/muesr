@@ -38,6 +38,7 @@ class LocalFields(object):
     To introduce the contact term the user must modify :math:`\\mathrm{ACont} = 0` 
     using the property :py:attr:`~ACont`.
     
+    The object is initialized as LocalFields(BCont, BDip, BLor, ACont=0.).
     
     """
 
