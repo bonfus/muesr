@@ -184,7 +184,7 @@ def load_sample(filename, fileobj=None):
             if not spos is None:
                 sample.cell = Atoms(symbols = symbols, scaled_positions = spos, cell=cell, pbc=True)
             elif not cpos is None:
-                sample.cell = Atoms(symbols = symbols, scaled_positions = spos, cell=cell, pbc=True)
+                sample.cell = Atoms(symbols = symbols, positions = cpos, cell=cell, pbc=True)
             else:
                 warnings.warn('Cell not loaded!', RuntimeWarning)
 
@@ -234,6 +234,7 @@ def load_sample(filename, fileobj=None):
                 
                 sample.mm = n
                 sample.mm.k = np.array(mo['k'])
+                sample.mm.phi = np.array(mo['phi'])
                 
                 rfcs, ifcs = np.hsplit(np.array(mo['fc']),2)
                 
