@@ -55,7 +55,8 @@ Propagation vector
 ++++++++++++++++++
 
 In :mod:`muesr`, the propagation vector is always specified 
-in **reciprocal lattice units**.
+in **reciprocal lattice units** with the 
+:py:attr:`~muesr.core.magmodel.MM.k` property.
 
 Fourier components
 ++++++++++++++++++
@@ -80,7 +81,20 @@ systems:
     vectors.
     If we define L = {{a,0,0},{0,b,0},{0,0,c}}, then the magnetic metric
     tensor is M = L.G.L^(-1), which is unit-less.
-    
+
+Here's a table connecting the three possible input and related functions
+
+.. table ::
+
+   ======================== ============================================ ===========================================================
+   coordinate system number :py:mod:`~muesr.core.magmodel.MM` property   String version (used in YAML files and in helper functions)
+   ======================== ============================================ ===========================================================
+   0                        :py:attr:`~muesr.core.magmodel.MM.fc`        'bohr-cartesian' or 'b-c' (case insensitive)
+                            :py:attr:`~muesr.core.magmodel.MM.fcCart`    
+   1                        :py:attr:`~muesr.core.magmodel.MM.fcLattBMA` 'bohr/angstrom-lattice' or 'b/a-l' (case insensitive)
+   2                        :py:attr:`~muesr.core.magmodel.MM.fcLattBM`  'bohr-lattice' or 'b-l' (case insensitive)
+   ======================== ============================================ ===========================================================
+
 In practice
 +++++++++++
 
@@ -103,15 +117,23 @@ From that you can access and define all the properties of the magnetic definitio
     ... array([0, 0, 0])
     
 
-Plese see the :py:mod:`~muesr.core.magmodel.MM` documentation for the 
+The three fundamental properties of a magnetic model are:
+
+  - :py:attr:`~muesr.core.magmodel.MM.fc`
+  - :py:attr:`~muesr.core.magmodel.MM.k`
+  - :py:attr:`~muesr.core.magmodel.MM.phi`
+
+Please see the :py:mod:`muesr.core.magmodel.MM` documentation for the 
 details.
 
 To simplify the definition of the magnetic structure, the 
-:py:func:`~muesr.utilities.ms.mago_add` helper function is available.
+:py:func:`~muesr.utilities.ms.mago_add` helper function is available in
+the :py:mod:`muesr.utilities.ms` module.
 
 It prompts an interactive interface like the one shown below
 (for a Ti2O3 structure): ::
 
+    >>> from muesr.utilities.ms import mago_add
     >>> mago_add(smp,coordinates='bohr-lattice')
     ...      Propagation vector (w.r.t. conv. rec. cell): 0 0 0
     ... 	 Magnetic moments in bohr magnetons and lattice coordinates.
@@ -219,6 +241,10 @@ Which are indeed: ::
 The zeros in the Fourier components are from the atoms different from 
 `Ti`.
 
+  .. note::
+     The phases can only be set with the :py:attr:`~muesr.core.magmodel.MM.phi`
+     property.
+     
 
 Useful readings
 +++++++++++++++
@@ -228,10 +254,12 @@ Useful readings
 Setting the muon position
 -------------------------
 
-The muon position can be easly set with the .
+The muon position can be easily set with the 
+:py:attr:`~muesr.core.sample.Sample.add_muon` method.
 
 If symmetry is defined, equivalent muon positions can be obtained with 
-the function :py:func:`~muesr.utilities.muon.find_equiv`
+the function :py:func:`~muesr.utilities.muon.find_equiv` in the 
+:py:mod:`muesr.utilities.muon` module.
 
 Calculate local fields 
 ------------------------
@@ -292,3 +320,16 @@ To see their meaning follow the links.
 
 The utility functions are mainly intended for interactive usage and report
 problems by printing messages on the screen.
+
+
+Saving and loading sample details to/from file
+----------------------------------------------
+
+To save a sample use :py:func:`~muesr.io.sampleIO.save_sample`. To load
+a saved sample use :py:func:`~muesr.io.sampleIO.load_sample`.
+
+Data is stored in an YAML file. It is possible (but error prone) to write
+an input file by hand. When loaded, the file will undergo a minimal 
+validation. Spotting errors is not so easy so the best method to specify
+the sample details is probably using the various functions discussed in 
+this manual.

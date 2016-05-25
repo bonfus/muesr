@@ -145,3 +145,11 @@ Source documentation
    :members:
    :undoc-members:
    :show-inheritance:
+   
+:mod:`muesr.utilities.muon` -- Functions facilitating muon position definition
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. automodule:: muesr.utilities.muon
+   :members:
+   :undoc-members:
+   :show-inheritance:
