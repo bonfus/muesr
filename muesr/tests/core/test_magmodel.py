@@ -231,6 +231,9 @@ if have_sympy:
             
             np.testing.assert_array_almost_equal(self._smm.fc_get(0), np.array([params,params]))
             
+            with self.assertRaises(TypeError):
+                # wrong size for symbolic fourier components
+                self._smmnolat.set_symFC([1,2,3], 1)
             with self.assertRaises(ValueError):
                 # wrong size for symbolic fourier components
                 self._smmnolat.set_symFC('[[x,y,z]]', 1)

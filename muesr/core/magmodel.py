@@ -380,11 +380,21 @@ if have_sympy:
                 self._inputType = coord_system
 
             
+            if type(value) != str:
+                raise TypeError("value type must be str")
+           
+            
+            
             self._symFCexpr = sy.sympify(value) # "[[0,0,0],[x,y,0]]"
+            if self._symFCexpr is None:
+                raise ValueError("Cannot sympyfy expression! See sympy manual.")
+                
             if len(self._symFCexpr) != self.size:
+                size_given = len(self._symFCexpr)
                 self._symFCexpr = None
                 self._symFClambda = None
-                raise ValueError("Invalid shape size: " + str(len(self._symFCexpr)) + " instead of " + str(self.size))
+                raise ValueError("Invalid shape size: " + str(size_given)
+                                    + " instead of " + str(self.size))
 
                 
             self._symFClambda = sy.lambdify(self._symbols,
