@@ -187,7 +187,7 @@ class TestSample(unittest.TestCase):
             self._sample.current_mm_idx = -1
 
             
-        self.assertEqual(s.current_mm_idx,0)
+        self.assertEqual(self._sample.current_mm_idx,0)
 
         
     def test_sym_property(self):

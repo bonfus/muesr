@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Note: this is not really a unit test but rather a comprehensive
+#       test for the main functionalities of the package.
+#       It can also be useful to understand some features.
+
 import unittest
 import os
 import numpy as np
