@@ -7,6 +7,7 @@ from muesr.settings import config
 from muesr.io.xsf.xsfio import *
 from muesr.io.xsf.xsfrun import *
 
+from muesr.core.sampleErrors import MuonError
 from muesr.core.parsers import *
 from muesr.core.ninput import ninput
 from muesr.core.nprint import nprintmsg
@@ -92,8 +93,11 @@ def show_cell(sample):
     cell = sample.cell
     
     if not cell is None:
-        for m in sample.muons:
-            cell.extend(symbol="mu",scaled_position=m)
+        try:
+            for m in sample.muons:
+                cell.extend(symbol="mu",scaled_position=m)
+        except MuonError:
+            pass
             
         write_xsf(os.path.join(config.XCrysTmp,'preview.xsf'),cell)
         run_xcrysden(os.path.join(config.XCrysTmp,'preview.xsf'))
