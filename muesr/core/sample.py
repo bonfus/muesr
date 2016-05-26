@@ -56,11 +56,16 @@ class Sample(object):
     def __setattr__(self, key, value):
         #check if attribute is present
         _hasattr = False
-        try:
-            _hasattr = hasattr(self, key)
-        except SampleException:
+        # this is a work around till I find a better way to check 
+        # properties that raises exceptions both in python2 and python3
+        if key in ['name', 'mm', 'current_mm_idx','sym','cell']:
             _hasattr = True
-            
+        else:
+            try:
+                _hasattr = hasattr(self, key)
+            except SampleException:
+                _hasattr = True
+        
         if self.__isfrozen and not _hasattr:
             raise TypeError( "Cannot set attributes in this class" )
         object.__setattr__(self, key, value)
