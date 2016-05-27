@@ -49,7 +49,7 @@ def export_fpstudio(sample, filename):
         outbuffer += "LATTICE P\n"
         outbuffer += "SYMM x,y,z\n"
         outbuffer += "MSYM u,v,w,0.0\n"
-        for i, atom in enumerate(self._cell):
+        for i, atom in enumerate(sample.cell):
             outbuffer += "MATOM "
             outbuffer += atom[0]+str(i) + " "
             outbuffer += atom[0] + " "  
@@ -57,9 +57,9 @@ def export_fpstudio(sample, filename):
             outbuffer += " SCALE 0.8 ENVELOP\n"
             
             outbuffer += "skp 1 1 "
-            outbuffer += " ".join([str(x) for x in self.mm.fcLattBM[i].real]) + " "
-            outbuffer += " ".join([str(x) for x in self.mm.fcLattBM[i].imag]) + " "
-            outbuffer += str(self._phi()[i]) + "\n"
+            outbuffer += " ".join([str(x) for x in sample.mm.fcLattBM[i].real]) + " "
+            outbuffer += " ".join([str(x) for x in sample.mm.fcLattBM[i].imag]) + " "
+            outbuffer += str(sample.mm.phi[i]) + "\n"
         
         
 
