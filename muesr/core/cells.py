@@ -49,6 +49,26 @@ def get_simple_supercell(sample,  multi):
     
     unitcell = sample.cell
     
+    if type(multi) is np.ndarray:
+        multi = multi.tolist()
+    
+    if type(multi) is list:
+        if len(multi) == 3:
+            try:
+                multi = [int(x) for x in multi]
+            except:
+                raise TypeError('Cannot convert multi to int')
+            if multi[0] <= 0 or multi[1] <= 0 or multi[2] <= 0:
+                raise ValueError('Supercell values must be strictly positive.')
+            else:
+                # everything is fine!
+                pass
+        else:
+            raise ValueError('multi must be a 3D vector!')
+    else:
+        raise TypeError('multi must me list or numpy array of integers' +
+                        ' (automatically converted)')
+    
     have_mag_structure = True
     
     FC=None

@@ -9,6 +9,8 @@ from muesr.core.parsers import mybool
 
 
 def write_xsf(fileobj, images, data=None):
+    
+    # this won't work with unicode!!
     if isinstance(fileobj, str):
         fileobj = open(fileobj, 'w')
         
