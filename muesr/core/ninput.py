@@ -6,7 +6,11 @@ def ninput(message,parser = None):
     Nice input function
     """
     try:
-        choice = input('\t ' + message )
+        choice = ""
+        if sys.version_info >= (3,0):
+            choice = input('\t ' + message )
+        else:
+            choice = raw_input('\t ' + message )
         #readline.remove_history_item(readline.get_current_history_length()-1)
         if parser:
             choice = parser(choice)
