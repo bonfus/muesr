@@ -1,6 +1,8 @@
 # http://magcryst.org/resources/magnetic-coordinates/
 
-from muesr.core.magmodel import SMM,MM
+from muesr.core.magmodel import MM, have_sympy
+if have_sympy:
+    from muesr.core.magmodel import SMM
 
 from muesr.core.parsers import *
 from muesr.core.nprint  import nprint, nprintmsg, print_cell
@@ -140,8 +142,7 @@ def mago_set_FC(sample, fcs= None, atoms_types = None, mm=None, inputConvention=
         try:
             if set_this_fc(atom[0]): # check if we should set this fc
                 FCin = ninput_mt("FC for atom %i %s (3 real, [3 imag]): " % (i+1,atom[0]), parse_complex_vector)
-                fcs[i]=[FCin[i]+1.j*FCin[i+3] for i in range(3)]
-                
+                fcs[i]=[FCin[j]+1.j*FCin[j+3] for j in range(3)]
                     
             else:
                 # 0 is always 0, no matter the input format! ;)
@@ -150,7 +151,7 @@ def mago_set_FC(sample, fcs= None, atoms_types = None, mm=None, inputConvention=
         except EOFError:
             gotEOS = True
             break
-            
+
     if gotEOS:
         nprint('Nothing set')
     else:
