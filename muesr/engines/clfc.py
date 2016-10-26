@@ -208,7 +208,7 @@ def find_largest_sphere(sample, supercell):
         distances = []
         
         # muon position in Cartesian coordnates
-        mup = np.dot(scell, (mu + np.floor(np.array(supercell,dtype=np.float64)/2.))/np.array(supercell,dtype=np.float64))
+        mup = np.dot((mu + np.floor(np.array(supercell,dtype=np.float64)/2.))/np.array(supercell,dtype=np.float64), scell)
         # define planes using point and normal vector
         
         for i,j,k in [[1,1,0],[1,0,1],[0,1,1]]:
@@ -231,7 +231,7 @@ def find_largest_sphere(sample, supercell):
             D = np.dot(n,mup-p1-sp)
             distances.append(np.abs(D))
 
-    nprint("WARNING: this is and experimental function!",'warn')
+    #nprint("WARNING: this is and experimental function!",'warn')
     return np.min(distances)
     
 def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangles = None, axis = None):
@@ -297,6 +297,10 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
         sc = np.array(supercellsize, dtype=np.int32)
     except:
         raise TypeError("Cannot convert supercellsize to NumPy array.")
+
+    if (np.min(sc) <= 0):
+        raise ValueError("Supercellsize must be strictly positive.")
+
         
     if sc.shape != (3,):
         raise ValueError("Propagation vector has the wrong shape.")
