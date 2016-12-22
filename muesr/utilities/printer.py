@@ -1,4 +1,4 @@
-from muesr.core.nprint import print_cell
+from muesr.core.nprint import print_cell as pc
 
 
   
@@ -8,7 +8,7 @@ def print_cell(sample):
     Print base cell
     """
     if sample._check_lattice():
-        print_cell(sample._cell)
+        pc(sample._cell)
             
             
         
