@@ -50,11 +50,11 @@ def build(sample, size, min_distance_from_atoms=1.0):
                     #this point is equivalent to someone else!
                     continue
                 
-                for ir in range(len(r)):
+                for r,t in sample.sym.get_symop():
                     # new position for the muon
                     n = np.zeros(3)
                     # apply symmetry and bring back to unit cell
-                    n = np.round(np.dot(r[ir],[x[i,j,k],y[i,j,k],z[i,j,k]])+t[ir],decimals=config.FCRD)%1
+                    n = np.round(np.dot(r,[x[i,j,k],y[i,j,k],z[i,j,k]])+t,decimals=config.FCRD)%1
                     if (np.abs(n*size - np.rint(n*size)) < 10**-(config.FCRD)).all():
                         
                         #get index of point
