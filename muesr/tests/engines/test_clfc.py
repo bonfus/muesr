@@ -125,8 +125,42 @@ class TestCLFC(unittest.TestCase):
         self.sample.add_muon([1.,1.,1.],cartesian=True)
         self.assertEqual(find_largest_sphere(self.sample,[1,1,1]),1.)
         
+    def test_locfield(self):
+        # sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangles = None, axis = None):
+        with self.assertRaises(TypeError):
+            locfield(None, None, None, None)
+            
+        with self.assertRaises(TypeError):
+            locfield(self.sample, None, None, None)
+
+        with self.assertRaises(TypeError):
+            locfield(self.sample, 's', None, None)
+            
+        with self.assertRaises(TypeError):
+            locfield(self.sample, 's', [2,2,2], None)
+
+        with self.assertRaises(TypeError):
+            locfield(self.sample, 's', [2,2,2], 3.)
+
+        with self.assertRaises(TypeError):
+            locfield(self.sample, 's', [2,2,2], 3., '2')
+
+        with self.assertRaises(TypeError):
+            locfield(self.sample, 's', [2,2,2], 3., '2', '10')
+
+        with self.assertRaises(ValueError):
+            locfield(self.sample, 'a', [2,2,2], 3.)
+            
+        with self.assertRaises(ValueError):
+            locfield(self.sample, 'i', [2,2,2], 3.)
+
+        with self.assertRaises(ValueError):
+            locfield(self.sample, 's', [0,2,2], 3.)
+            
         
-    
+            
+        
+        
 
 # http://stackoverflow.com/a/6802723
 def rotation_matrix(axis, theta):
