@@ -32,12 +32,12 @@ def symsearch(sample, precision=1e-4):
     """
     
     if sample._check_lattice() and have_spg:
-        symbol,number = spg.get_spacegroup(sample.cell, symprec=precision).split()
-        operations    = spg.get_symmetry(sample.cell, symprec=precision)
-        number = int(''.join([c for c in number if c.isdigit()]))
-        sample.sym = spacegroup_from_data(number,symbol,rotations=operations['rotations'],translations=operations['translations']) ## 
+        dataset = spg.get_symmetry_dataset(sample.cell, symprec=precision)
+        sample.sym = spacegroup_from_data(no=dataset['number'],
+                                          rotations=dataset['rotations'],
+                                          translations=dataset['translations'])
         
-        warnings.warn("Warning, only works for standard settings!")
+        warnings.warn("Warning, information regarding spacegroup setting might be wrong!",RuntimeWarning, stacklevel=0)
         
         return True
     elif not have_spg:
