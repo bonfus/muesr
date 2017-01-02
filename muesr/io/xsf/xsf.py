@@ -72,6 +72,16 @@ def show_supercell(sample, supercell=[1,1,1]):
         sc = get_simple_supercell(sample, supercell)
 
         if not sc is None:
+            try:
+                for m in sample.muons:
+                    spos_m = [ (m[0] + int(supercell[0]/2)) / supercell[0],
+                                                    (m[1] + int(supercell[1]/2)) / supercell[1],
+                                                    (m[2] + int(supercell[2]/2)) / supercell[2] ]
+                    sc.extend(symbol="mu",scaled_position=(spos_m))
+            except MuonError:
+                pass
+
+        if not sc is None:
             write_xsf(os.path.join(config.XCrysTmp,'preview.xsf'),sc)
             run_xcrysden(os.path.join(config.XCrysTmp,'preview.xsf'))
             return True
