@@ -24,7 +24,7 @@ except:
 
 
 
-def save_sample(sample, filename, fileobj=None):
+def save_sample(sample, filename="", fileobj=None):
     """
     This function saves the sample provided in YAML format.
     
@@ -46,6 +46,8 @@ def save_sample(sample, filename, fileobj=None):
         raise TypeError('Sample argument must be a Sample object.')
 
     outdict = {}
+    
+    outdict['Name'] = sample.name
     
     lattdict = {}
     try:
@@ -78,7 +80,8 @@ def save_sample(sample, filename, fileobj=None):
                 {'format':'b-c',
                     'k': md.k.tolist(),
                     'fc': np.hstack([md.fc.real,md.fc.imag]).tolist(),
-                    'phi': md.phi.tolist()
+                    'phi': md.phi.tolist(),
+                    'desc': md.desc
                 }
             )
             if not (md.lattice_params is None):
@@ -107,7 +110,9 @@ def save_sample(sample, filename, fileobj=None):
     output = dump(outdict, Dumper=Dumper)
     
     if fileobj is None:
-        
+        if filename == "":
+            raise ValueError("Specify filename or provide a file object")
+            
         while os.path.isfile(filename):
             if not ninput('Do you really want to overwite ' + 
                     os.path.basename(filename) + '?', parse_bool):
@@ -122,7 +127,7 @@ def save_sample(sample, filename, fileobj=None):
         fileobj.write(output)
 
     
-def load_sample(filename, fileobj=None):
+def load_sample(filename="", fileobj=None):
 
     """
     This function load a sample from a file in YAML format.
@@ -148,6 +153,8 @@ def load_sample(filename, fileobj=None):
     
     data = {}
     if fileobj is None:
+        if filename == "":
+            raise ValueError("Specify filename or File object")
         with open(filename,'r') as f:
             data = load(f, Loader=Loader)
     else:
@@ -159,6 +166,9 @@ def load_sample(filename, fileobj=None):
     
     if data is None:
         raise ValueError('Invalid/empty data file. (problems with YAML?)')
+    
+    if 'Name' in data.keys():
+        sample.name = str(data['Name'])
     
     if 'Lattice' in data.keys():
         l = data['Lattice']
@@ -235,6 +245,9 @@ def load_sample(filename, fileobj=None):
                 sample.mm = n
                 sample.mm.k = np.array(mo['k'])
                 sample.mm.phi = np.array(mo['phi'])
+                
+                if 'desc' in mo.keys():
+                    sample.mm.desc = str(mo['desc'])
                 
                 rfcs, ifcs = np.hsplit(np.array(mo['fc']),2)
                 
