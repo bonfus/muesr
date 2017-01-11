@@ -46,7 +46,7 @@ def load_xsf(sample, filename):
             
 
     
-def show_supercell(sample, supercell=[1,1,1]):
+def show_supercell(sample, supercell=[1,1,1], askConfirm=True):
     """
     Creates a supercell and shows it in XCrysDen.
     This function only works interactively.
@@ -54,18 +54,19 @@ def show_supercell(sample, supercell=[1,1,1]):
         
     :param sample: a sample object.
     :param list supercell: a list containig the number of replica along the three lattice parameters
+    :param bool askConfirm: for CLI, ask for confirmation before running XCrysDen
     :return: True if succeful, False otherwise 
     :rtype: bool
     :raises: TypeError        
     """
     
     
-    
-    
-    try:
-        ans = ninput('Are you sure?! [y/N]', parse_bool)
-    except EOFError:
-        return False
+    ans = True
+    if askConfirm:
+        try:
+            ans = ninput('Are you sure?! [y/N]', parse_bool)
+        except EOFError:
+            return False
         
         
     if ans:
