@@ -130,11 +130,25 @@ class Sample(object):
         
         
         if cartesian:
+            #go to reduced lattice coordinates...check this
             self._muon.append(np.dot(position,
                                         np.linalg.inv(self._cell.cell)))
         else:
             self._muon.append(1.0*position) # make floats from ints
     
+    
+    @property
+    def mm_count(self):
+        """
+        Count the loaded Magnetic Model(s).
+        
+        :getter: Returns the current Magnetic Model (a MM object)
+        :setter: Read-only
+        :type: :py:class:`~MM` object
+        :raises: None
+        """
+        
+        return len(self._magdefs)
     
     @property
     def mm(self):
@@ -305,7 +319,36 @@ class Sample(object):
         
 
         return status
+    
+    def check_status(self, cell=False, magdefs=False, muon=False, sym=False):
+        ok = True
+        if cell:
+            try:
+                self._check_lattice()
+            except CellError:
+                ok = False
+                
+        if magdefs:
+            try:
+                self._check_magdefs()
+            except MagDefError:
+                ok = False
+                
+        if muon:
+            try:
+                self._check_muon()
+            except MuonError:
+                ok = False
 
+        if sym:
+            try:
+                self._check_sym()
+            except SymmetryError:
+                ok = False
+                
+        return ok
+                
+                
 
     def _reset(self,cell=False,magdefs=False,muon=False,sym=False):
         """
