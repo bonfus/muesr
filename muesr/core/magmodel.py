@@ -97,13 +97,23 @@ class MM(object):
 
     @k.setter
     def k(self, value):
-        if isinstance(value, np.ndarray):
+        if isinstance(value, list):
+            try:
+                value = np.asarray(value,np.float)
+                if value.shape == (3,):
+                    self._k=value
+                else:
+                    raise ValueError('Array must be a single 3D vector.')
+            except:
+                raise ValueError('Array must be a single 3D vector.')
+                
+        elif isinstance(value, np.ndarray):
             if value.shape == (3,):
                 self._k=np.asarray(value,np.float)
             else:
                 raise ValueError('Array must be a single 3D vector.')
         else:
-            raise TypeError('k value must be numpy array.')
+            raise TypeError('k value must be a 3D numpy array or list.')
             
     @property
     def fc(self):
