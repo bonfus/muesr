@@ -4,11 +4,14 @@ import numpy as np
 #from numpy.ctypeslib import ndpointer
 from copy import deepcopy
 
-from muesr.core.parsers import *
-from muesr.core.nprint  import nprint, nprintmsg
-from muesr.core.ninput  import ninput, ninput_mt
+from muesr.core.sample import Sample
 
-import lfcext
+try:
+    import lfclib as lfcext
+    print("Using new LFC library")
+except:
+    import lfcext
+    print("Using internal LFC library")
 
 
 class LocalFields(object):
@@ -261,10 +264,10 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
     
     """
     
+    # check sample is a Sample object
+    if not isinstance(sample, Sample):
+        raise TypeError("sample must be a Sample instance.")
     
-    # check current status is ok
-    sample._check_lattice()
-    sample._check_magdefs()
 
     if type(ctype) != str:
         raise TypeError("ctype must be a of type str")
@@ -327,7 +330,9 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
     if rc<0:
         raise ValueError("rcont must be positive.")
     
-    
+    # check current status is ok
+    sample._check_lattice()
+    sample._check_magdefs()
     
     # Remove non magnetic atoms from list
 
