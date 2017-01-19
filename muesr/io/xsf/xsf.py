@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from warnings import warn
 from copy import deepcopy
 
 from muesr.settings import config
@@ -45,6 +46,45 @@ def load_xsf(sample, filename):
         return False
             
 
+def save_xsf(sample, filename, supercell=[1,1,1], addMuon=True):
+    """
+    Export structure to XCrysDen.
+    
+    :param sample: a sample object.
+    :param str filename: path of the destination file.
+    :param list supercell: a list containig the number of replica along the three lattice parameters
+    :param bool addMuon: if true, adds the muon positions (if any) in the central unit cell 
+    :return: True if succeful, False otherwise 
+    :rtype: bool
+    :raises: CellError, TypeError 
+    """
+    
+    if type(supercell) != list:
+        raise TypeError("supercell must be a list")
+        
+    if len(filename) == 0:
+        raise ValueError("Invalid filename.")
+        
+    sc = get_simple_supercell(sample, supercell)
+
+    if (not sc is None) and addMuon:
+        try:
+            for m in sample.muons:
+                spos_m = [ (m[0] + int(supercell[0]/2)) / supercell[0],
+                                                (m[1] + int(supercell[1]/2)) / supercell[1],
+                                                (m[2] + int(supercell[2]/2)) / supercell[2] ]
+                sc.extend(symbol="mu",scaled_position=(spos_m))
+        except MuonError:
+            pass
+
+    if not sc is None:
+        write_xsf(filename,sc)
+        return True
+    else:
+        nprintmsg('esupcell')
+        return False
+        
+
     
 def show_supercell(sample, supercell=[1,1,1], askConfirm=True):
     """
@@ -60,6 +100,7 @@ def show_supercell(sample, supercell=[1,1,1], askConfirm=True):
     :raises: TypeError        
     """
     
+    warn("This function has been decprecated. Use show_structure in muesr.utilities.xcrysden instead.",category=DeprecationWarning)
     
     ans = True
     if askConfirm:
@@ -100,6 +141,7 @@ def show_cell(sample):
     :rtype: bool
     """
     
+    warn("This function has been decprecated. Use show_structure in muesr.utilities.xcrysden instead.",category=DeprecationWarning)
     
     cell = sample.cell
     
