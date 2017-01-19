@@ -291,17 +291,20 @@ class TestMuon(unittest.TestCase):
             origsym = deepcopy(self._sample.sym)
             symsearch(self._sample)
             
-            new_rotations = self._sample.sym.rotations
-            self.assertEqual(len(new_rotations),len(origsym.rotations))
+            new_rotations, new_translations = self._sample.sym.get_op()
+            self.assertEqual(len(new_rotations),len(origsym.get_op()[0]))
             
-            for oi, r in enumerate(origsym.rotations):
+            for r, t in origsym.get_symop():
                 ni = np.argwhere(np.all(new_rotations==r, axis=(1,2)))
-                
+
                 if len(ni) >= 1:
                     found = False
                     for i in ni:
-                        if np.allclose(origsym.translations[oi]%1,self._sample.sym.translations[i[0]]%1):
+                        # for some reason there is a rounding error so
+                        # mod is done on 0.9999999... instead of 1
+                        if np.allclose(np.mod(t,1-1e-13),np.mod(new_translations[i[0]],1-1e-13)):
                             found = True
+
                     if found == False:
                         raise RuntimeError
                         
