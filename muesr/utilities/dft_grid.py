@@ -8,7 +8,8 @@ import numpy as np
 def build_uniform_grid(sample, size, min_distance_from_atoms=1.0):
     """
     Generates a grid of symmetry inequivalent interstitial
-    positions to be used in DFT simulations.
+    positions with a specified minimum distance from the atoms of the
+    sample. Especially intended for DFT simulations.
     
     :param sample: A sample object.
     :param int size: The number of steps in the three lattice directions. 
@@ -107,8 +108,8 @@ def build_uniform_grid(sample, size, min_distance_from_atoms=1.0):
 
                     for a in range(len(sample._cell)):
                         dists[a*27:(a+1)*27] = np.linalg.norm(
-                                            np.dot(scaled_pos[a] - center + nb_cells,
-                                                reduced_bases), axis=1 )
+                                                  np.dot(scaled_pos[a] - center + nb_cells,
+                                                         reduced_bases), axis=1 )
                     #
                     # old method 20 times slower!
                     #

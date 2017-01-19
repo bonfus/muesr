@@ -8,7 +8,7 @@ import numpy as np
 
 from muesr.core.sampleErrors import CellError, MuonError
 from muesr.core.sample import Sample
-from muesr.utilities.dft_grid import build
+from muesr.utilities.dft_grid import build_uniform_grid
 from muesr.io.cif.cif import read_cif
 
 co_lattice = StringIO("""
@@ -284,17 +284,17 @@ class TestMuon(unittest.TestCase):
     
     def test_dftgrid(self):
         # get a 64x64x64 grid independently on the atoms position
-        r = build(self._sample,4,-1.)
+        r = build_uniform_grid(self._sample,4,-1.)
         # check that positions are inequivalent
         self.assertEqual(len(self._sample.sym.equivalent_sites(r)[0]),64)
 
         # same as above but missing the origin already occupied by Co!
-        r = build(self._sample,4,0.000000001)
+        r = build_uniform_grid(self._sample,4,0.000000001)
         # check that positions are inequivalent
         self.assertEqual(len(self._sample.sym.equivalent_sites(r)[0]),60)
 
         # empty set becouse all too close
-        r = build(self._sample,4,2.0)
+        r = build_uniform_grid(self._sample,4,2.0)
         self.assertEqual(len(r),0)
 
 
