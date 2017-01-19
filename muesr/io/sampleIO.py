@@ -1,7 +1,6 @@
 import os, warnings
 import numpy as np
 from muesr.core.parsers  import parse_bool
-from muesr.core.nprint   import nprint
 from muesr.core.ninput   import *
 from muesr.core.atoms    import Atoms
 from muesr.core.sample   import Sample
