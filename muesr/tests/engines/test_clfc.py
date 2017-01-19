@@ -126,10 +126,13 @@ class TestCLFC(unittest.TestCase):
         self.assertEqual(find_largest_sphere(self.sample,[1,1,1]),1.)
         
     def test_locfield(self):
+        
+        self.sample._reset(cell=True,muon=True,sym=True,magdefs=True)
+      
         # sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangles = None, axis = None):
         with self.assertRaises(TypeError):
             locfield(None, None, None, None)
-            
+        
         with self.assertRaises(TypeError):
             locfield(self.sample, None, None, None)
 
@@ -139,14 +142,14 @@ class TestCLFC(unittest.TestCase):
         with self.assertRaises(TypeError):
             locfield(self.sample, 's', [2,2,2], None)
 
-        with self.assertRaises(TypeError):
-            locfield(self.sample, 's', [2,2,2], 3.)
+        #with self.assertRaises(TypeError):
+        #    locfield(self.sample, 's', [2,2,2], 3.)
 
         with self.assertRaises(TypeError):
-            locfield(self.sample, 's', [2,2,2], 3., '2')
+            locfield(self.sample, 's', [2,2,2], 3., '2a')
 
         with self.assertRaises(TypeError):
-            locfield(self.sample, 's', [2,2,2], 3., '2', '10')
+            locfield(self.sample, 's', [2,2,2], 3., '2', '10b')
 
         with self.assertRaises(ValueError):
             locfield(self.sample, 'a', [2,2,2], 3.)
