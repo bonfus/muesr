@@ -4,8 +4,8 @@ from muesr.settings import config
 
 import numpy as np
 
- 
-def build(sample, size, min_distance_from_atoms=1.0):
+#@profile
+def build_uniform_grid(sample, size, min_distance_from_atoms=1.0):
     """
     Generates a grid of symmetry inequivalent interstitial
     positions to be used in DFT simulations.
@@ -23,13 +23,6 @@ def build(sample, size, min_distance_from_atoms=1.0):
     
     tolerance = config.FCRD
     
-        
-    # get symmmetry operations
-    r = sample.sym.rotations
-    t = sample.sym.translations
-    
-    
-    
     #build uniform grid
     npoints = size**3
     x_ = np.linspace(0., 1., size, endpoint=False)
@@ -41,6 +34,37 @@ def build(sample, size, min_distance_from_atoms=1.0):
     
     
     equiv=np.ones_like(x)*(npoints)
+    
+    
+    alt = True
+    nb_cells = np.array([[-1., -1., -1.],
+                         [-1., -1.,  0.],
+                         [-1., -1.,  1.],
+                         [-1.,  0., -1.],
+                         [-1.,  0.,  0.],
+                         [-1.,  0.,  1.],
+                         [-1.,  1., -1.],
+                         [-1.,  1.,  0.],
+                         [-1.,  1.,  1.],
+                         [ 0., -1., -1.],
+                         [ 0., -1.,  0.],
+                         [ 0., -1.,  1.],
+                         [ 0.,  0., -1.],
+                         [ 0.,  0.,  0.],
+                         [ 0.,  0.,  1.],
+                         [ 0.,  1., -1.],
+                         [ 0.,  1.,  0.],
+                         [ 0.,  1.,  1.],
+                         [ 1., -1., -1.],
+                         [ 1., -1.,  0.],
+                         [ 1., -1.,  1.],
+                         [ 1.,  0., -1.],
+                         [ 1.,  0.,  0.],
+                         [ 1.,  0.,  1.],
+                         [ 1.,  1., -1.],
+                         [ 1.,  1.,  0.],
+                         [ 1.,  1.,  1.]])
+
     
     for i in range(size):
         for j in range(size):
@@ -75,18 +99,32 @@ def build(sample, size, min_distance_from_atoms=1.0):
                 if equiv[i,j,k] >= npoints:
                     #saves distances with all atoms
                     distances = []
+                    dists = np.zeros(27*len(sample._cell))
                     center = [x[i,j,k],y[i,j,k],z[i,j,k]]
 
                     #check distances form atoms (also in neighbouring cells)
+                    
+
                     for a in range(len(sample._cell)):
-                        for ii in (-1, 0, 1):
-                            for jj in (-1, 0, 1):
-                                for kk in (-1, 0, 1):
-                                    distances.append( np.linalg.norm(
-                                            np.dot(scaled_pos[a] - center + np.array([ii,jj,kk]),
-                                                reduced_bases) ) )
-                                                
-                    if min(distances) > min_distance_from_atoms:
+                        dists[a*27:(a+1)*27] = np.linalg.norm(
+                                            np.dot(scaled_pos[a] - center + nb_cells,
+                                                reduced_bases), axis=1 )
+                    #
+                    # old method 20 times slower!
+                    #
+                    #for a in range(len(sample._cell)):
+                    #    for ii in (-1, 0, 1):
+                    #        for jj in (-1, 0, 1):
+                    #            for kk in (-1, 0, 1):
+                    #                distances.append( np.linalg.norm(
+                    #                        np.dot(scaled_pos[a] - center + np.array([ii,jj,kk]),
+                    #                            reduced_bases) ) )
+                    #
+                    #print(np.allclose(dists,distances))
+                    #if min(distances) > min_distance_from_atoms:
+                    
+                    
+                    if dists.min() > min_distance_from_atoms:
                         positions.append([x[i,j,k],y[i,j,k],z[i,j,k]])
                         
     return positions
