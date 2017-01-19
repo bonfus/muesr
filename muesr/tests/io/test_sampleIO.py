@@ -261,7 +261,9 @@ class TestSampleIO(unittest.TestCase):
         warnings.simplefilter("ignore")
     
     def test_invalid_sample(self):
-        with self.assertRaises(FileNotFoundError):
+        with self.assertRaises(ValueError):
+            load_sample()
+        with self.assertRaises(ValueError):
             load_sample("")
         with self.assertRaises(TypeError):
             save_sample(1,"")
