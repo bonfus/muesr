@@ -79,8 +79,8 @@ Contact Hyperfine field
 
 
 There is another source of local magnetic field at the muon site
-which is referred to as Fermi contact hyperfien field.
-It originates from the direct intercation between the muon and polarized
+which is referred to as Fermi contact hyperfine field.
+It originates from the direct interaction between the muon and polarized
 electrons at the muon site.
 For a polarized spherical electronic cloud surrounding the muon one has
 
@@ -91,13 +91,21 @@ For a polarized spherical electronic cloud surrounding the muon one has
 In :py:mod:`muesr`, only a scalar relation between :math:`\mathbf{B_{\mathrm{cont}}}` and 
 :math:`\mathbf{m}_e` is allowed and is expressed as :math:`\vert \psi_s (\mathbf{r}_\mu) \vert ^2`.
 
+There is another important point which strongly affects the hyperfine 
+field results: the number of nearest neighbours considered in the above sum.
+The importance of this term is a direct consequence of the strong 
+approximations that we are introducing the the current version of :py:mod:`muesr`.
+The contact hyperfine interaction is a purely quantistic phenomenon and
+an accurate description would require the knowledge of the electronic
+distribution at the muon site.
+This is **very badly** approximated by considerig that each magnetic 
+atom while contribute to the total hyperfine field by an amount which is
+inversely propostional to the cube of its distance from the muon. The 
+total is then scaled by the facotr ACont.
+
 [TODO]
 
-Discussion about effective nature of the contact term used in muesr!!!!
-
-   
- 
-
+Improve discussion about effective nature of the contact term used in muesr!!!!
 
 
 .. _intro_description_of_magnetic_structures:

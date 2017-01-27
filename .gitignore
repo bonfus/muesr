@@ -1,8 +1,12 @@
 __pycache__
 *.pyc
+*.so
+*.bz2
+.coverage
 dist
 MANIFEST
 build
 muesr/engines/LFCExt/oldstuff
 muesr.egg-info
 docs/_build/
+htmlcov

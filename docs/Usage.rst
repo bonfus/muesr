@@ -95,8 +95,8 @@ Here's a table connecting the three possible input and related functions
    2                        :py:attr:`~muesr.core.magmodel.MM.fcLattBM`  'bohr-lattice' or 'b-l' (case insensitive)
    ======================== ============================================ ===========================================================
 
-In practice
-+++++++++++
+Quick overview
+++++++++++++++
 
 To define a new magnetic structure just do ::
 
@@ -318,8 +318,9 @@ TypeError) or other 4 specific Exceptions:
  
 To see their meaning follow the links.
 
-The utility functions are mainly intended for interactive usage and report
-problems by printing messages on the screen.
+N.B.: the utility functions are mainly intended for interactive usage 
+and therefore report problems by printing error messages on the screen.
+Exceptions are only raised in core components.
 
 
 Saving and loading sample details to/from file
@@ -330,6 +331,6 @@ a saved sample use :py:func:`~muesr.io.sampleIO.load_sample`.
 
 Data is stored in an YAML file. It is possible (but error prone) to write
 an input file by hand. When loaded, the file will undergo a minimal 
-validation. Spotting errors is not so easy so the best method to specify
+validation. Identifying the errors is not so easy so the best method to specify
 the sample details is probably using the various functions discussed in 
 this manual.

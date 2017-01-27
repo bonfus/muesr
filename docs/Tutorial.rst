@@ -9,7 +9,7 @@ help a lot but it is not needed.
 First steps with muesr
 ---------------------------
 
-Preliminaries: definig the sample
+Definig the sample
 +++++++++++++++++++++++++++++++++
 
 The fundamental component of muesr is the :class:`~Sample` object.
