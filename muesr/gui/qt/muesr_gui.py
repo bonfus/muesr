@@ -2007,7 +2007,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
         
         self.setObjectName("MueSR")
-        self.resize(800, 600)
+        self.resize(800, 500)
         self.centralwidget = QtWidgets.QWidget(self)
         
         
