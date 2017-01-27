@@ -3,7 +3,7 @@ Tutorial
 
 With the help of a few examples, we will show how to quickly evaluate local fields in Muesr.
 
-To use :py:mod`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can 
+To use :py:mod:`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can 
 help a lot but it is not needed.
 
 First steps with muesr
@@ -12,7 +12,7 @@ First steps with muesr
 Definig the sample
 +++++++++++++++++++++++++++++++++
 
-The fundamental component of muesr is the :class:`~Sample` object.
+The fundamental component of muesr is the :py:class:`muesr.core.sample.Sample` object.
 You can import and instantiate it like this:
 
 .. code-block:: python
