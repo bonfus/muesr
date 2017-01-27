@@ -258,7 +258,7 @@ The muon position can be easily set with the
 :py:attr:`~muesr.core.sample.Sample.add_muon` method.
 
 If symmetry is defined, equivalent muon positions can be obtained with 
-the function :py:func:`~muesr.utilities.muon.find_equiv` in the 
+the function :py:func:`~muesr.utilities.muon.muon_find_equiv` in the 
 :py:mod:`muesr.utilities.muon` module.
 
 Calculate local fields 
