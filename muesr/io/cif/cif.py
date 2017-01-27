@@ -30,7 +30,7 @@ def load_cif(sample, filename, reset_muon=True, reset_sym=True):
     :param muesr.core.sample.Sample sample: the sample object.
     :param str filename:   the cif file path (path + filename).
     :param bool reset_muon: if true the muon positions is reinitialized.
-    :param bool reset_sym:  if true the symmetry is reinitialized.
+    :param bool reset_sym:  if true the symmetry is reinitialized. ALWAYS TRUE
     :returns: True if succesfull, false otherwise
     :rtype: bool
     """
@@ -40,13 +40,14 @@ def load_cif(sample, filename, reset_muon=True, reset_sym=True):
         f = open(os.path.expanduser(filename),'r')
     except:
         nprint ("Problems with file name...file not found!", 'warn')
+        f.close()
         return False
     
     
     atoms, sym = read_cif(f,0) # selectd index 0
     f.close()
     if atoms:
-        sample._reset(muon=reset_muon,sym=reset_sym)
+        sample._reset(cell=True,sym=True,magdefs=True,muon=reset_muon)
         sample.cell = atoms
         sample.sym = sym
         return True
