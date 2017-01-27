@@ -21,6 +21,7 @@ Contents:
    Intro
    Install
    Tutorial
+   Examples
    Usage
    Symmetry
    ContactTerm
