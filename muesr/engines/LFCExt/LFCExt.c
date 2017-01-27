@@ -425,7 +425,8 @@ static PyObject * py_lfcext_fields(PyObject *self, PyObject *args) {
   cont = (double *) PyArray_DATA(ocont);
   lor = (double *) PyArray_DATA(olor);
   
-  
+  // long computation starts here. No python object is touched so free thread execution
+  Py_BEGIN_ALLOW_THREADS
   switch (icalc_type)
   {
     case 1:
@@ -441,6 +442,7 @@ static PyObject * py_lfcext_fields(PyObject *self, PyObject *args) {
         in_cell,r, nnn,rcont,num_atoms,nangles,cont,dip,lor);
     
   }
+  Py_END_ALLOW_THREADS
 
   if (in_positions != NULL){
       free(in_positions);
