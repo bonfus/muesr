@@ -12,6 +12,7 @@ def show_structure(sample, supercell=[1,1,1], askConfirm=True, block=True):
     :param sample: a sample object.
     :param list supercell: a list containig the number of replica along the three lattice parameters
     :param bool askConfirm: for CLI, ask for confirmation before running XCrysDen
+    :param bool block: XCrysDen is forked if block=False, only works on unix
     :return: True if succeful, False otherwise 
     :rtype: bool
     :raises: TypeError        
@@ -46,10 +47,23 @@ def run_xcrysden(fname, block=True):
     if config.XCrysExec == None:
         warnings.warn("XCrysDen executable not found. Check configs.")
         return
-    p = subprocess.Popen([config.XCrysExec, "--xsf", fname], 
-                          stdout=subprocess.PIPE, 
-                          stderr=subprocess.PIPE,
-                          preexec_fn=os.setpgrp)
+    
+    
+    spargs = dict(
+        args   = [config.XCrysExec, "--xsf", fname], 
+        stdout = subprocess.PIPE, 
+        stderr = subprocess.PIPE
+    )
+    
+    if not block:
+        if os.name == 'posix':
+            spargs['preexec_fn'] = os.setpgrp
+        elif os.name == 'nt':
+            spargs['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP
+        
+        
+    p = subprocess.Popen(**spargs)
+    
     if block:
         out, err = p.communicate()
 
