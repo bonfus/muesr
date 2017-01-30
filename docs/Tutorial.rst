@@ -3,7 +3,7 @@ Tutorial
 
 With the help of a few examples, we will show how to quickly evaluate local fields in Muesr.
 
-To use :py:mod`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can 
+To use :py:mod:`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can 
 help a lot but it is not needed.
 
 First steps with muesr
@@ -12,12 +12,12 @@ First steps with muesr
 Definig the sample
 +++++++++++++++++++++++++++++++++
 
-The fundamental component of muesr is the :class:`~Sample` object.
+The fundamental component of muesr is the :py:class:`muesr.core.sample.Sample` object.
 You can import and instantiate it like this:
 
 .. code-block:: python
     
-    >>> from muesr.core.sample import Sample
+    >>> from muesr.core import Sample
     >>>
     >>> mysample = Sample()
 
@@ -89,12 +89,12 @@ can be specified as
 
 If proper symmetry of the sample is present in the sample definition, it
 is usually usefull to get symmetry equivalent sites.
-This can be done with the utility function :py:func:`~muesr.utilities.muon.find_equiv`.
+This can be done with the utility function :py:func:`~muesr.utilities.muon.muon_find_equiv`.
 
 .. code-block:: python
     
-    >>> from muesr.utilities.muon import find_equiv
-    >>> find_equiv(mysample)
+    >>> from muesr.utilities import muon_find_equiv
+    >>> muon_find_equiv(mysample)
 
 
 Defining a magnetic structure

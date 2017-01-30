@@ -3,7 +3,7 @@ Symmetry
 
 :mod:`muesr` tries to grab symmetry information from either the CIF files or 
 using the `spglib` routines.
-If a magnetic cif (*.mcif) is loaded, the symmetry is disregarded. 
+If a magnetic cif (\*.mcif) is loaded, the symmetry is disregarded. 
 The symmetry equivalent sites depend indeed only on the symmetry of the 
 parent cell. If one consider the symmetry of the magnetic structure and 
 searches for the equivalent muon sites, many of them will be missing.

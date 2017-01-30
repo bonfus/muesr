@@ -8,7 +8,7 @@ import numpy as np
 
 from muesr.core.sampleErrors import CellError, MuonError
 from muesr.core.sample import Sample
-from muesr.utilities.muon import muon_set_frac, find_equiv, muon_reset
+from muesr.utilities import muon_set_frac, muon_find_equiv, muon_reset
 from muesr.io.cif.cif import read_cif
 
 co_lattice = StringIO("""
@@ -331,10 +331,10 @@ class TestMuon(unittest.TestCase):
         
         #tests throw error if no muon positions defined
         with self.assertRaises(MuonError):
-            find_equiv(self._sample)
+            muon_find_equiv(self._sample)
         
         muon_set_frac(self._sample, "0 0 0")
-        find_equiv(self._sample)
+        muon_find_equiv(self._sample)
         
         muon_positions = self._sample.muons
         
@@ -345,7 +345,7 @@ class TestMuon(unittest.TestCase):
         self._sample._reset(muon=True)
         
         muon_set_frac(self._sample, "0.2 0.3 0.4")
-        find_equiv(self._sample)
+        muon_find_equiv(self._sample)
         
         muon_positions = self._sample.muons
         #positions calculated with VESTA

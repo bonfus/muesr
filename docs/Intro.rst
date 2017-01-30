@@ -146,8 +146,8 @@ group formed by the operators leaving invariant the propagation vector.
 :mod:`muesr` can only handle 1-k magnetic structures.
 However, since local field are linear in the magnetic moment, the
 results for multiple-k magnetic orders can be obtained by performing 
-multiple simulations for each of the k vectors describing the system
-and summing the results.
+multiple simulations for each of the k vectors and Fourier components
+which describe the system and summing the results.
 
 Implementation details
 ----------------------------
