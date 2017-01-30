@@ -11,7 +11,7 @@ from muesr.io.xsf.xsf import show_supercell, show_cell # For visualisation with 
 from muesr.utilities.ms import mago_add                # For magnetic structure description
 from muesr.engines.clfc import locfield                # Does the sum and returns the local field in its diff. contributions
 from muesr.engines.clfc import find_largest_sphere     # Aids in the calculation of the sphere's radius for the lattice sum.
-from muesr.utilities.muon import find_equiv            # For finding and including the symmetry equivalent muon positions in the calculation 
+from muesr.utilities.muon import muon_find_equiv       # For finding and including the symmetry equivalent muon positions in the calculation 
 
 
 #    Declare  and load sample 
@@ -24,7 +24,7 @@ fe.add_muon([0.50,0.25,0.0])
 
 #   Finds and includes the symmetry equivalent positions of the above defined muon.
 #   For this example there are 12 sites "print fe.muons" will show their positions.
-find_equiv(fe)  
+muon_find_equiv(fe)  
 
 
 #   Description of the propagation vector k and fourier components fc with a new magnetic structure declared with fe.new_mm()
@@ -75,7 +75,7 @@ radius=find_largest_sphere(fe,[100, 100, 100])
 r=locfield(fe, 's', [100, 100, 100] ,radius) 
 
 """
-- The find_largest_sphere func. returns a warning: This is an experimental function.This func. must not be used, see documentation. 
+- The find_largest_sphere func. is an experimental function.This func. must not be used, see documentation. 
 -  s is for the summation method used. For help type 'help(locfield)' on the interactive python session after the locfield  must have been imported
 -  [100, 100, 100] defines the supercell for the calculation
 -  radius is the sphere radius
@@ -98,24 +98,27 @@ for i in range(len(fe.muons)):
 	B_Tot[i]=r[i].T
 
 
-print "Dipolar Field for all the 12 tetrahedral equivalent sites"
-print B_dip 
+print("Dipolar Field for all the 12 tetrahedral equivalent sites")
+print(B_dip) 
 
 # This is and should be same for all the equivalent sites
-print "The Lorentz field is",B_Lor[0]   
+print("The Lorentz field is {}".format(B_Lor[0]))   
 
-print "The contact field is", np.linalg.norm(B_Cont[0]),"Tesla" 
+print("The contact field is {} T".format(np.linalg.norm(B_Cont[0]))) 
 
 
 
 """
-Quick look on the description of the muon jumps between the tetrahedral sites as discussed in the reference below. "The field contribution at each equivalent site is either parallel or antiparallel to the magnetization of the domains" such that B_dip(parallel)=-2B_dip(antiparallel) "the average of the dipolar field at these three sites vanishes "
+Quick look on the description of the muon jumps between the tetrahedral sites as 
+discussed in the reference below. "The field contribution at each equivalent site
+ is either parallel or antiparallel to the magnetization of the domains" such that
+ B_dip(parallel)=-2B_dip(antiparallel) "the average of the dipolar field at these three sites vanishes "
 
 Reference:  M. Schmolz et.al, Hyperfine Interactions 31 (1986) 199-204 
 
 """
 
-print "Dipolar average of 1 parallel site and 2 antiparallel sites is",np.linalg.norm(B_dip[3]+B_dip[10]+B_dip[11]),"Tesla "
+print("Dipolar average of 1 parallel site and 2 antiparallel sites is {} T".format(np.linalg.norm(B_dip[3]+B_dip[10]+B_dip[11])))
 
 
 
@@ -123,8 +126,7 @@ print "Dipolar average of 1 parallel site and 2 antiparallel sites is",np.linalg
 
 """
 - Result on standard output should appear like this:
-
- WARNING: this is an experimental function!
+Using internal LFC library
 Dipolar Field for all the 12 tetrahedral equivalent sites
 [[  5.92276907e-18   3.82211885e-17   2.64976810e-01]
  [ -2.69848666e-17  -7.10720260e-18   2.64976810e-01]
@@ -139,7 +141,8 @@ Dipolar Field for all the 12 tetrahedral equivalent sites
  [ -2.89631243e-17   4.75531976e-19   2.64976810e-01]
  [ -1.58672778e-17  -1.93742009e-17   2.64976810e-01]]
 The Lorentz field is [ 0.          0.          0.73108635]
-The contact field is 1.11077214797 Tesla
-Dipolar average of 1 parallel site and 2 antiparallel sites is 9.30957573598e-14 Tesla 
+The contact field is 1.11077214797 T
+Dipolar average of 1 parallel site and 2 antiparallel sites is 9.30957573598e-14 T 
 
 """
+
