@@ -169,7 +169,7 @@ It prompts an interactive interface like the one shown below
     ... 	 FC for atom 12 Ti (3 real, [3 imag]): 0 1 0
     ... 
     
-This produces the following Fouerier components in Cartesian coordinates ::
+This produces the following Fourier components in Cartesian coordinates ::
 
     >>> smp.mm.fc
     ... array([[-0.5000000+0.j,  0.8660254+0.j,  0.0000000+0.j],
