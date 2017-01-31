@@ -78,7 +78,7 @@ print('Local fields at the muon sites (Tesla/Bohr Magneton):')
 #  
 #  The parameters of the following function are:
 #            sample   type of calculation     supercell    Lorentz radius
-r = locfield( smpl,          's',           [100,100,100],       200)
+r = locfield( smpl,          's',           [100,100,100],       40)
 
 # we report the results in T/mu_B (same as the paper cited above)
 print(r[0].T/4.19, "Norm {: 0.4f}".format(np.linalg.norm(r[0].T/4.19)))
@@ -102,8 +102,8 @@ smpl.new_mm()
 # Set a description for the magnetic order
 smpl.mm.desc = "Ferromagnetic"
 
-
-# propagation vector, defined with respoect to the cel lattice vectors
+# the k property can provides and set the propagation vector,
+#  always defined in reciprocal lattice units (r.l.u.).
 smpl.mm.k=np.array([0.,0.,0.])
 
 # Define Fourier components, in CARTESIAN coordinates and bhor magnetons!
@@ -137,12 +137,12 @@ FCs = np.array([[ 0.00+0.j,  4.19+0.j,  0.00+0.j],
        [ 0.00+0.j,  0.00+0.j,  0.00+0.j],
        [ 0.00+0.j,  0.00+0.j,  0.00+0.j]])
 
-# set the f
+# set the Fourier components, by default in Cartesian coordinates.
 smpl.mm.fc_set(FCs)
 
 
 print('Local fields at the muon sites (Tesla/Bohr Magneton):')
-r = locfield(smpl, 's', [100,100,100],200)
+r = locfield(smpl, 's', [100,100,100],40)
 
 print(r[0].T/4.19, "Norm {: 0.4f}".format(np.linalg.norm(r[0].T/4.19)))
 print(r[1].T/4.19, "Norm {: 0.4f}".format(np.linalg.norm(r[1].T/4.19)))
