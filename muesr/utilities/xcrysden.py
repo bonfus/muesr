@@ -1,5 +1,5 @@
 from muesr.settings import config
-from muesr.io.xsf import save_xsf
+from muesr.i_o.xsf import save_xsf
 import os, subprocess, warnings
 
 

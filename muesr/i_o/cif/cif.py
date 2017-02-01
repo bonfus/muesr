@@ -15,9 +15,9 @@ from muesr.core.magmodel import MM
 from muesr.core.spg import Spacegroup
 from muesr.core.nprint import nprint, nprintmsg
 
-from muesr.io.cif.crystal import crystal
+from muesr.i_o.cif.crystal import crystal
 from muesr.core.spg import spacegroup_from_data
-from muesr.io.cif.cell import cellpar_to_cell
+from muesr.i_o.cif.cell import cellpar_to_cell
 
 
         

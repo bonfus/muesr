@@ -3,7 +3,7 @@ Tutorial
 
 With the help of a few examples, we will show how to quickly evaluate local fields in Muesr.
 
-To use :py:mod`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can 
+To use :py:mod:`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can 
 help a lot but it is not needed.
 
 First steps with muesr
@@ -12,12 +12,12 @@ First steps with muesr
 Definig the sample
 +++++++++++++++++++++++++++++++++
 
-The fundamental component of muesr is the :class:`~Sample` object.
+The fundamental component of muesr is the :py:class:`muesr.core.sample.Sample` object.
 You can import and instantiate it like this:
 
 .. code-block:: python
     
-    >>> from muesr.core.sample import Sample
+    >>> from muesr.core import Sample
     >>>
     >>> mysample = Sample()
 
@@ -46,24 +46,24 @@ files. Here's a few examples:
 .. code-block:: python
     
     >>> # load data from XCrysden .xsf file
-    >>> from muesr.io.xsf.xsf import load_xsf
+    >>> from muesr.i_o.xsf.xsf import load_xsf
     >>> 
     >>> load_xsf(mysample, "/path/to/file.xsf")
     >>> 
     >>> 
     >>> # load data from .cif file
-    >>> from muesr.io.cif.cif import load_cif
+    >>> from muesr.i_o.cif.cif import load_cif
     >>> 
     >>> load_cif(mysample, "/path/to/file.cif")
     >>> 
     >>> 
     >>> # load data from .mcif file
-    >>> from muesr.io.cif.cif import load_mcif
+    >>> from muesr.i_o.cif.cif import load_mcif
     >>> 
     >>> load_mcif(mysample, "/path/to/file.mcif")
 
 
-The :py:func:`~muesr.io.cif.cif.load_cif` function will also load symmetry information. 
+The :py:func:`~muesr.i_o.cif.cif.load_cif` function will also load symmetry information. 
 Please note that only a single lattice structure at a time can be
 defined so each load function will remove the previous lattice structure
 definition.
@@ -89,12 +89,12 @@ can be specified as
 
 If proper symmetry of the sample is present in the sample definition, it
 is usually usefull to get symmetry equivalent sites.
-This can be done with the utility function :py:func:`~muesr.utilities.muon.find_equiv`.
+This can be done with the utility function :py:func:`~muesr.utilities.muon.muon_find_equiv`.
 
 .. code-block:: python
     
-    >>> from muesr.utilities.muon import find_equiv
-    >>> find_equiv(mysample)
+    >>> from muesr.utilities import muon_find_equiv
+    >>> muon_find_equiv(mysample)
 
 
 Defining a magnetic structure

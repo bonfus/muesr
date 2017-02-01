@@ -9,7 +9,7 @@ from copy import deepcopy
 from muesr.core.sampleErrors import CellError, MuonError
 from muesr.core.sample import Sample
 from muesr.utilities.symsearch import symsearch, have_spg
-from muesr.io.cif.cif import read_cif
+from muesr.i_o.cif.cif import read_cif
 
 
 co_lattice = StringIO("""

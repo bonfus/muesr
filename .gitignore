@@ -4,6 +4,7 @@ __pycache__
 *.bz2
 .coverage
 dist
+*.DS_Store
 MANIFEST
 build
 muesr/engines/LFCExt/oldstuff

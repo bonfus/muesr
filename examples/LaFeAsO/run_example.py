@@ -4,9 +4,9 @@ import numpy as np
 np.set_printoptions(precision=3,suppress=True)
 
 from muesr.core.sample import Sample
-from muesr.io.cif.cif import load_mcif
+from muesr.i_o.cif.cif import load_mcif
 from muesr.utilities.symsearch import symsearch
-from muesr.utilities.muon import  find_equiv
+from muesr.utilities import  muon_find_equiv
 from muesr.engines.clfc import locfield
 
 #define an empty sample.
@@ -28,7 +28,7 @@ for mcif in mcifs:
 # Sets muon position in fractional coordinates
     m.add_muon([0.375,  0.375, 0.635])
 # Find crystalographically equivalent muon sites. 
-    find_equiv(m)
+    muon_find_equiv(m)
     res=locfield(m, 's',[100,100,50],200)
     print('Structure in file: '+mcif)
     for e in res:
