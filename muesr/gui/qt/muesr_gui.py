@@ -11,10 +11,10 @@ import numpy as np
 from muesr.core.sample import Sample
 from muesr.core.sampleErrors import CellError, MuonError, MagDefError
 from muesr.engines.clfc import locfield, find_largest_sphere
-from muesr.io.xsf.xsf import load_xsf, show_cell, show_supercell
-from muesr.io.cif.cif import load_cif
-from muesr.io.sampleIO import load_sample, save_sample
-from muesr.io.exportFPS import export_fpstudio
+from muesr.i_o.xsf.xsf import load_xsf, show_cell, show_supercell
+from muesr.i_o.cif.cif import load_cif
+from muesr.i_o.sampleIO import load_sample, save_sample
+from muesr.i_o.exportFPS import export_fpstudio
 
 # tool to check is the interface is started as a Mantid Algorithm
 from muesr.gui.mantidtools import running_inside_mantid
