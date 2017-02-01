@@ -9,7 +9,7 @@ import numpy as np
 
 from muesr.core.sample import Sample
 from muesr.core.sampleErrors import *
-from muesr.io.sampleIO import *
+from muesr.i_o.sampleIO import *
 
 yaml_only_lattice = """
 Lattice:

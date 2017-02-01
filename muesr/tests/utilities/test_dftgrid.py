@@ -9,7 +9,7 @@ import numpy as np
 from muesr.core.sampleErrors import CellError, MuonError
 from muesr.core.sample import Sample
 from muesr.utilities.dft_grid import build_uniform_grid
-from muesr.io.cif.cif import read_cif
+from muesr.i_o.cif.cif import read_cif
 
 co_lattice = StringIO("""
 #------------------------------------------------------------------------------

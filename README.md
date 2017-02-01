@@ -39,6 +39,11 @@ Known problems
 Please not that the code is still under heavy development. 
 You'll probably find bugs so please report them!
 
+Authors
+-------
+
+Pietro Bonfa', Ifeanyi John Onuorah and Roberto De Renzi.
+
 Notes
 -----
 

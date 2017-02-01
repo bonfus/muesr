@@ -12,7 +12,7 @@ import numpy as np # to calculate the norm
 import os          # join path on windows.  
 
 from muesr.core import Sample            # this object contains all the info on our sample
-from muesr.io import load_cif            # loads lattice and symmetry from CIF file
+from muesr.i_o import load_cif            # loads lattice and symmetry from CIF file
 from muesr.utilities import  mago_add    # this function provides a CLI for inserting the MAGnetic Order
 from muesr.engines.clfc import locfield  # this is the function which actually performs the sum and returns
                                          #  the local fields.

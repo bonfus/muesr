@@ -4,7 +4,7 @@ import numpy as np
 np.set_printoptions(precision=3,suppress=True)
 
 from muesr.core.sample import Sample
-from muesr.io.cif.cif import load_mcif
+from muesr.i_o.cif.cif import load_mcif
 from muesr.utilities.symsearch import symsearch
 from muesr.utilities import  muon_find_equiv
 from muesr.engines.clfc import locfield

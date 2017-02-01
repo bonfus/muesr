@@ -13,8 +13,8 @@ from muesr.core.sample import Sample
 from muesr.core.magmodel import MM, have_sympy
 if have_sympy:
     from muesr.core.magmodel import SMM
-from muesr.io.xsf.xsf import load_xsf
-from muesr.io.cif.cif import load_mcif
+from muesr.i_o.xsf.xsf import load_xsf
+from muesr.i_o.cif.cif import load_mcif
 from muesr.engines.clfc import locfield
 from muesr.utilities.muon import muon_reset, muon_set_frac
 

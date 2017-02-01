@@ -46,24 +46,24 @@ files. Here's a few examples:
 .. code-block:: python
     
     >>> # load data from XCrysden .xsf file
-    >>> from muesr.io.xsf.xsf import load_xsf
+    >>> from muesr.i_o.xsf.xsf import load_xsf
     >>> 
     >>> load_xsf(mysample, "/path/to/file.xsf")
     >>> 
     >>> 
     >>> # load data from .cif file
-    >>> from muesr.io.cif.cif import load_cif
+    >>> from muesr.i_o.cif.cif import load_cif
     >>> 
     >>> load_cif(mysample, "/path/to/file.cif")
     >>> 
     >>> 
     >>> # load data from .mcif file
-    >>> from muesr.io.cif.cif import load_mcif
+    >>> from muesr.i_o.cif.cif import load_mcif
     >>> 
     >>> load_mcif(mysample, "/path/to/file.mcif")
 
 
-The :py:func:`~muesr.io.cif.cif.load_cif` function will also load symmetry information. 
+The :py:func:`~muesr.i_o.cif.cif.load_cif` function will also load symmetry information. 
 Please note that only a single lattice structure at a time can be
 defined so each load function will remove the previous lattice structure
 definition.

@@ -5,9 +5,9 @@
 
 import numpy as np
 from muesr.core.sample import Sample                   # Retains all the sample info.
-from muesr.io.cif.cif import load_cif                  # For loading the structure from cif files
-from muesr.io.xsf.xsf import load_xsf                  # For loading the structure from xsf files
-from muesr.io.xsf.xsf import show_supercell, show_cell # For visualisation with xcrysden (http://www.xcrysden.org/)
+from muesr.i_o.cif.cif import load_cif                  # For loading the structure from cif files
+from muesr.i_o.xsf.xsf import load_xsf                  # For loading the structure from xsf files
+from muesr.i_o.xsf.xsf import show_supercell, show_cell # For visualisation with xcrysden (http://www.xcrysden.org/)
 from muesr.utilities.ms import mago_add                # For magnetic structure description
 from muesr.engines.clfc import locfield                # Does the sum and returns the local field in its diff. contributions
 from muesr.engines.clfc import find_largest_sphere     # Aids in the calculation of the sphere's radius for the lattice sum.

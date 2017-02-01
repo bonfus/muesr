@@ -33,9 +33,9 @@ However this can be tedious and error prone. Therefore you are strongly
 suggested to load the lattice information from a file using use one of
 these functions:
 
- - :py:func:`~muesr.io.cif.cif.load_cif` for Crystallographic Information Files
- - :py:func:`~muesr.io.cif.cif.load_mcif` for Magnetic Crystallographic Information Files
- - :py:func:`~muesr.io.xsf.xsf.load_xsf` for XCrysDen files.
+ - :py:func:`~muesr.i_o.cif.cif.load_cif` for Crystallographic Information Files
+ - :py:func:`~muesr.i_o.cif.cif.load_mcif` for Magnetic Crystallographic Information Files
+ - :py:func:`~muesr.i_o.xsf.xsf.load_xsf` for XCrysDen files.
 
 .. note ::
    For CIF files the symmetry is automatically parsed and set from the file.
@@ -326,8 +326,8 @@ Exceptions are only raised in core components.
 Saving and loading sample details to/from file
 ----------------------------------------------
 
-To save a sample use :py:func:`~muesr.io.sampleIO.save_sample`. To load
-a saved sample use :py:func:`~muesr.io.sampleIO.load_sample`.
+To save a sample use :py:func:`~muesr.i_o.sampleIO.save_sample`. To load
+a saved sample use :py:func:`~muesr.i_o.sampleIO.load_sample`.
 
 Data is stored in an YAML file. It is possible (but error prone) to write
 an input file by hand. When loaded, the file will undergo a minimal 

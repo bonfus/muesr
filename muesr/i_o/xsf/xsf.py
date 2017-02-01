@@ -5,8 +5,8 @@ from copy import deepcopy
 
 from muesr.settings import config
 
-from muesr.io.xsf.xsfio import *
-from muesr.io.xsf.xsfrun import *
+from muesr.i_o.xsf.xsfio import *
+from muesr.i_o.xsf.xsfrun import *
 
 from muesr.core.sampleErrors import MuonError
 from muesr.core.parsers import *

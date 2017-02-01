@@ -11,7 +11,7 @@ import numpy as np
 
 from muesr.core.atoms import Atoms
 from muesr.core.spg import Spacegroup
-from muesr.io.cif.cell import cellpar_to_cell
+from muesr.i_o.cif.cell import cellpar_to_cell
 
 __all__ = ['crystal']
 

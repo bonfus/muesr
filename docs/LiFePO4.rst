@@ -36,7 +36,7 @@ The sample object holds the following information:
 The lattice structure is orthorhombic, with *Pnma* symmetry and
 lattice parameters :math:`a=10.3244(2), b=6.0064(3), c=4.6901(5)`.
 We can import these data from a CIF file using the function
-:py:func:`~muesr.io.cif.cif.load_cif`:
+:py:func:`~muesr.i_o.cif.cif.load_cif`:
 
 .. literalinclude:: ../examples/LiFePO4/run_example.py
    :lines: 31

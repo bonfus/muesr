@@ -1,7 +1,7 @@
 # coding: utf-8
 import numpy as np
 from muesr.core.sample import Sample
-from muesr.io import load_cif
+from muesr.i_o import load_cif
 from muesr.utilities import print_cell, muon_find_equiv
 from muesr.engines.clfc import locfield
 from matplotlib import pyplot as plt
