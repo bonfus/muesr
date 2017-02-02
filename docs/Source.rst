@@ -62,40 +62,40 @@ Source documentation
    :undoc-members:
    :show-inheritance:   
 
-:mod:`muesr.io` -- Input Output functions
+:mod:`muesr.i_o` -- Input Output functions
 --------------------------------------------
 
-:mod:`muesr.io.sampleIO` -- Input Output functions for the Sample object
+:mod:`muesr.i_o.sampleIO` -- Input Output functions for the Sample object
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. automodule:: muesr.io.sampleIO
+.. automodule:: muesr.i_o.sampleIO
    :members:
    :undoc-members:
    :show-inheritance:
    
    
-:mod:`muesr.io.exportFPS` -- Input Output for FullProf Studio
+:mod:`muesr.i_o.exportFPS` -- Input Output for FullProf Studio
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. automodule:: muesr.io.exportFPS
+.. automodule:: muesr.i_o.exportFPS
    :members:
    :undoc-members:
    :show-inheritance:
    
 
-:mod:`muesr.io.xsf.xsf` -- Input Output for Xcrysden
+:mod:`muesr.i_o.xsf.xsf` -- Input Output for Xcrysden
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. automodule:: muesr.io.xsf.xsf
+.. automodule:: muesr.i_o.xsf.xsf
    :members:
    :undoc-members:
    :show-inheritance:
    
 
-:mod:`muesr.io.cif.cif` -- Input in CIF and mCIF format
+:mod:`muesr.i_o.cif.cif` -- Input in CIF and mCIF format
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. automodule:: muesr.io.cif.cif
+.. automodule:: muesr.i_o.cif.cif
    :members:
    :undoc-members:
    :show-inheritance:
