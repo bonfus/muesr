@@ -6,20 +6,20 @@ Local fields in MuSR
 
 Muon spin rotation and relaxation spectroscopy is mainly used to probe 
 magnetic materials.
-We briefly describe here the interactions involved between the muon and 
-the electrons of the hosting system which produce a local magnetic field
+We briefly describe here the interactions between the magnetic moments of the 
+muon and the electrons in the host system that produce a local magnetic field 
 at the muon site in magnetically ordered samples.
 
 Dipolar Field
 +++++++++++++
 
 The dipolar field is produced by the magnetic dipolar interaction between
-the polarized electronic orbitals and the muon spin.
+the spin polarized electronic orbitals and the muon spin.
 Even though the interaction is best described with quantum mechanics, 
-for the sake of simplicity, here we approximate the polarized electronic
-orbitals with classical dipoles centered at the nuclei. This 
-approximation is also implicit in the code and works rather well in many
-cases.
+for the sake of simplicity, here we approximate the spin polarized electronic
+orbitals with classical dipoles centered at the nuclei. This approximation
+is also implicit in the code and works rather well in many cases.
+
 
 The dipolar field is given by
 
@@ -69,8 +69,8 @@ is the **bulk** magnetization of the sample.
 .. note::
   :py:mod:`muesr` only estimates :math:`\mathbf{B}_\mathrm{dip}` and 
   :math:`\mathbf{B}_\mathrm{Lor}`.
-  The demagnetisation field depends on both the sample details and the 
-  experiment details and must be evaluated case by case.
+  The demagnetisation field depends on both the sample shape and the 
+  experiment conditions and it must be evaluated case by case.
 
 
 
@@ -78,11 +78,12 @@ Contact Hyperfine field
 +++++++++++++++++++++++
 
 
-There is another source of local magnetic field at the muon site
-which is referred to as Fermi contact hyperfine field.
-It originates from the direct interaction between the muon and polarized
-electrons at the muon site.
-For a polarized spherical electronic cloud surrounding the muon one has
+A distinct contribution to the local magnetic field at the muon site 
+is referred to as Fermi contact hyperfine field.
+It accounts for the finite probability for the quantum electron with 
+wavefunction :math:`\psi_s (\mathbf{r})`to share 
+the muon position :math: `\mathbf{r}_\mu` and it amounts to
+
 
 .. math::
 
