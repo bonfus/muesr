@@ -229,7 +229,7 @@ class MM(object):
         if isinstance(value, np.ndarray):
            
             if value.dtype != np.complex:
-                raise ValueError
+                raise ValueError("Fourier components must be a complex array!")
             
             #check that number of FCs is the same as atoms
             if not (value.shape == self._fc.shape):
