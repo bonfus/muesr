@@ -3,7 +3,8 @@ import numpy as np
 from muesr.core.sample import Sample
 from muesr.i_o import load_cif
 from muesr.utilities import print_cell, muon_find_equiv
-from muesr.engines.clfc import locfield
+from muesr.utilities.muon import muon_reset
+from muesr.engines.clfc import locfield, dipten
 from matplotlib import pyplot as plt
 
 """
@@ -23,8 +24,56 @@ point in a plane perpendicular to the propagation vector.
 s = Sample()
 load_cif(s, 'MnSi.cif')
 
-print_cell(s)
+# let's find the muon sites with the dipolar tensor values
 
+# move along 111
+positions = np.linspace(0,1,100)
+for pos in positions:
+    s.add_muon([pos,pos,pos])
+
+# apply an arbitrary small field to select magnetic atoms.
+APP_FCs = 0.001*np.array([[0,0,1],
+                          [0,0,1],
+                          [0,0,1],
+                          [0,0,1],
+                          [0,0,0],
+                          [0,0,0],
+                          [0,0,0],
+                          [0,0,0]], dtype=np.complex)
+
+
+s.new_mm()
+s.mm.desc = "Applied field"
+s.mm.k = np.array([0,0,0])
+s.mm.fc = APP_FCs
+
+dts = dipten(s, [30,30,30],50) # supercell size set to 100 unit cells, 
+                                  # a 200 Ang sphere si certainly contained.
+
+# remove all defined positions for the search
+muon_reset(s)
+                              
+values_for_plot = np.zeros_like(positions)                              
+for i, dt in enumerate(dts):
+    # to reproduce the plot of Amato et. al, we convert to emu/mol
+    values_for_plot[i] = dt[0,1] * 6.022E24/1E24/4 # (cm^3/angstrom^3) = 1E24
+    print(positions[i], values_for_plot[i])
+
+fig = plt.figure()
+ax = fig.gca()
+ax.axhline(y=0, xmin=0., xmax=1., color='b')
+ax.axhline(y=-0.2044, xmin=0.4, xmax=0.9, color='r', ls='-',lw=2)
+ax.axvline(x=0.532, ymin=-0.0, ymax=1, color='g', ls=':',lw=2)
+ax.axvline(x=0.712, ymin=-0.0, ymax=1., color='g', ls=':',lw=2)  # typo in the article?
+
+ax.plot(positions, values_for_plot)
+ax.set_ylim([-0.7,0.7])
+plt.show()
+
+
+
+
+print_cell(s)
 scaled_pos = s.cell.get_scaled_positions()
 pos_Mn1 = scaled_pos[0]
 pos_Mn2 = scaled_pos[1]
@@ -101,11 +150,11 @@ s.add_muon([0.532, 0.532, 0.532])
 muon_find_equiv(s)
 
 # For Reft Handed
-s.current_mm_idx = 0;
-r_RH = locfield(s, 'i',[100,100,100],200,nnn=3,nangles=360)
+s.current_mm_idx = 1;      # N.B.: indexes start from 0 but idx=0 is the transverse field!
+r_RH = locfield(s, 'i',[100,100,100],200,nnn=3,nangles=3600)
 
-s.current_mm_idx = 1;
-r_LH = locfield(s, 'i',[100,100,100],200,nnn=3,nangles=360)
+s.current_mm_idx = 2;
+r_LH = locfield(s, 'i',[100,100,100],200,nnn=3,nangles=3600)
 
 
 for i in range(4):
@@ -121,8 +170,8 @@ ax2.set_title('left-handed')
 
 
 for i in range(4):
-    ax1.plot(np.linalg.norm(r_RH[i].T, axis=1))
-    ax2.plot(np.linalg.norm(r_LH[i].T, axis=1))
+    ax1.plot(np.linspace(0,360,3600),np.linalg.norm(r_RH[i].T, axis=1))
+    ax2.plot(np.linspace(0,360,3600),np.linalg.norm(r_LH[i].T, axis=1))
 
 ax1.set_ylabel('Total field [T]')
 ax1.set_xlabel('angles [deg]')
