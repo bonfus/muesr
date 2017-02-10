@@ -17,7 +17,7 @@ The dipolar field is produced by the magnetic dipolar interaction between
 the spin polarized electronic orbitals and the muon spin.
 Even though the interaction is best described with quantum mechanics, 
 for the sake of simplicity, here we approximate the spin polarized electronic
-orbitals with classical dipoles centered at the nuclei. This approximation
+orbitals with classical dipoles centered at the nuclei of the magnetic atoms. This approximation
 is also implicit in the code and works rather well in many cases.
 
 
@@ -81,32 +81,33 @@ Contact Hyperfine field
 A distinct contribution to the local magnetic field at the muon site 
 is referred to as Fermi contact hyperfine field.
 It accounts for the finite probability for the quantum electron with 
-wavefunction :math:`\psi_s (\mathbf{r})`to share 
-the muon position :math: `\mathbf{r}_\mu` and it amounts to
+wavefunction :math:`\psi_s (\mathbf{r})` to share 
+the classical muon position :math:`\mathbf{r}_\mu` and it amounts to
 
 
 .. math::
 
    \mathbf{B_{\mathrm{cont}}} = \frac{2 \mu_0}{3} \vert \psi_s (\mathbf{r}_\mu) \vert ^2 \mathbf{m}_e ^s
    
-In :py:mod:`muesr`, only a scalar relation between :math:`\mathbf{B_{\mathrm{cont}}}` and 
-:math:`\mathbf{m}_e` is allowed and is expressed as :math:`\vert \psi_s (\mathbf{r}_\mu) \vert ^2`.
+In :py:mod:`muesr`, only a scalar coupling between :math:`\mathbf{B_{\mathrm{cont}}}` and 
+:math:`\mathbf{m}_e` is allowed, proportional to :math:`\vert \psi_s (\mathbf{r}_\mu) \vert ^2`.
 
-There is another important point which strongly affects the hyperfine 
-field results: the number of nearest neighbours considered in the above sum.
-The importance of this term is a direct consequence of the strong 
-approximations that we are introducing the the current version of :py:mod:`muesr`.
-The contact hyperfine interaction is a purely quantistic phenomenon and
-an accurate description would require the knowledge of the electronic
-distribution at the muon site.
-This is **very badly** approximated by considerig that each magnetic 
-atom while contribute to the total hyperfine field by an amount which is
-inversely propostional to the cube of its distance from the muon. The 
-total is then scaled by the facotr ACont.
+
+In principle the quantum nature of the contact hyperfine interaction requires the knowledge of the electronic
+distribution around the muon site for an accurate description. Each magnetic atom that is a 
+muon neighbor may contribute with a different coupling value, while the current version of :py:mod:`muesr` allows 
+for just one average value. Furthermore the coupling may produce contributions from one or more neighbor magnetic atoms. 
+They add up differently, depending to the magnetic structure.
+
+At the moment this is only implemented by varying the number of nearest neighbours considered in the above sum.
+It is **very badly** approximated by considerig that each magnetic 
+atom within a given radius contributes to the total hyperfine field by an amount 
+inversely proportional to the cube of its distance from the muon. The 
+total is then scaled by the common factor ACont.
 
 [TODO]
 
-Improve discussion about effective nature of the contact term used in muesr!!!!
+Improve the implementation of an effective contact interaction in muesr!!!!
 
 
 .. _intro_description_of_magnetic_structures:
@@ -114,9 +115,9 @@ Improve discussion about effective nature of the contact term used in muesr!!!!
 Description of Magnetic Structures
 -----------------------------------
 
-There are two possibilities to describe a magnetic structure: using the
-colored group theory or with the propagation vector and Fourier 
-coefficients formalism. :mod:`muesr` opts for the latter.
+There are two possibilities to describe a magnetic structure: by using the
+color (Shubnikov) group theory or by defining one (or more) propagation vector(s) and using the Fourier 
+coefficients formalism. :mod:`muesr` opts for the latter, limited to single wavevector (1-k) structures for the time being.
 A magnetic structure is defined as
 
 .. math::
@@ -144,7 +145,7 @@ group formed by the operators leaving invariant the propagation vector.
 [TODO] Discuss the phase!
 
 
-:mod:`muesr` can only handle 1-k magnetic structures.
+As we said :mod:`muesr` can only handle 1-k magnetic structures.
 However, since local field are linear in the magnetic moment, the
 results for multiple-k magnetic orders can be obtained by performing 
 multiple simulations for each of the k vectors and Fourier components
