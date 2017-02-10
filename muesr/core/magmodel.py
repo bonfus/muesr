@@ -298,11 +298,13 @@ class MM(object):
         return self._description
     
     @desc.setter
-    def desc(self, value):    
-        if type(value) is str:
+    def desc(self, value):
+        try:
+            value = str(value)
             self._description = value
-        else:
-            raise TypeError('Description type must be string (str)')
+        except:
+            raise TypeError("Description type must be type string, got {} instead.".format(type(value)))
+            
 
     @property
     def isSymbolic(self):
