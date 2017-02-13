@@ -22,15 +22,26 @@ point in a plane perpendicular to the propagation vector.
 
 """
 
-
+print("Create sample...", end='')
 s = Sample()
+print("done!")
+
+print("Load CIF file", end='')
 load_cif(s, 'MnSi.cif')
+print("done!")
 
-s.add_muon([0.53,0.53,0.53])
+print("Calculate dipolar tensor for equivalent sites...\n")
 
+# this is a general position along the 111, 
+# just to identify the form of the dipolar tensor for the sites 
+# along the 111
+s.add_muon([0.5,0.5,0.5])
+
+# we find the remainig eq muon sites
 muon_find_equiv(s)
 
 # apply an arbitrary small field to select magnetic atoms.
+# the abslute value is not used, but it must be different from 0.
 APP_FCs = 0.001*np.array([[0,0,1],
                           [0,0,1],
                           [0,0,1],
@@ -46,10 +57,11 @@ s.mm.desc = "Applied field"
 s.mm.k = np.array([0,0,0])
 s.mm.fc = APP_FCs
 
+# Calculate the dipolar tensor. Result is in Ang^-3
 dts = dipten(s, [30,30,30],50) # supercell size set to 30 unit cells, 
                                   # a 50 Ang sphere si certainly contained.
 
-
+# Print the muon site for all the 4 equivalent site.
 for i, pos in enumerate(s.muons):
     print(("\nFrac. muon position: {:2.3f} {:2.3f} {:2.3f}\n" + \
             "Dipolar Tensor: {:2.3f} {:2.3f} {:2.3f}\n" + \
@@ -60,6 +72,7 @@ for i, pos in enumerate(s.muons):
           )
       
 
+# We will now identify the position of the muon site using the TF data
 # remove all defined positions for the search
 muon_reset(s)      
 
@@ -91,12 +104,13 @@ ax.axvline(x=0.712, ymin=-0.0, ymax=1., color='g', ls=':',lw=2)  # typo in the a
 
 ax.plot(positions, values_for_plot)
 ax.set_ylim([-0.7,0.7])
-plt.show()
+ax.set_xlabel("Position along the 111 (frac. unit)")
+ax.set_ylabel("Dip. Tens. elements [emu/mol]")
+plt.savefig("DipolarTensor.png")
 
 
 
 
-print_cell(s)
 scaled_pos = s.cell.get_scaled_positions()
 pos_Mn1 = scaled_pos[0]
 pos_Mn2 = scaled_pos[1]
@@ -186,7 +200,7 @@ for i in range(4):
 
 
 # Two subplots, unpack the axes array immediately
-f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10,5))
 
 ax1.set_title('right-handed')
 ax2.set_title('left-handed')
@@ -200,7 +214,7 @@ ax1.set_ylabel('Total field [T]')
 ax1.set_xlabel('angles [deg]')
 ax2.set_xlabel('angles [deg]')
 
-plt.show()
+plt.savefig("TotalFields.png")
 
 
 # Repeat with much more angles
@@ -216,7 +230,7 @@ for i in range(4):
     r_LH[i].ACont = -0.066
 
 # Two subplots, unpack the axes array immediately
-f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10,5))
 
 ax1.set_title('right-handed')
 ax2.set_title('left-handed')
@@ -244,4 +258,4 @@ ax1.set_ylabel('P(B)')
 ax1.set_xlabel('B[T]')
 ax2.set_xlabel('B[T]')
 
-plt.show()
+plt.savefig("Histogram.png")
