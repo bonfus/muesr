@@ -3,9 +3,11 @@ import numpy as np
 from muesr.core.sample import Sample
 from muesr.i_o import load_cif
 from muesr.utilities import print_cell, muon_find_equiv
-from muesr.utilities.muon import muon_reset
+from muesr.utilities.muon import muon_reset, muon_find_equiv
 from muesr.engines.clfc import locfield, dipten
 from matplotlib import pyplot as plt
+
+np.set_printoptions(suppress=True)
 
 """
 
@@ -24,12 +26,9 @@ point in a plane perpendicular to the propagation vector.
 s = Sample()
 load_cif(s, 'MnSi.cif')
 
-# let's find the muon sites with the dipolar tensor values
+s.add_muon([0.53,0.53,0.53])
 
-# move along 111
-positions = np.linspace(0,1,100)
-for pos in positions:
-    s.add_muon([pos,pos,pos])
+muon_find_equiv(s)
 
 # apply an arbitrary small field to select magnetic atoms.
 APP_FCs = 0.001*np.array([[0,0,1],
@@ -47,17 +46,41 @@ s.mm.desc = "Applied field"
 s.mm.k = np.array([0,0,0])
 s.mm.fc = APP_FCs
 
-dts = dipten(s, [30,30,30],50) # supercell size set to 100 unit cells, 
-                                  # a 200 Ang sphere si certainly contained.
+dts = dipten(s, [30,30,30],50) # supercell size set to 30 unit cells, 
+                                  # a 50 Ang sphere si certainly contained.
+
+
+for i, pos in enumerate(s.muons):
+    print(("\nFrac. muon position: {:2.3f} {:2.3f} {:2.3f}\n" + \
+            "Dipolar Tensor: {:2.3f} {:2.3f} {:2.3f}\n" + \
+            "                {:2.3f} {:2.3f} {:2.3f}\n" + \
+            "                {:2.3f} {:2.3f} {:2.3f}\n").format( \
+              *(pos.tolist() + (dts[i] * 6.022E24/1E24/4).flatten().tolist()) \
+            )
+          )
+      
 
 # remove all defined positions for the search
-muon_reset(s)
-                              
+muon_reset(s)      
+
+# let's find the muon sites with the dipolar tensor values
+
+# move along 111
+positions = np.linspace(0,1,100)
+for pos in positions:
+    s.add_muon([pos,pos,pos])
+
+
+dts = dipten(s, [30,30,30],50) # supercell size set to 30 unit cells, 
+                                  # a 50 Ang sphere si certainly contained.
+
 values_for_plot = np.zeros_like(positions)                              
 for i, dt in enumerate(dts):
     # to reproduce the plot of Amato et. al, we convert to emu/mol
     values_for_plot[i] = dt[0,1] * 6.022E24/1E24/4 # (cm^3/angstrom^3) = 1E24
-    print(positions[i], values_for_plot[i])
+
+# remove all defined positions for the search
+muon_reset(s)     
 
 fig = plt.figure()
 ax = fig.gca()
@@ -151,10 +174,10 @@ muon_find_equiv(s)
 
 # For Reft Handed
 s.current_mm_idx = 1;      # N.B.: indexes start from 0 but idx=0 is the transverse field!
-r_RH = locfield(s, 'i',[100,100,100],200,nnn=3,nangles=3600)
+r_RH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=360)
 
 s.current_mm_idx = 2;
-r_LH = locfield(s, 'i',[100,100,100],200,nnn=3,nangles=3600)
+r_LH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=360)
 
 
 for i in range(4):
@@ -170,11 +193,55 @@ ax2.set_title('left-handed')
 
 
 for i in range(4):
-    ax1.plot(np.linspace(0,360,3600),np.linalg.norm(r_RH[i].T, axis=1))
-    ax2.plot(np.linspace(0,360,3600),np.linalg.norm(r_LH[i].T, axis=1))
+    ax1.plot(np.linspace(0,360,360),np.linalg.norm(r_RH[i].T, axis=1))
+    ax2.plot(np.linspace(0,360,360),np.linalg.norm(r_LH[i].T, axis=1))
 
 ax1.set_ylabel('Total field [T]')
 ax1.set_xlabel('angles [deg]')
 ax2.set_xlabel('angles [deg]')
+
+plt.show()
+
+
+# Repeat with much more angles
+s.current_mm_idx = 1;      # N.B.: indexes start from 0 but idx=0 is the transverse field!
+r_RH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=36000)
+
+s.current_mm_idx = 2;
+r_LH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=36000)
+
+
+for i in range(4):
+    r_RH[i].ACont = -0.066
+    r_LH[i].ACont = -0.066
+
+# Two subplots, unpack the axes array immediately
+f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+
+ax1.set_title('right-handed')
+ax2.set_title('left-handed')
+
+N_BINS=1000
+
+LH_Hist=np.zeros(N_BINS)
+RH_Hist=np.zeros(N_BINS)
+bin_range=np.zeros(N_BINS+1)
+for i in range(4):
+    hist, bin_range = np.histogram(np.linalg.norm(r_RH[i].T, axis=1), bins=N_BINS, range=(0.08,0.24))
+    RH_Hist += hist
+    hist, bin_range = np.histogram(np.linalg.norm(r_LH[i].T, axis=1), bins=N_BINS, range=(0.08,0.24))
+    LH_Hist += hist
+
+mid_of_bin = bin_range[0:-1]+0.5*np.diff(bin_range)
+
+ax1.plot(mid_of_bin, RH_Hist)
+ax2.plot(mid_of_bin, LH_Hist)
+
+ax1.set_ylim([0,1600])
+ax2.set_ylim([0,1600])
+
+ax1.set_ylabel('P(B)')
+ax1.set_xlabel('B[T]')
+ax2.set_xlabel('B[T]')
 
 plt.show()
