@@ -13,7 +13,7 @@ Definig the sample
 +++++++++++++++++++++++++++++++++
 
 The fundamental component of muesr is the :py:class:`muesr.core.sample.Sample` object.
-You can import and instantiate it like this:
+You can import and initialize it like this:
 
 .. code-block:: python
     
@@ -21,12 +21,12 @@ You can import and instantiate it like this:
     >>>
     >>> mysample = Sample()
 
-Specifying the atomic structure
+Specifying the lattice structure
 ++++++++++++++++++++++++++++++++++++
 
-The first thing that must be defined is the atomic structure. Muesr uses 
-the ASE :class:`~Atoms` class. You can declare your own, fore example
-like this (Copper in simple cubic lattice)
+The first thing that must be defined is the lattice structure together with
+the atomic positions. Muesr uses the ASE :class:`~Atoms` class. You can 
+declare your own, fore example like this (Copper in simple cubic lattice)
 
 .. code-block:: python
     
@@ -40,7 +40,7 @@ like this (Copper in simple cubic lattice)
 However this is quite tedious and error prone so it is much better to use some
 builtin functions to parse crystallographic files.
 
-At the moment musr can parse XCrysDen files (xsf), CIF (cif) and mCIF (mcif)
+At the moment muesr can parse XCrysDen files (xsf), CIF (cif) and mCIF (mcif)
 files. Here's a few examples:
 
 .. code-block:: python
@@ -74,7 +74,7 @@ Setting muon positions
 When the lattice structure is defined it is possible to specify the
 muon position and the magnetic orders.
 
-To specify the muon position, simply do:
+To specify the muon position, just do:
 
 .. code-block:: python
     
