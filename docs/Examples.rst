@@ -7,3 +7,4 @@ The following examples provide a broad introduction to MuESR.
 
    LiFePO4
    Iron
+   MnSi

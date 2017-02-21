@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 np.set_printoptions(suppress=True)
 
 """
+Introduction
 
 Crystal structure: space group P213, No. 198; Mn-ion at the position 
 (0.138,0.138,0.138), and Si-ion at the position (0.845,0.845,0.845); 
