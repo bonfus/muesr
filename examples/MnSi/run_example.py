@@ -27,7 +27,7 @@ print("Create sample...", end='')
 s = Sample()
 print("done!")
 
-print("Load CIF file", end='')
+print("Load CIF file...", end='')
 load_cif(s, 'MnSi.cif')
 print("done!")
 
@@ -36,7 +36,7 @@ print("Calculate dipolar tensor for equivalent sites...\n")
 # this is a general position along the 111, 
 # just to identify the form of the dipolar tensor for the sites 
 # along the 111
-s.add_muon([0.5,0.5,0.5])
+s.add_muon([0.45,0.45,0.45])
 
 # we find the remainig eq muon sites
 muon_find_equiv(s)

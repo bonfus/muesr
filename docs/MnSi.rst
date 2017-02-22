@@ -32,12 +32,49 @@ visually checking the dipolar tensor elements for all the equivalent sites. This
 analytically but a numerical check can come in handy.
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 1-78
-   :emphasize-lines: 39,42,46-53,56-59,62
-   :lineno-start: 1
+   :lines: 36-78
+   :emphasize-lines: 4, 7,11-18,21-24,27
+   :lineno-start: 35
    :language: python
-   
-   
+
+In line 38 we add one of the four symmetry equivalent positions for a 
+muon in the `4a` Wyckoff site and we let the code find the other sites
+in line 41 with the function `muon_find_equiv`.
+In line 45 we define arbitrary small Fourier components which are used
+to specify which atoms are magnetic (Mn in this case).
+We finally add this sort of magnetic order to the sample description in 
+lines 55-58. The value of the propagation vector given in line 57 can 
+be omitted (resulting in 0 as default )as it is not used anywhere 
+in this initial estimation of the dipolar tensor. 
+The non-zero values of the dipolar tensor, shown at standard output, are
+::
+
+    Frac. muon position: 0.450 0.450 0.450
+    Dipolar Tensor: 0.000 0.092 0.092
+                    0.092 0.000 0.092
+                    0.092 0.092 0.000
+    
+    
+    Frac. muon position: 0.050 0.550 0.950
+    Dipolar Tensor: 0.000 0.092 -0.092
+                    0.092 -0.000 -0.092
+                    -0.092 -0.092 0.000
+    
+    
+    Frac. muon position: 0.550 0.950 0.050
+    Dipolar Tensor: -0.000 -0.092 0.092
+                    -0.092 0.000 -0.092
+                    0.092 -0.092 0.000
+    
+    
+    Frac. muon position: 0.950 0.050 0.550
+    Dipolar Tensor: 0.000 -0.092 -0.092
+                    -0.092 0.000 0.092
+                    -0.092 0.092 -0.000
+    
+    
+
+
 In order to compare with the experiment, we will evaluate the dipolar 
 tensor for 100 values along the 111 direction. 
 
@@ -49,13 +86,17 @@ tensor for 100 values along the 111 direction.
 
 
 Lines 99-110 produce the following figure: 
-|dipten|
 
-.. |dipten| image:: ../examples/MnSi/reference/DipolarTensor.png
-
+.. image:: ../examples/MnSi/reference/DipolarTensor.png
+   :height: 350
+   :width: 350
+   :alt: Dipolar tensor values along 111
+   
+which is essentially what is reported in [Amato2014]_.
 
 Local Fields
 -------------
+
 In order to calculate the local fields at the muon site in the helical state, we will first define the magnetic order and then evaluate the local fields with a optimized algorithm for incommensurate magnetic structures.
 
 Let us first create a few useful variables for the definition of the Fourier components (FC).
@@ -105,12 +146,16 @@ for all the muon sites that we defined.
 
 The lines 203-262 produce the following pictures:
 
-|locf|
-|hist|
 
-.. |locf| image:: ../examples/MnSi/reference/TotalFields.png
-.. |hist| image:: ../examples/MnSi/reference/Histogram.png
-
+.. image:: ../examples/MnSi/reference/TotalFields.png
+   :height: 150
+   :width: 300
+   :alt: Total Fields for left and right handed helices
+   
+.. image:: ../examples/MnSi/reference/Histogram.png
+   :height: 150
+   :width: 300
+   :alt: Histogram of local fields
 
 
 Interestingly, left-handed and right-handed orders produce different local field. This is due to the lack of inversion symmetry.
