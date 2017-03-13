@@ -135,8 +135,8 @@ The same can be achieved in a more pythonic way like this:
 .. code-block:: python
     
     >>> mysample.new_mm()
-    >>> mysample.k = numpy.array([ 0.,  0.,  0.])
-    >>> mysample.fc = numpy.array([[ 0.+0.j,  0.+0.j,  1.+0.j]])
+    >>> mysample.mm.k = numpy.array([ 0.,  0.,  0.])
+    >>> mysample.mm.fc = numpy.array([[ 0.+0.j,  0.+0.j,  1.+0.j]])
 
 .. note::
    In this method each atom must have a Fourier component! For a 8 atoms
