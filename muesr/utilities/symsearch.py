@@ -27,13 +27,15 @@ def symsearch(sample, precision=1e-4):
     :param sample: A sample object.
     :param float precision: atoms are assumed equivalent if distances are 
                             smaller than precision. In Angstrom.
-    :returns: True if succesful, False otherwise.
+    :returns: True if successful, False otherwise.
     :rtype: bool
     """
     
     if sample._check_lattice() and have_spg:
         dataset = spg.get_symmetry_dataset(sample.cell, symprec=precision)
-        sample.sym = spacegroup_from_data(no=dataset['number'],
+        # spglib 1.9.9 returns a long int in python2, this causes problems
+        # for spg.py, simple workaround is to convert it even if not necessary
+        sample.sym = spacegroup_from_data(no=int(dataset['number']),
                                           rotations=dataset['rotations'],
                                           translations=dataset['translations'])
         
