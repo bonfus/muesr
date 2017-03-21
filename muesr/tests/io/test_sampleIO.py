@@ -260,6 +260,7 @@ class TestSampleIO(unittest.TestCase):
     def setUp(self):
         warnings.simplefilter("ignore")
     
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_invalid_sample(self):
         with self.assertRaises(ValueError):
             load_sample()
@@ -268,6 +269,7 @@ class TestSampleIO(unittest.TestCase):
         with self.assertRaises(TypeError):
             save_sample(1,"")
     
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_load_only_latt(self):
         s = load_sample("",StringIO(yaml_only_lattice))
         np.testing.assert_array_equal(s.cell.get_cell(),
@@ -279,7 +281,7 @@ class TestSampleIO(unittest.TestCase):
                                         
                                         
         
-        
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_load_latt_and_one_mag(self):
         s = load_sample("",StringIO(yaml_lattice_and_one_mag))
         np.testing.assert_array_equal(s.cell.get_cell(),
@@ -299,21 +301,23 @@ class TestSampleIO(unittest.TestCase):
         with self.assertRaises(IndexError):
             s.current_mm_idx = 1
 
-        
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_load_only_one_mag(self):
         with self.assertRaises(CellError):
             load_sample("",StringIO(yaml_only_one_mag))
     
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_invalid_yaml(self):
         with self.assertRaises(ValueError):
             load_sample("",StringIO(yaml_invalid))
         
-    
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_load_lattice_and_muon(self):
         s = load_sample("",StringIO(yaml_lattice_and_muon))
         np.testing.assert_array_equal(s.muons[0], np.array([0.5,0.5,0.5]))
         np.testing.assert_array_equal(s.muons[1], np.array([0.75,0.25,0.5]))
-        
+    
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_load_lattice_and_sym(self):
         s = load_sample("",StringIO(yaml_latt_and_sym))
         np.testing.assert_array_equal(s.cell.get_cell(),
@@ -327,7 +331,7 @@ class TestSampleIO(unittest.TestCase):
         
         self.assertEqual(s.sym.symbol,'F -4 3 m')
         
-    
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_store_and_load_empty_structure(self):
         l = Sample()
         myfile = StringIO()
@@ -335,14 +339,22 @@ class TestSampleIO(unittest.TestCase):
         myfile.seek(0)
         t = load_sample("",myfile)
         
-    
+    @unittest.skipIf(have_yaml == False, 'PyYaml not available')
     def test_load_cartesian_positions(self):
         s = load_sample("",StringIO(yaml_lattice_cartesian_positions))
         spos = s.cell.get_scaled_positions()
         
         np.testing.assert_array_equal(spos,
                                         np.array([[0,0,0],[0.25,0.25,-0.75]])%1)
-        
+
+    @unittest.skipIf(have_yaml == True, 'PyYaml available')
+    def test_load_save_sample_no_yaml(self):
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            load_sample("",StringIO(yaml_lattice_cartesian_positions))
+            assert len(w) == 1
+            save_sample(None)
+            assert len(w) == 2
         
 if __name__ == '__main__':
     unittest.main()

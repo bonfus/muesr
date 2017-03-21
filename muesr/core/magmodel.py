@@ -1,6 +1,19 @@
 # http://magcryst.org/resources/magnetic-coordinates/
 
 import numpy as np
+try:
+    from six import string_types
+    def isstr(s):
+        return isinstance(s, string_types)
+except ImportError:
+    try:
+       isinstance("", basestring)
+       def isstr(s):
+           return isinstance(s, basestring)
+    except NameError:
+       def isstr(s):
+           return isinstance(s, str)
+           
 from muesr.core.cells  import get_cell_parameters
 
 have_sympy = True
@@ -299,10 +312,13 @@ class MM(object):
     
     @desc.setter
     def desc(self, value):
-        try:
-            value = str(value)
-            self._description = value
-        except:
+        if isstr(value):
+            try:
+                value = str(value)
+                self._description = value
+            except:
+                raise TypeError("Description type must be type string, got {} instead.".format(type(value)))
+        else:
             raise TypeError("Description type must be type string, got {} instead.".format(type(value)))
             
 
