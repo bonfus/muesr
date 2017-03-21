@@ -114,7 +114,7 @@ The next four lines of code print the results of the simulation in T/:math:`\mu_
 Programmatic magnetic order definition
 ---------------------------------------
 
-As already mentioned above, it's also possible to scepcify a magnetic 
+As already mentioned above, it's also possible to specify a magnetic 
 order programmatically. This can be done with the help of the methods
 :py:attr:`~muesr.core.sample.Sample.new_mm`, 
 :py:attr:`~muesr.core.magmodel.MM.k` and :py:attr:`~muesr.core.magmodel.MM.fc`.
@@ -128,14 +128,14 @@ order programmatically. This can be done with the help of the methods
 Please remember to specify the FC in a 2D array with 3 columns and :math:`N_{\mathrm{Atoms}}`
 rows of complex values.
 
-.. note::  The **propagation vector** is **always** specified in **recirocal lattice units**. 
+.. note::  The **propagation vector** is **always** specified in **reciprocal lattice units**. 
            On the other hand, the **Fourier components** can be specified with **three
            different coordinate system and units**: 
            
-              1. Bohr Magnetons in Cartesian coordinates (Cartesian vector notation)
-              2. Bohr Magnetons/Angstrom along the lattice vectors (Lattice vector notation)
-              3. Modulus (in Bohr Magnetons) along the lattice vectors.
+              1. Bohr magnetons in Cartesian coordinates (Cartesian vector notation)
+              2. Bohr magnetons/Angstrom along the lattice vectors (Lattice vector notation)
+              3. Modulus (in Bohr magnetons) along the lattice vectors.
 
-The results can be retrived as described above.
+The results can be retrieved as described above.
 
 .. [Sugiyama2011] Jun Sugiyama `et al.`, Phys. Rev. B 84, 054430 (2011)

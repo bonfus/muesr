@@ -2,7 +2,7 @@ BCC Iron
 ---------
 
 This example shows how to calculate the local field at the tetrahedral 
-site(s) in bcc-Fe as descibed in Ref. [Schmolz1986]_.
+site(s) in bcc-Fe as described in Ref. [Schmolz1986]_.
 
 Let's first load some useful tools.
 
@@ -11,8 +11,8 @@ Let's first load some useful tools.
    :lineno-start: 6
    :language: python
 
-the lattice structure and one of the twelve tetrahedral muon sites are
-added to our sample objectc:
+The lattice structure and one of the twelve tetrahedral muon sites are
+added to our sample object:
 
 .. literalinclude:: ../examples/Fe_bcc/run_example.py
    :lines: 20-24
@@ -20,7 +20,7 @@ added to our sample objectc:
    :language: python
 
 Since the lattice structure was parsed from a CIF file, symmetry information
-are already present in our Sample object. This allows to obtain all the
+are already present in the Sample object. This allows to obtain all the
 twelve tetrahedral sites with the command
 
 .. literalinclude:: ../examples/Fe_bcc/run_example.py
@@ -28,7 +28,7 @@ twelve tetrahedral sites with the command
    :lineno-start: 29
    :language: python
 
-Finally, we define the ferromagnetci structure with local moments parallel
+Finally, we define the ferromagnetic structure with local moments parallel
 to z in Cartesian coordinates.
 
 .. literalinclude:: ../examples/Fe_bcc/run_example.py
@@ -53,7 +53,7 @@ for all the twelse muon sites (can be different in general).
    :emphasize-lines: 9
    :language: python
 
-In the aboce lines we collected the results in numpy arrays to simplify the
+In the above lines we collected the results in numpy arrays to simplify the
 output statements.
 
 
