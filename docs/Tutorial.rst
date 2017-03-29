@@ -180,7 +180,7 @@ with the following command ::
 
     >>> from muesr.engines.clfc import locfield
 
-A detailed description of the possible calculatros is given in the 
+A detailed description of the possible calculators is given in the 
 :py:func:`~muesr.engines.clfc.locfield` documentation.
 
 Let's go straight to the local field evaluation which is obtained by 
@@ -230,7 +230,13 @@ In the next tutorial we will discuss the Hyperfine Contact Field.
 The Contact field contribution
 ------------------------------
 
-TODO
+In muesr, the current implementation of the contact field only allows a 
+scalar interaction between a set of nearest neighbouring magnetic atoms
+and the muon. This is generally insufficient to describe the contact 
+hypefine field but it can be a reasobale approximation in ferromagnets.
+
+TODO: discuss the details.
+
 
 
 
