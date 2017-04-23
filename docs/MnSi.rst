@@ -1,7 +1,9 @@
 MnSi
 ====
 
-This example will guide you through the experimental investigation conducted by Amato et al. and Dalmas de Réotier et. al reported in the following journal articles [Amato2014]_, [DalmasdeReotier2016]_.
+This example will guide you through the experimental investigation conducted 
+by Amato et al. and Dalmas de Réotier et. al reported in the following journal
+articles [Amato2014]_, [DalmasdeReotier2016]_.
 
 .. note::  This is an advanced example. It is assumed that you already
            familiarized with Muesr by following one of the other examples
@@ -32,18 +34,18 @@ visually checking the dipolar tensor elements for all the equivalent sites. This
 analytically but a numerical check can come in handy.
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 36-78
+   :lines: 37-79
    :emphasize-lines: 4, 7,11-18,21-24,27
-   :lineno-start: 35
+   :lineno-start: 37
    :language: python
 
-In line 38 we add one of the four symmetry equivalent positions for a 
+In line 40 we add one of the four symmetry equivalent positions for a 
 muon in the `4a` Wyckoff site and we let the code find the other sites
-in line 41 with the function `muon_find_equiv`.
-In line 45 we define arbitrary small Fourier components which are used
+in line 42 with the function `muon_find_equiv`.
+In line 46 we define arbitrary small Fourier components which are used
 to specify which atoms are magnetic (Mn in this case).
 We finally add this sort of magnetic order to the sample description in 
-lines 55-58. The value of the propagation vector given in line 57 can 
+lines 56-59 The value of the propagation vector given in line 58 can 
 be omitted (resulting in 0 as default )as it is not used anywhere 
 in this initial estimation of the dipolar tensor. 
 The non-zero values of the dipolar tensor, shown at standard output, are
@@ -79,9 +81,9 @@ In order to compare with the experiment, we will evaluate the dipolar
 tensor for 100 values along the 111 direction. 
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 83-97
+   :lines: 84-98
    :emphasize-lines: 3,6
-   :lineno-start: 83
+   :lineno-start: 84
    :language: python
 
 
@@ -102,23 +104,23 @@ In order to calculate the local fields at the muon site in the helical state, we
 Let us first create a few useful variables for the definition of the Fourier components (FC).
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 115-146
-   :lineno-start: 115
+   :lines: 116-147
+   :lineno-start: 116
    :language: python
 
 We can now define both a left handed and a right handed helix.
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 150-169
-   :lineno-start: 150
+   :lines: 151-171
+   :lineno-start: 151
    :language: python
 
 We finally add the muon positions and the two magnetic orders with the 
 commands
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 175-188
-   :lineno-start: 175
+   :lines: 177-190
+   :lineno-start: 177
    :language: python
 
 .. note:: When a new magnetic order is added, the index is automatically
@@ -131,8 +133,8 @@ muon site we use the function locfield function and specify the 'i' sum
 type.
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 190-195
-   :lineno-start: 190
+   :lines: 192-197
+   :lineno-start: 192
    :language: python
 
 By default, the contact coupling is 0 for all sites. In order to have a 
@@ -140,11 +142,11 @@ contact term different from 0 we have to set the parameter ACont
 for all the muon sites that we defined.
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 198-200
-   :lineno-start: 190
+   :lines: 200-202
+   :lineno-start: 200
    :language: python
 
-The lines 203-262 produce the following pictures:
+The lines 205-2624produce the following pictures:
 
 
 .. image:: ../examples/MnSi/reference/TotalFields.png
@@ -160,10 +162,36 @@ The lines 203-262 produce the following pictures:
 
 Interestingly, left-handed and right-handed orders produce different local field. This is due to the lack of inversion symmetry.
 
-The phase
----------
+The phase between Mn atoms in the unit cell
+-------------------------------------------
 
-TODO
+Dalmas De and Reotier colleagues pointed out that the complete description
+of the spiral phase requires three additional degrees of freedom: the two angles 
+describing the misalignmente between the rotation plane of the Mn moments
+and the plane perpendicular to the propagation vector :math:`k` and the
+phase between the helices in the Mn sites belonging to the two crystallographic 
+orbits (see [DalmasdeReotier2016]_).
+This last parameter strongly influence the results.
+
+Here we define a phase shift :math:`\phi=2` degrees as reported in the article 
+mentioned above.
+
+
+.. literalinclude:: ../examples/MnSi/run_example.py
+   :lines: 293-231
+   :lineno-start: 293
+   :emphasize-lines: 1,11
+   :language: python
+
+Repeating the same procedure discussed above leads to the following 
+comparison between the magnetic structures with :math:`\phi=0` (blue) and 
+and :math:`\phi=2` deg (orange).
+
+.. image:: ../examples/MnSi/reference/Histogram-zoom.png
+   :height: 150
+   :width: 300
+   :alt: Histogram of local fields
+
 
 Bibliography
 ------------

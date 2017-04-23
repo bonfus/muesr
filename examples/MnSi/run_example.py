@@ -18,9 +18,10 @@ lattice constant 4.558 Å.
 
 The magnetic structure of MnSi is characterized by spins forming a 
 left-handed incommensurate helix with a propagation vector k≃0.036 Å^−1
-in the [111] direction [5–7]. The static Mn moments ( ∼0.4μB for T→0 K)
+in the [111] direction [5–7]. The static Mn moments ( ∼0.385μB for T→0 K)
 point in a plane perpendicular to the propagation vector. 
 
+All data is taken from PRB 93 144419 (2016)
 """
 
 print("Create sample...", end='')
@@ -123,7 +124,7 @@ pos_Mn4 = scaled_pos[3]
 a = 4.558 # Ang
 a_star = 2*np.pi/a #Ang^-1
 
-norm_k = 0.036 # Å −1
+norm_k = 0.035 # Å −1
 
 k_astar = k_bstar = k_cstar = (1/np.sqrt(3))*norm_k
 
@@ -145,10 +146,11 @@ b = np.cross(k_u,a) # the other vector (perp. to a) defining the plane
                     # There are two choices here: left handed or right 
                     # handed spiral. We will do both.
 
-
+# Fianally, the experimental contact coupling term is:
+ContatExp = -0.066679616
 
 # assuming that, at x=0, a Mn moment is // a, the spiral can be obtained as
-RH_FCs = 0.4 * np.array([(a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn1)),
+RH_FCs = 0.385 * np.array([(a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn1)),
                          (a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn2)),
                          (a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn3)),
                          (a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn4)),
@@ -158,7 +160,7 @@ RH_FCs = 0.4 * np.array([(a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn1)),
                          [0,0,0]
                         ])
 # Notice the minus sign.
-LH_FCs = 0.4 * np.array([(a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn1)),
+LH_FCs = 0.385 * np.array([(a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn1)),
                          (a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn2)),
                          (a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn3)),
                          (a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn4)),
@@ -196,8 +198,8 @@ r_LH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=360)
 
 
 for i in range(4):
-    r_RH[i].ACont = -0.066
-    r_LH[i].ACont = -0.066
+    r_RH[i].ACont = ContatExp
+    r_LH[i].ACont = ContatExp
 
 
 # Two subplots, unpack the axes array immediately
@@ -227,8 +229,8 @@ r_LH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=36000)
 
 
 for i in range(4):
-    r_RH[i].ACont = -0.066
-    r_LH[i].ACont = -0.066
+    r_RH[i].ACont = ContatExp
+    r_LH[i].ACont = ContatExp
 
 # Two subplots, unpack the axes array immediately
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10,5))
@@ -247,6 +249,7 @@ for i in range(4):
     hist, bin_range = np.histogram(np.linalg.norm(r_LH[i].T, axis=1), bins=N_BINS, range=(0.08,0.24))
     LH_Hist += hist
 
+# just for plotting, gnerate intermediate positions for bins of the histogram
 mid_of_bin = bin_range[0:-1]+0.5*np.diff(bin_range)
 
 ax1.plot(mid_of_bin, RH_Hist)
@@ -260,3 +263,89 @@ ax1.set_xlabel('B[T]')
 ax2.set_xlabel('B[T]')
 
 plt.savefig("Histogram.png")
+
+
+
+# Now add a phase between the two orbital types, see PRB 93 144419 (2016)
+
+# Two subplots, unpack the axes array immediately
+f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10,5))
+
+ax1.set_title('right-handed')
+ax2.set_title('left-handed')
+
+# replot old results fro perfect field to compare later
+ax1.plot(mid_of_bin, RH_Hist, label = 'original')
+ax2.plot(mid_of_bin, LH_Hist, label = 'original')
+
+ax1.set_ylim([0,1600])
+ax2.set_ylim([0,1600])
+ax1.set_xlim([0.08,0.1])
+ax2.set_xlim([0.08,0.1])
+
+ax1.set_ylabel('P(B)')
+ax1.set_xlabel('B[T]')
+ax2.set_xlabel('B[T]')
+
+
+
+# assuming that, at x=0, a Mn moment is // a, the new spiral can be obtained as
+RH_FCs = 0.385 * np.array([(a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn1)-np.pi*2./180.),
+                         (a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn2)),
+                         (a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn3)),
+                         (a+1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn4)),
+                         [0,0,0],
+                         [0,0,0],
+                         [0,0,0],
+                         [0,0,0]
+                        ])
+# Notice the minus sign.
+LH_FCs = 0.385 * np.array([(a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn1)-np.pi*2./180.),
+                         (a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn2)),
+                         (a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn3)),
+                         (a-1j*b)*np.exp(-2*np.pi*1j*np.dot(k_rlu,pos_Mn4)),
+                         [0,0,0],
+                         [0,0,0],
+                         [0,0,0],
+                         [0,0,0]
+                        ])
+
+s.new_mm()
+s.mm.desc = "Right handed spiral with 2 deg. pahse"
+s.mm.k = k_rlu
+s.mm.fc = RH_FCs
+
+s.new_mm()
+s.mm.desc = "Left handed spiral with 2 deg. pahse"
+s.mm.k = k_rlu
+s.mm.fc = LH_FCs
+
+
+s.current_mm_idx = 3;      # N.B.: indexes start from 0 but idx=0 is the transverse field!
+                           #       and 1 and 2 are the perfect spiral (no phase shift)
+r_RH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=36000)
+
+s.current_mm_idx = 4;
+r_LH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=36000)
+
+
+for i in range(4):
+    r_RH[i].ACont = ContatExp
+    r_LH[i].ACont = ContatExp
+
+
+LH_Hist=np.zeros(N_BINS)
+RH_Hist=np.zeros(N_BINS)
+for i in range(4):
+    hist, bin_range = np.histogram(np.linalg.norm(r_RH[i].T, axis=1), bins=N_BINS, range=(0.08,0.24))
+    RH_Hist += hist
+    hist, bin_range = np.histogram(np.linalg.norm(r_LH[i].T, axis=1), bins=N_BINS, range=(0.08,0.24))
+    LH_Hist += hist
+
+
+ax1.plot(mid_of_bin, RH_Hist, label='2 deg. shift')
+ax2.plot(mid_of_bin, LH_Hist, label='2 deg. shift')
+
+plt.legend()
+
+plt.savefig("Histogram-zoom.png")
