@@ -5,6 +5,9 @@ This example will guide you through the experimental investigation conducted
 by Amato et al. and Dalmas de Réotier et. al reported in the following journal
 articles [Amato2014]_, [DalmasdeReotier2016]_.
 
+For the complete code see `run_example.py` in the `MnSi` the examples directory
+of the muesr package (or open it `on github <https://github.com/bonfus/muesr/blob/master/examples/MnSi/run_example.py>`_).
+
 .. note::  This is an advanced example. It is assumed that you already
            familiarized with Muesr by following one of the other examples
            or the tutorial.
@@ -173,15 +176,16 @@ phase between the helices in the Mn sites belonging to the two crystallographic
 orbits (see [DalmasdeReotier2016]_).
 This last parameter strongly influence the results.
 
-Here we define a phase shift :math:`\phi=2` degrees as reported in the article 
+Here we define a phase shift of :math:`\phi=2` degrees as reported in the article 
 mentioned above.
 
 
 .. literalinclude:: ../examples/MnSi/run_example.py
-   :lines: 293-231
+   :lines: 293-311
    :lineno-start: 293
    :emphasize-lines: 1,11
    :language: python
+
 
 Repeating the same procedure discussed above leads to the following 
 comparison between the magnetic structures with :math:`\phi=0` (blue) and 

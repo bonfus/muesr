@@ -274,7 +274,7 @@ f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10,5))
 ax1.set_title('right-handed')
 ax2.set_title('left-handed')
 
-# replot old results fro perfect field to compare later
+# replot previous results for later comparison
 ax1.plot(mid_of_bin, RH_Hist, label = 'original')
 ax2.plot(mid_of_bin, LH_Hist, label = 'original')
 
@@ -328,7 +328,7 @@ r_RH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=36000)
 s.current_mm_idx = 4;
 r_LH = locfield(s, 'i',[50,50,50],100,nnn=3,nangles=36000)
 
-
+# set hyperfine coupling for all 4 muon positions.
 for i in range(4):
     r_RH[i].ACont = ContatExp
     r_LH[i].ACont = ContatExp
