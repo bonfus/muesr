@@ -156,7 +156,7 @@ class Sample(object):
         Current Magnetic Model.
         
         :getter: Returns the current Magnetic Model (a MM object)
-        :setter: Sets the current Magnetic Model.
+        :setter: Adds and select a new Magnetic Model (MM object)
         :type: :py:class:`~MM` object
         :raises: TypeError, MagDefError
         """
@@ -316,7 +316,17 @@ class Sample(object):
         else:
             status += cstring('Yes','ok')
         status += '\n'
-        
+
+        if self._magdefs:
+            status += "\nMagnetic orders available ('*' means selected)\n\n"
+            status += " Idx | Sel | Desc. \n"
+            for i, m in enumerate(self._magdefs):
+                fmt_args = (i, \
+                            '*' if (i == self._selected_mm) else ' ', \
+                            m.desc)
+                status += " {:2d}  |  {}  | {}\n".format(*fmt_args)
+            
+            
 
         return status
     
