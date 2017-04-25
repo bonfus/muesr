@@ -1,10 +1,14 @@
 Tutorial
 ========
 
-With the help of a few examples, we will show how to quickly evaluate local fields in Muesr.
+This tutorial describes how to use the :py:mod:`~muesr` API to obtained
+the local magnetic field at a specific interstitial muon site in a magnetic
+sample.
 
-To use :py:mod:`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can 
-help a lot but it is not needed.
+To proficiently use :py:mod:`~muesr` a basic knowledge of python is
+strongly suggested. There are plenty of tutorial out there in the web, pick
+one and get familiar with the basic python syntax before going forward.
+
 
 First steps with muesr
 ---------------------------
@@ -12,7 +16,7 @@ First steps with muesr
 Definig the sample
 +++++++++++++++++++++++++++++++++
 
-The fundamental component of muesr is the :py:class:`muesr.core.sample.Sample` object.
+The fundamental component of Muesr is the :py:class:`~muesr.core.sample.Sample` object.
 You can import and initialize it like this:
 
 .. code-block:: python
@@ -24,9 +28,11 @@ You can import and initialize it like this:
 Specifying the lattice structure
 ++++++++++++++++++++++++++++++++++++
 
-The first thing that must be defined is the lattice structure together with
-the atomic positions. Muesr uses the ASE :class:`~Atoms` class. You can 
-declare your own, fore example like this (Copper in simple cubic lattice)
+The first thing that must be defined in a sample object is the lattice structure
+and the atomic positions. Muesr uses a custom version of the ASE :class:`~muesr.core.atoms.Atoms` class
+to do so. 
+The following code defines and add the the lattice structure of simple cubic Iron
+to the sample object:
 
 .. code-block:: python
     
@@ -37,34 +43,31 @@ declare your own, fore example like this (Copper in simple cubic lattice)
     >>> 
     >>> mysample.cell = atms
     
-However this is quite tedious and error prone so it is much better to use some
+However this procedure is quite tedious and error prone so it is much better to use 
 builtin functions to parse crystallographic files.
 
-At the moment muesr can parse XCrysDen files (xsf), CIF (cif) and mCIF (mcif)
-files. Here's a few examples:
+At the moment muesr can parse crystallographic data from CIF (cif) files
+and XCrysDen (xsf) files.
+Here's an example:
 
 .. code-block:: python
     
-    >>> # load data from XCrysden .xsf file
-    >>> from muesr.i_o.xsf.xsf import load_xsf
+    >>> # load data from XCrysden *.xsf file
+    >>> from muesr.i_o import load_xsf
     >>> 
     >>> load_xsf(mysample, "/path/to/file.xsf")
     >>> 
     >>> 
-    >>> # load data from .cif file
-    >>> from muesr.i_o.cif.cif import load_cif
+    >>> # load data from *.cif file
+    >>> from muesr.i_o import load_cif
     >>> 
     >>> load_cif(mysample, "/path/to/file.cif")
     >>> 
     >>> 
-    >>> # load data from .mcif file
-    >>> from muesr.i_o.cif.cif import load_mcif
-    >>> 
-    >>> load_mcif(mysample, "/path/to/file.mcif")
 
 
 The :py:func:`~muesr.i_o.cif.cif.load_cif` function will also load symmetry information. 
-Please note that only a single lattice structure at a time can be
+Please note that **only a single lattice structure at a time** can be
 defined so each load function will remove the previous lattice structure
 definition.
 
@@ -80,8 +83,8 @@ To specify the muon position, just do:
     
     >>> mysample.add_muon([0.1,0,0])
     
-positions are assumed to be in fractional coordinates. Cartesian coordinates
-can be specified as
+positions are assumed to be in fractional coordinates. If Cartesian coordinates
+are needed, they can be specified as
 
 .. code-block:: python
     
@@ -93,12 +96,14 @@ the command
 .. code-block:: python
     
     >>> print(mysample.muons)
+    [array([ 0.1,  0. ,  0. ]), array([ 0.1,  0. ,  0. ])]
 
 If symmetry information are present in the sample definition, it
-is usually useful to get symmetry equivalent sites.
+symmetry equivalent muon sites can be obtained.
 This can be done with the utility function :py:func:`~muesr.utilities.muon.muon_find_equiv`.
 In our case we did not load any symmetry information so the 
 following command will raise an error.
+You can check that by doing
 
 .. code-block:: python
     
@@ -106,6 +111,9 @@ following command will raise an error.
     >>> muon_find_equiv(mysample)
     [...]
     SymmetryError: Symmetry is not defined.
+    
+
+
 
 Defining a magnetic structure
 ++++++++++++++++++++++++++++++
@@ -125,12 +133,13 @@ A quick way to do that is using the helper function :py:func:`~muesr.utilities.m
 You will be asked the propagation vector and the Fourier coefficients
 for the specified atomic symbol. By default the Fourier components are
 specified in **Cartesian** coordinates. You can use the keyword argument
-`inputConvention` to change this behavior.
+`inputConvention` to change this behavior (see :py:func:`~muesr.utilities.ms.mago_add`
+documentation for more info).
 Here's an example::
 
      >>> mago_add(a)
         Propagation vector (w.r.t. conv. rec. cell): 0 0 0
-        Magnetic moments in bohr magnetons and cartesian coordinates.
+        Magnetic moments in Bohr magnetons and Cartesian coordinates.
         Which atom? (enter for all)Fe
         Lattice vectors:
             a    3.000000000000000    0.000000000000000    0.000000000000000
@@ -147,6 +156,7 @@ The same can be achieved without interactive input like this:
     >>> mysample.new_mm()
     >>> mysample.mm.k = numpy.array([ 0.,  0.,  0.])
     >>> mysample.mm.fc = numpy.array([[ 0.+0.j,  0.+0.j,  1.+0.j]])
+    >>> mysample.mm.desc = "FM m//c"
 
 .. note::
    In this method each atom must have a Fourier component! For a 8 atoms
@@ -154,18 +164,53 @@ The same can be achieved without interactive input like this:
    array!
    
 
+
 It is possible to specify multiple magnetic structure for the same lattice
-structure. Each time a new magnetic structure is added or set the 
-previously specified magnetic orders are kept.
+structure. **Each time a new magnetic structure is added to the sample
+object it is immediately selected for the later operations**.
+The currently selected magnetic order can be checked with the following
+command:
+
+.. code-block:: python
+    
+    >>> print(mysample)
+    Sample status: 
+    
+    Crystal structure:           Yes
+    Magnetic structure:          Yes
+    Muon position(s):            2 site(s)
+    Symmetry data:               No
+    
+    Magnetic orders available ('*' means selected)
+    
+     Idx | Sel | Desc. 
+      0  |     | No title
+      1  |  *  | FM m//c
+
 
 
 Checking the magnetic structure
 +++++++++++++++++++++++++++++++
 
-The Fourier components are complex vector and therefore not so easy to 
-visualize. There are two ways to actually see the magnetic moment 
-defined in the system. One is to generate a (possibly trivial) supercell 
-and visualize it in XCrysDen. The other is to use FPStudio.
+The magnetic structures already defined can be visualized with the XCrysDen
+software.
+
+
+.. code-block:: python
+
+    >>> from muesr.utilities import show_structure
+    >>> show_structure(mysample)
+
+the interactive session will block until XCrysDen is in execution.
+To show the local moments on Iron atoms press the 'f' key or 'Display -> Forces'.
+
+.. image:: tutorial_xcrysden_forces.png
+   :height: 370
+   :width: 391
+   :alt: XCrysden window showing Fe moments
+
+To procede with the tutorial close the XCrysDen Window.
+
 
 
 Evaluating the local field
@@ -176,48 +221,64 @@ crunch some numbers!
 To evaluate the local fields at the muon site :py:mod:`~muesr` uses a 
 python extension written in C in order to get decent performances.
 You can load a simple wrapper to the extension as providing local fields
-with the following command ::
+with the following command 
+
+.. code-block:: python
 
     >>> from muesr.engines.clfc import locfield
 
-A detailed description of the possible calculators is given in the 
-:py:func:`~muesr.engines.clfc.locfield` documentation.
+A detailed description of the possible computations is given in the 
+muLFC documentation.
 
 Let's go straight to the local field evaluation which is obtained by 
-running the command: ::
+running the command: 
 
-    >>> results = locfield(mysample, 'sum', [30, 30, 30] , 100)
+.. code-block:: python
 
-Let's review this command in details. The first argument is just the 
-sample object that we considered till now.
-The second argument tells the code to sum all magnetic moments
-in a supercell generated by the expansion of the unit cell 30x30x30 
-times along the lattice vectors (third argument of the function).
+    >>> results = locfield(mysample, 'sum', [30, 30, 30] , 40)
+
+The first argument is just the sample object that was just defined.
+The second and third argument respectively specify that
+a simple *sum* of all magnetic moments should be performed using a supercell
+obtained replicating  *30x30x30 times* the unit cell along the lattice vectors.
 The fourth argument is the radius of the Lorentz sphere considered.
-All magnetic moments outside the Lorentz sphere are ignored.
-The muon is automatically placed in the center of the supercell. 
+All magnetic moments outside the Lorentz sphere are ignored and
+the muon is automatically placed in the center of the supercell.
+
 
 .. note::
    To get an estimate of the largest radius that you can use to avoid 
-   sampling outside the supercell size you can use :py:func:`~muesr.engines.clfc.find_largest_sphere`
+   sampling outside the supercell size you can use the python
+   function `find_largest_sphere` in the LFC python package.
 
-The results variable now contains a list of 
+.. warning::
+   If the Lorentz sphere does not fit into the supercell, the results 
+   obtained with this function are not accurate!
+
+
+The `results` variable now contains a list of 
 :py:class:`~muesr.core.magmodel.LocalField` objects.
-However if you print the results you'll see something which looks like
-a numpy array: ::
+However, if you print the `results` variable you'll see something that looks like
+a numpy array: 
+
+.. code-block:: python
 
     >>> print(results)
-    [array([ -1.83231311e-18,  -9.00562374e-19,  -3.42108252e+01]), 
-    array([ -1.83231311e-18,  -9.00562374e-19,  -3.42108252e+01])]
+    [array([  3.83028907e-18,  -3.37919319e-18,  -3.42111893e+01]),
+     array([  3.83028907e-18,  -3.37919319e-18,  -3.42111893e+01])]
+
+
     
-the numbers shown here are the total field for the magnetic structure 
-discussed above. To access the various components you do: ::
+these are the **total field** for the muon positions and the magnetic structure 
+defined above. To access the various components you do: 
+
+.. code-block:: python
 
     >>> results[0].Lorentz
-    array([ 0.        ,  0.        ,  0.14382354])
+    array([ 0.        ,  0.        ,  0.14355877])
     
     >>> results[0].Dipolar
-    array([ -1.83231311e-18,  -9.00562374e-19,  -3.43546487e+01])
+    array([  3.83028907e-18,  -3.37919319e-18,  -3.43547481e+01])
     
     >>> results[0].Contact
     array([ 0.,  0.,  0.])
@@ -225,17 +286,28 @@ discussed above. To access the various components you do: ::
 
 And you are done! Remember that all results are in Tesla units.
 
-In the next tutorial we will discuss the Hyperfine Contact Field.
 
-The Contact field contribution
-------------------------------
+Saving for later use
+++++++++++++++++++++
 
-In muesr, the current implementation of the contact field only allows a 
-scalar interaction between a set of nearest neighbouring magnetic atoms
-and the muon. This is generally insufficient to describe the contact 
-hypefine field but it can be a reasobale approximation in ferromagnets.
 
-TODO: discuss the details.
+The current sample definition can be stored in a file with the following
+command:
+
+.. code-block:: python
+
+    >>> from muesr.i_o import save_sample
+    >>> save_sample(mysample, '/path/to/mysample.yaml')
+    
+and later loaded with 
+
+.. code-block:: python
+
+    >>> from muesr.i_o import load_sample
+    >>> mysample_again = load_sample('/path/to/mysample.yaml')
+    
+
+
 
 
 

@@ -23,7 +23,6 @@ Contents:
    Tutorial
    Examples
    Usage
-   Symmetry
    ContactTerm
    FAQ
 

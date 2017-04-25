@@ -66,7 +66,7 @@ Source documentation
 --------------------------------------------
 
 :mod:`muesr.i_o.sampleIO` -- Input Output functions for the Sample object
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: muesr.i_o.sampleIO
    :members:
