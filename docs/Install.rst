@@ -70,21 +70,21 @@ To install Muesr in a virtualenv, first make sure that the command `virtualenv`
 is available on your system. If not, please check online what is the 
 recommended way of installing virtualenv in your os.
 
-To create the virualenv run in a terminal:
+To create the virualenv run in a terminal: ::
 
    virtualenv muesr-env
 
-and to activate the environment (linux and OsX)
+and to activate the environment (linux and OsX) ::
 
    cd muesr-env
    source bin/activate
    
-now you can install Muesr in the virtualenv with the command
+now you can install Muesr in the virtualenv with the command ::
 
    pip install https://github.com/bonfus/muesr/archive/master.tar.gz
    
 this will only provide the minimal dependencies. To have access to all 
-Muesr functions you also need `spglib` and `PyYAML`
+Muesr functions you also need `spglib` and `PyYAML` ::
 
    pip install pyyaml spglib
    
