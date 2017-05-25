@@ -96,18 +96,19 @@ print('Now automatic run...\n')
 smpl.new_mm()
 
 # The new magnetic order is automatically selected.
-#  one can get the current magnetic model with the
-#  property "mm". 
+# One can obtain the current magnetic model with the
+#  property "mm". E.g. smpl.mm.k prints the k-vector, etc. 
 
-# Set a description for the magnetic order
+# Set a description for the magnetic order 
 smpl.mm.desc = "Ferromagnetic"
+# Remember: anti-ferro = ferro with a bassis
 
-# the k property can provides and set the propagation vector,
-#  always defined in reciprocal lattice units (r.l.u.).
+# The smpl.mm.k property can also set the propagation vector,
+#  in reciprocal lattice units (r.l.u.).
 smpl.mm.k=np.array([0.,0.,0.])
 
-# Define Fourier components, in CARTESIAN coordinates and bhor magnetons!
-#  if this is done in the script, the components for all the atoms must be set.
+# Now define Fourier components (in CARTESIAN coordinates and Bohr magnetons);
+#  the components must be set for all the atoms in a cell (28 in the present case).
 FCs = np.array([[ 0.00+0.j,  4.19+0.j,  0.00+0.j],
        [ 0.00+0.j, -4.19+0.j,  0.00+0.j],
        [ 0.00+0.j, -4.19+0.j,  0.00+0.j],
@@ -137,7 +138,7 @@ FCs = np.array([[ 0.00+0.j,  4.19+0.j,  0.00+0.j],
        [ 0.00+0.j,  0.00+0.j,  0.00+0.j],
        [ 0.00+0.j,  0.00+0.j,  0.00+0.j]])
 
-# set the Fourier components, by default in Cartesian coordinates.
+# Set the Fourier components, by default in Cartesian coordinates.
 smpl.mm.fc_set(FCs)
 
 

@@ -15,8 +15,8 @@ the magnetic order at runtime and prints the output on screen.
 Let's first import the necessary python objects and functions of :py:mod:`muesr`.
 
 .. literalinclude:: ../examples/LiFePO4/run_example.py
-   :lines: 14-17
-   :lineno-start: 14
+   :lines: 11-17
+   :lineno-start: 11
    :language: python
 
 
@@ -44,14 +44,14 @@ We can import these data from a CIF file using the function
    :language: python
    
    
-The next step is setting the the definition of the magnetic order. This 
+The next step is the definition of the magnetic order. This 
 can be done interactively during the script execution or programmatically.
+
 Let's discuss the former case first. The function :py:func:`~muesr.utilities.ms.mago_add`
-will prompt the input and let you specify the Fourier components and the
-propagation vector.
-Here we want to describe an anti-ferromagnetic order in which the
-iron moments lie along the :math:`y` axis and are
-4.19 :math:`\mu_{\mathrm{B}}` in magnitude.
+will let you specify the Fourier components and the propagation vector.
+
+We want to describe LiFePo anti-ferromagnetic order in which the
+iron moments, 4.19 :math:`\mu_{\mathrm{B}}` in magnitude, lie along the :math:`y` axis. We do this by defining a `ferromagnetic order` (propagation vector **k** = 0), with a basis of four moments. If you run the code the full output below allows you to recognize the input that you have to provide fromthe function prompts.  
 
 .. literalinclude:: ../examples/LiFePO4/run_example.py
    :lines: 43-61
@@ -95,8 +95,8 @@ Improving this parameters is left as an exercise to the reader.
 
 The results are stored in a list of 
 :py:class:`~muesr.core.magmodel.LocalField` objects which, for each muon
-site, contain the Total, Dipolar, Lorentz and Contact contributions in
-**Tesla**.
+site, contain the total, dipolar, Lorentz and Contact contributions in
+Tesla (in the present case, an antiferromagnet in zero external field, with no Fermi contact term, only the dipolar field is obtained).
 
 The next four lines of code print the results of the simulation in T/:math:`\mu_{\mathrm{B}}` 
 
@@ -105,16 +105,27 @@ The next four lines of code print the results of the simulation in T/:math:`\mu_
    :lineno-start: 84
    :language: python
    
+You should now see the following self explaining result 
+
+::
+
+   (array([-0.15540174, -0.12234256, -0.02399385]), 'Norm  0.1992')
+   (array([ -1.32075572e-17,  -1.24059244e-01,  -1.10237957e-19]), 'Norm  0.1241')  
+   (array([ -5.22880379e-18,  -1.80946551e-01,   3.16831013e-18]), 'Norm  0.1809')
+   (array([-0.1333684 , -0.11733706, -0.03497624]), 'Norm  0.1810')"
+
+These are the Cartesian components and modulus of the local field at the four Sugiyama sites, in Tesla.
    
 .. note::   **The results are always** reported in the **Cartesian** 
             coordinate system defined by the lattice vectors of the
             crystal.
 
 
+
 Programmatic magnetic order definition
 ---------------------------------------
 
-As already mentioned above, it's also possible to scepcify a magnetic 
+As already mentioned above, it's also possible to specify a magnetic 
 order programmatically. This can be done with the help of the methods
 :py:attr:`~muesr.core.sample.Sample.new_mm`, 
 :py:attr:`~muesr.core.magmodel.MM.k` and :py:attr:`~muesr.core.magmodel.MM.fc`.
@@ -128,14 +139,14 @@ order programmatically. This can be done with the help of the methods
 Please remember to specify the FC in a 2D array with 3 columns and :math:`N_{\mathrm{Atoms}}`
 rows of complex values.
 
-.. note::  The **propagation vector** is **always** specified in **recirocal lattice units**. 
+.. note::  The **propagation vector** is **always** specified in **reciprocal lattice units**. 
            On the other hand, the **Fourier components** can be specified with **three
            different coordinate system and units**: 
            
-              1. Bohr Magnetons in Cartesian coordinates (Cartesian vector notation)
-              2. Bohr Magnetons/Angstrom along the lattice vectors (Lattice vector notation)
-              3. Modulus (in Bohr Magnetons) along the lattice vectors.
+              1. Bohr magnetons in Cartesian coordinates (Cartesian vector notation)
+              2. Bohr magnetons/Angstrom along the lattice vectors (Lattice vector notation)
+              3. Modulus (in Bohr magnetons) along the lattice vectors.
 
-The results can be retrived as described above.
+The results can be retrieved as described above.
 
 .. [Sugiyama2011] Jun Sugiyama `et al.`, Phys. Rev. B 84, 054430 (2011)
