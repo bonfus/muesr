@@ -6,7 +6,7 @@
 Welcome to MuESR's documentation!
 =================================
 
-MuESR (Magneti strtucture and mUon Embedding Site Refinement) is a tool 
+MuESR (Magnetic structure and mUon Embedding Site Refinement) is a tool 
 to identify muon sites and analize local fields for a given magnetic 
 structure quickly and effectively.
 
