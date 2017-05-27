@@ -38,16 +38,28 @@ XCrysDen  >= 1.0    :mod:`muesr.i_o.xsf.xsf.show_cell` ,            http://www.x
    The muesr distribution ships with a internal version of appdirs which,
    however, may not be up to date.
 
-To compile the python extension you also need the build tools appropriate
+
+Compilation and installation
+----------------------------
+
+This is the hard way. Make your git project muesr directory, move into it and use ::
+
+  git clone https://github.com/bonfus/muesr.git
+
+In order to compile the python extension you also need the build tools appropriate
 for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
 
-If you do not want to compile you can use these wheels:
+If you have all the prerequisites and you are in the muesr directory, type:: 
 
-Installation
-------------
-Use the python way of installing the package.
+   make clean
+   make all
+   make install
 
-Simply type ::
+If you do not want to compile, you can use instead the following `wheels: <https://packaging.python.org/wheel_egg/>`_
+
+Direct installation
+-------------------
+Use the python way of installing the package. First, `download it <https://github.com/bonfus/muesr/archive/master.zip>`_ and unzip. Move to the muesr directory and simply type ::
    
    python setup.py test
    python setup.py install
@@ -89,6 +101,11 @@ Muesr functions you also need `spglib` and `PyYAML` ::
 
    pip install pyyaml spglib
    
-Now you are ready to go! Why not start with Muesr examples?
+
+Now you are ready to go! Why not start with a look at the first paragraph of the Tutorial_ and then move directly to the Muesr Examples_?
+
+.. _Tutorial: ../html/Tutorial.html
+.. _Examples: ../html/Examples.html
+
 
 
