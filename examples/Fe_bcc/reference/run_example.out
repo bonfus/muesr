@@ -1,0 +1,17 @@
+Using internal LFC library
+Dipolar Field for all the 12 tetrahedral equivalent sites
+[[ 0.       0.       0.26498]
+ [-0.      -0.       0.26498]
+ [-0.       0.      -0.52995]
+ [ 0.       0.      -0.52995]
+ [ 0.       0.       0.26498]
+ [-0.      -0.       0.26498]
+ [ 0.      -0.       0.26498]
+ [-0.      -0.       0.26498]
+ [ 0.       0.      -0.52995]
+ [ 0.       0.      -0.52995]
+ [-0.      -0.       0.26498]
+ [-0.      -0.       0.26498]]
+The Lorentz field is 0.000 0.000 0.731
+The contact field is 1.111 T
+Dipolar average of 1 parallel site and 2 antiparallel sites is 0.00000 T

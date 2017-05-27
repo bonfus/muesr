@@ -26,18 +26,19 @@ def muon_set_frac(sample, arg = None):
                     
         except EOFError:
             nprint("Ok.")
-            return
+            return False
         except TypeError:
             nprint("Cannot parse position.",'warn')
-            return
+            return False
             
         if (not isinstance(arg, np.ndarray)):
             pos = np.array(pos)
         
         sample.add_muon(pos)
-        return      
+        return True
     else:
-        nprintmsg('NS') 
+        #nprintmsg('NS')
+        return False
         
         
     
@@ -57,11 +58,12 @@ def muon_find_equiv(sample, eps=1.e-3):
     sample._reset(muon=True)
     for p in eqpoints:
         sample.add_muon(np.array(p))
-    
+    return True
    
 def muon_reset(sample):
     """
-    Resets muon position.
-    returns: None
+    Removes all previously set muon positions.
+    returns: True
     """
     sample._reset(muon=True)
+    return True

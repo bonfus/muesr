@@ -9,7 +9,6 @@ To proficiently use :py:mod:`~muesr` a basic knowledge of python is
 strongly suggested. There are plenty of tutorial out there in the web, pick
 one and get familiar with the basic python syntax before going forward.
 
-<<<<<<< HEAD
 To use :py:mod:`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can help a lot but it is not needed.
 
 To be pedantic, you can
@@ -17,9 +16,9 @@ To be pedantic, you can
 1. Run the commands listed below in an ipython console
 2. Write these commands in a example.py file and run by the command ::
   python example.py
-
 3. Use the muesr gui (which implies having what?)
 4. Use `Mantid <https://www.mantidproject.org/Main_Page>`_, that contains a muesr library
+
 
 
 
@@ -267,10 +266,10 @@ the muon is automatically placed in the center of the supercell.
    sampling outside the supercell size you can use the python
    function `find_largest_sphere` in the LFC python package.
 
+
 .. warning::
    If the Lorentz sphere does not fit into the supercell, the results 
    obtained with this function are not accurate!
-
 
 The `results` variable now contains a list of 
 :py:class:`~muesr.core.magmodel.LocalField` objects.

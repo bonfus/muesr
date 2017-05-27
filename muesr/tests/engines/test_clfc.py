@@ -13,10 +13,6 @@ if have_sympy:
 
 from muesr.engines.clfc import *
 
-
-import lfcext
-
-
 class TestLocalFields(unittest.TestCase):
     def test_init(self):
         with self.assertRaises(TypeError):
@@ -183,7 +179,10 @@ def rotation_matrix(axis, theta):
                      [2*(bd+ac), 2*(cd-ab), aa+dd-bb-cc]])
 
         
-class TestLFCExtension(unittest.TestCase):
+class TestLFCExtension(unittest.TestCase):  
+    def setUp(self):
+        import lfclib as lfcext
+
     def test_one_over_r_cube(self):
         
         p  = np.array([[0.,0.,0.]])

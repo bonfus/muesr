@@ -14,7 +14,7 @@ import numpy as np
 
    
 
-def mago_set_k(sample, kvalue=None,mm=None):
+def mago_set_k(sample, kvalue=None, mm=None):
     
     """
     Set propagation with respect to the conventional reciprocal cell
@@ -36,7 +36,7 @@ def mago_set_k(sample, kvalue=None,mm=None):
         if not kvalue is None:
             if isinstance(kvalue, np.ndarray) and ( kvalue.shape == (3,)):
                 smm.k = kvalue
-                return
+                return True
         else:
             try:
                 if kvalue is None:
@@ -46,37 +46,48 @@ def mago_set_k(sample, kvalue=None,mm=None):
 
             except EOFError:
                 nprint("Ok.")
-                return
+                return False
             except TypeError:
                 nprint("Cannot parse position.",'warn')
                 return
             smm.k=np.array(kval,dtype=np.float)
-            return
+            return True
 
 
-def mago_add(sample, coordinates='b-c'):
+def mago_add(sample, coordinates='b-c', fcs=None, kvalue=None):
     """
-    Add a magnetic model (fourier components and K vector).
-    
+    Adds a magnetic model (fourier components and K vector).
     The order is automatically selected if succesfully added.
     
+    :param sample: A sample object.
+    :param string coordinates: coordinates of Fourier components
+    :param np.complex fcs: Fourier components in coordinate system 
+                          (default: Bohr magnetoc/ Cartesian coordinates)
+    :param np.ndarray kvalue: Propagation vector in r.l.u.
+    :returns: True if successful, False otherwise.
+    :rtype: bool
     
-    returns: None
     """        
     
     nmm = MM(sample.cell.get_number_of_atoms(),sample.cell.get_cell())
     
-    mago_set_k(sample, mm=nmm)
-    mago_set_FC(sample, mm=nmm, inputConvention=coordinates)
+    ret = mago_set_k(sample, mm=nmm, kvalue=kvalue)
+    if not ret:
+        return False
+        
+    ret = mago_set_FC(sample, mm=nmm, inputConvention=coordinates, fcs=fcs)
+    if not ret:
+        return False
+        
     sample.mm = nmm
-    
+    return True
 
         
 
-def mago_set_FC(sample, fcs= None, atoms_types = None, mm=None, inputConvention='b-c'):
+def mago_set_FC(sample, fcs = None, atoms_types = None, mm=None, inputConvention='b-c'):
     """
-    defines fourier components for the unit cell.
-    Values are given in CARTESIAN coordinates (this is different from mcif convention)
+    Defines fourier components for the unit cell.
+    
     """
 
 
@@ -93,27 +104,27 @@ def mago_set_FC(sample, fcs= None, atoms_types = None, mm=None, inputConvention=
     inputConvEnum = -1
         
     if inputConvention.lower() in ['bohr-cartesian', 'b-c']:
-        nprint('Magnetic moments in bohr magnetons and cartesian coordinates.')
+        nprint('Magnetic moments in Bohr magnetons and cartesian coordinates.')
         inputConvEnum = 0
         
     elif inputConvention.lower() in ['bohr/angstrom-lattice', 'b/a-l']:
-        nprint('Magnetic moments in bohr magnetons/angstrom and lattice coordinates.')
+        nprint('Magnetic moments in Bohr magnetons/angstrom and lattice coordinates.')
         inputConvEnum = 1
         
     elif inputConvention.lower() in ['bohr-lattice','b-l']:
-        nprint('Magnetic moments in bohr magnetons and lattice coordinates.')
+        nprint('Magnetic moments in Bohr magnetons and lattice coordinates.')
         inputConvEnum = 2
         
     else:
-        nprint('Invalid Fourier Description method: ' + inputConvention.lower() ,'error')
-        return    
+        nprint('Invalid Fourier Description method: ' + inputConvention.lower() ,'error.')
+        return False
     
 
 
     
     if not fcs is None:
         smm.fc_set(fcs, inputConvEnum)
-        return
+        return True
             
 
 
@@ -122,7 +133,7 @@ def mago_set_FC(sample, fcs= None, atoms_types = None, mm=None, inputConvention=
     
     
     if atoms_types is None:
-        atoms_types=ninput('Which atom? (enter for all)').split()
+        atoms_types=ninput('Which atom? (enter for all): ').split()
     
     if atoms_types == []:
         set_this_fc = lambda x: True
@@ -154,8 +165,10 @@ def mago_set_FC(sample, fcs= None, atoms_types = None, mm=None, inputConvention=
 
     if gotEOS:
         nprint('Nothing set')
+        return False
     else:
         smm.fc_set(fcs, inputConvEnum)
+        return True
 
 
 

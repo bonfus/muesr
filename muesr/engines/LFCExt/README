@@ -1,2 +1,0 @@
-gcc -fPIC -shared -o clfclib.so bsum.c mat4.c vec4.c rotbsum.c vec3.c mat3.c ass.c rass.c -lm
-gcc -fPIC -shared -o clfclib.so bsum.c mat4.c vec4.c rotbsum.c vec3.c mat3.c ass.c rass.c rasshf.c -lm -fopenmp

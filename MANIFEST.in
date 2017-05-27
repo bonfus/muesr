@@ -1,6 +1,6 @@
 include MANIFEST.in
 include LICENSE README.md
-recursive-include muesr vec3.h mat3.h pile.h config.h
+include requirements.txt
 include muesr/core/spacegroup.dat
 recursive-include muesr/tests/structures *
 recursive-include docs *
