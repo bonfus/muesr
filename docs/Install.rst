@@ -44,31 +44,22 @@ Compilation and installation
 
 This is the hard way. Make your git project muesr directory, move into it and use ::
 
-  git clone https://github.com/bonfus/muesr.git
+   git clone https://github.com/bonfus/muesr.git
+   cd muesr
 
 In order to compile the python extension you also need the build tools appropriate
 for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
 
-If you have all the prerequisites and you are in the muesr directory, type:: 
+If you have all the prerequisites and you are in the muesr directory, type
+(you'll probably need to be superuser) :: 
 
-   make clean
-   make all
-   make install
-
-If you do not want to compile, you can use instead the following `wheels: <https://packaging.python.org/wheel_egg/>`_
-
-Direct installation
--------------------
-Use the python way of installing the package. First, `download it <https://github.com/bonfus/muesr/archive/master.zip>`_ and unzip. Move to the muesr directory and simply type ::
+   pip install -r requirements.txt
    
-   python setup.py test
+and finally run ::
+
    python setup.py install
 
-You can also use pip ::
 
-   pip install muesr-0.1.tar.gz
-
-(you'll probably need to be superuser)
 
 Installation in virtualenv
 --------------------------
