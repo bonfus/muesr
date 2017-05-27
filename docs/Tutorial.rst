@@ -1,3 +1,6 @@
+..  _tutorial:
+
+
 Tutorial
 ========
 
@@ -14,8 +17,7 @@ To use :py:mod:`~muesr` you must be familiar with python. An interactive shell l
 To be pedantic, you can
 
 1. Run the commands listed below in an ipython console
-2. Write these commands in a example.py file and run by the command ::
-  python example.py
+2. Write these commands in a example.py file and run it with python
 3. Use the muesr gui (which implies having what?)
 4. Use `Mantid <https://www.mantidproject.org/Main_Page>`_, that contains a muesr library
 
@@ -24,9 +26,8 @@ To be pedantic, you can
 
 First steps with muesr
 ---------------------------
-Find below a tutorial description of the main functions. An alternative way to familiarise with muer is to run directly the examples_ first and then come back here for a more systematic introduction.
+Find below a tutorial description of the main functions. An alternative way to familiarise with muer is to run directly the :ref:`examples` first and then come back here for a more systematic introduction.
 
-.. _examples: ../html/Examples.html
 
 Defining the sample
 +++++++++++++++++++++++++++++++++

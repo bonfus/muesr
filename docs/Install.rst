@@ -93,10 +93,8 @@ Muesr functions you also need `spglib` and `PyYAML` ::
    pip install pyyaml spglib
    
 
-Now you are ready to go! Why not start with a look at the first paragraph of the Tutorial_ and then move directly to the Muesr Examples_?
+Now you are ready to go! Why not start with a look at the first paragraph of the :ref:`tutorial` and then move directly to the Muesr :ref:`examples`?
 
-.. _Tutorial: ../html/Tutorial.html
-.. _Examples: ../html/Examples.html
 
 
 
