@@ -91,7 +91,15 @@ this will only provide the minimal dependencies. To have access to all
 Muesr functions you also need `spglib` and `PyYAML` ::
 
    pip install pyyaml spglib
-   
+
+
+.. figure:: asciicast/install.png
+   :scale: 25 %
+   :target: https://asciinema.org/a/6xeplqujkfw71bldp171sjafs?speed=2
+   :alt: Asciicast link
+
+   Follow the installation procedure in asciicast (you can copy/paste from the video!).
+
 
 Now you are ready to go! Why not start with a look at the first paragraph of the :ref:`tutorial` and then move directly to the Muesr :ref:`examples`?
 
