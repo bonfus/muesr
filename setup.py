@@ -20,9 +20,8 @@ setup(name='muesr',
                 ],
       include_package_data=True,
       package_dir={'muesr': 'muesr' },
-      requires=['numpy', 'LFC',],
       install_requires=[
-            'numpy',
+            'numpy >= 1.6',
       ],
       test_suite="muesr.tests",
      )

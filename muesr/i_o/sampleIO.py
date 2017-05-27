@@ -23,16 +23,17 @@ except:
 
 
 
-def save_sample(sample, filename="", fileobj=None):
+def save_sample(sample, filename="", fileobj=None, overwrite=False):
     """
     This function saves the sample provided in YAML format.
     
     :param sample: the sample object
     :param str filename: the filename used to store data.
     :param file fileobj: a file object used in place of filename.
+    :param overwrite bool: if selected file should be overwritten.
     :return: None
     :rtype: None
-    :raises: TypeError
+    :raises: TypeError, ValueError, IsADirectoryError
     """        
     
     
@@ -112,18 +113,18 @@ def save_sample(sample, filename="", fileobj=None):
         if filename == "":
             raise ValueError("Specify filename or provide a file object")
             
-        while os.path.isfile(filename):
-            if not ninput('Do you really want to overwite ' + 
-                    os.path.basename(filename) + '?', parse_bool):
-                filename = ninput('New file name: ')
-            else:
-                break
+        if os.path.isfile(filename) and (not overwrite):
+            warnings.warn('File not (over)written.', RuntimeWarning)
+            return False
         
-        # TODO: check overwrite and handle errors
+        
         with open(filename,'w') as f:
             f.write(output)
+        return True
+        
     else:
         fileobj.write(output)
+        return True
 
     
 def load_sample(filename="", fileobj=None):
@@ -136,10 +137,7 @@ def load_sample(filename="", fileobj=None):
                          supersede the filename input.
     :return: a sample object
     :rtype: :py:class:`~Sample` object or None
-    :raises: ValueError
-    
-    .. note::
-       Overwrite is not checked!  
+    :raises: ValueError, FileNotFoundError, IsADirectoryError
     
     """      
     

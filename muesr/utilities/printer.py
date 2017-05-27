@@ -1,7 +1,6 @@
 from muesr.core.nprint import print_cell as pc
 
 
-  
         
 def print_cell(sample):
     """
@@ -9,6 +8,7 @@ def print_cell(sample):
     """
     if sample._check_lattice():
         pc(sample._cell)
+        return True
             
             
         
