@@ -1,6 +1,19 @@
 # http://magcryst.org/resources/magnetic-coordinates/
 
 import numpy as np
+try:
+    from six import string_types
+    def isstr(s):
+        return isinstance(s, string_types)
+except ImportError:
+    try:
+       isinstance("", basestring)
+       def isstr(s):
+           return isinstance(s, basestring)
+    except NameError:
+       def isstr(s):
+           return isinstance(s, str)
+           
 from muesr.core.cells  import get_cell_parameters
 
 have_sympy = True
@@ -229,7 +242,7 @@ class MM(object):
         if isinstance(value, np.ndarray):
            
             if value.dtype != np.complex:
-                raise ValueError
+                raise ValueError("Fourier components must be a complex array!")
             
             #check that number of FCs is the same as atoms
             if not (value.shape == self._fc.shape):
@@ -298,11 +311,16 @@ class MM(object):
         return self._description
     
     @desc.setter
-    def desc(self, value):    
-        if type(value) is str:
-            self._description = value
+    def desc(self, value):
+        if isstr(value):
+            try:
+                value = str(value)
+                self._description = value
+            except:
+                raise TypeError("Description type must be type string, got {} instead.".format(type(value)))
         else:
-            raise TypeError('Description type must be string (str)')
+            raise TypeError("Description type must be type string, got {} instead.".format(type(value)))
+            
 
     @property
     def isSymbolic(self):

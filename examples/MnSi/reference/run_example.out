@@ -1,0 +1,29 @@
+Using internal LFC library
+Create sample...done!
+Load CIF file...done!
+Calculate dipolar tensor for equivalent sites...
+
+
+Frac. muon position: 0.450 0.450 0.450
+Dipolar Tensor: 0.000 0.092 0.092
+                0.092 0.000 0.092
+                0.092 0.092 0.000
+
+
+Frac. muon position: 0.050 0.550 0.950
+Dipolar Tensor: 0.000 0.092 -0.092
+                0.092 -0.000 -0.092
+                -0.092 -0.092 0.000
+
+
+Frac. muon position: 0.550 0.950 0.050
+Dipolar Tensor: -0.000 -0.092 0.092
+                -0.092 0.000 -0.092
+                0.092 -0.092 0.000
+
+
+Frac. muon position: 0.950 0.050 0.550
+Dipolar Tensor: 0.000 -0.092 -0.092
+                -0.092 0.000 0.092
+                -0.092 0.092 -0.000
+

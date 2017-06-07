@@ -316,7 +316,7 @@ TypeError) or other 4 specific Exceptions:
  - :py:class:`~muesr.core.sampleErrors.MagDefError`
  - :py:class:`~muesr.core.sampleErrors.SymmetryError`
  
-To see their meaning follow the links.
+To see their meaning follow the links above.
 
 N.B.: the utility functions are mainly intended for interactive usage 
 and therefore report problems by printing error messages on the screen.
@@ -334,3 +334,17 @@ an input file by hand. When loaded, the file will undergo a minimal
 validation. Identifying the errors is not so easy so the best method to specify
 the sample details is probably using the various functions discussed in 
 this manual.
+
+Symmetry
+--------
+
+:mod:`muesr` tries to grab symmetry information from either the CIF files or 
+using the `spglib` routines.
+If a magnetic cif (\*.mcif) is loaded, the symmetry is disregarded. 
+The symmetry equivalent sites depend indeed only on the symmetry of the 
+parent cell. If one consider the symmetry of the magnetic structure and 
+searches for the equivalent muon sites, many of them will be missing.
+The symmetry of every cell can always be identified with the help of 
+the :py:func:`~muesr.utilities.symsearch.symsearch` command.
+Note however that, **when dealing with supercells**, some of the symmetry 
+**equivalent muon positions must be specified by hand**.
