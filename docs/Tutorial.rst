@@ -80,6 +80,10 @@ Here's an example:
     >>> load_cif(mysample, "/path/to/file.cif")
     >>> 
     >>> 
+    >>> # load data from .mcif file
+    >>> from muesr.i_o.cif.cif import load_mcif
+    >>> 
+    >>> load_mcif(mysample, "/path/to/file.mcif")
 
 
 The :py:func:`~muesr.i_o.cif.cif.load_cif` function will also load symmetry information. 
@@ -302,6 +306,7 @@ defined above. To access the various components you do:
 
 And you are done! Remember that all results are in Tesla units.
 
+In the next tutorial we will discuss the Hyperfine Contact Field.
 
 Saving for later use
 ++++++++++++++++++++
