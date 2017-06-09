@@ -11,10 +11,23 @@ from muesr.core.magmodel import MM, have_sympy
 if have_sympy:
     from muesr.core.magmodel import SMM
 
-from muesr.engines.clfc import *
+have_lfclib = False
+try:
+    import lfclib as lfcext
+    have_lfclib = True
+except Exception as e:
+    print(e)
+
+
+if have_lfclib:
+    from muesr.engines.clfc import LocalFields, find_largest_sphere, locfield
 
 class TestLocalFields(unittest.TestCase):
+    def setUp(self):
+        self.assertTrue(have_lfclib,"lfclib not found! Sorry, it's a mandatory")
+        
     def test_init(self):
+
         with self.assertRaises(TypeError):
             LocalFields('a',2,None)
             
@@ -85,6 +98,7 @@ class TestLocalFields(unittest.TestCase):
 class TestCLFC(unittest.TestCase):
  
     def setUp(self):
+        self.assertTrue(have_lfclib)
         self.sample = Sample()
 
     def _set_a_cell(self):
@@ -179,10 +193,12 @@ def rotation_matrix(axis, theta):
                      [2*(bd+ac), 2*(cd-ab), aa+dd-bb-cc]])
 
         
-class TestLFCExtension(unittest.TestCase):  
+class TestLFCExtension(unittest.TestCase):
+    
     def setUp(self):
-        import lfclib as lfcext
-
+        self.assertTrue(have_lfclib)
+        
+    
     def test_one_over_r_cube(self):
         
         p  = np.array([[0.,0.,0.]])
@@ -222,6 +238,7 @@ class TestLFCExtension(unittest.TestCase):
         # ratios must be like 1/r^3
         np.testing.assert_array_almost_equal(d2, np.array([0,0,-0.92740095])*(1./(np.linalg.norm(mu2*2.))**3) )
         
+    
     def test_rotation_of_cart_coord(self):
         
         p  = np.array([[0.1,0.2,0.3]])
@@ -263,7 +280,7 @@ class TestLFCExtension(unittest.TestCase):
         np.testing.assert_array_almost_equal(d,np.dot(mrmat,dr))
         np.testing.assert_array_almost_equal(l,np.dot(mrmat,lr))
         
-        
+    
     def test_rotate1(self):
         p  = np.array([[0.,0.,0.]])
         fc = np.array([[0.,0.,1.]],dtype=np.complex)
@@ -304,7 +321,8 @@ class TestLFCExtension(unittest.TestCase):
                                                           [0,0.92740095,0],
                                                           [0,0,0.92740095],
                                                           [0,-0.92740095,0]]))
-                                                          
+    
+    
     def test_icommensurate(self):
         p  = np.array([[0.,0.,0.]])
         fc = np.array([[0.,1.j,1.]],dtype=np.complex)
@@ -336,7 +354,8 @@ class TestLFCExtension(unittest.TestCase):
                                                           [0,0.92740095E-3,0],
                                                           [0,0,-0.92740095E-3],
                                                           [0,-0.92740095E-3,0]]))
-                                                                                                                    
+    
+    
     def test_phase(self):
         p  = np.array([[0.,0.,0.]])
         fc = np.array([[0.,0.,1.]],dtype=np.complex)
@@ -450,7 +469,7 @@ class TestLFCExtension(unittest.TestCase):
         np.testing.assert_array_almost_equal(np.take(l,range(1,9),mode='wrap',axis=0), refl)
         np.testing.assert_array_almost_equal(np.take(d,range(1,9),mode='wrap',axis=0), refd)
         
-    
+
     def test_null_by_symmetry(self):
         p  = np.array([[0.,0.,0.]])
         fc = np.array([[0.,0.,1.]],dtype=np.complex)
@@ -488,7 +507,6 @@ class TestLFCExtension(unittest.TestCase):
         
         
         
-    
     def test_dipolar_tensor(self):
         # initial stupid test...
         ###### TODO : do a reasonable test!!!  ######

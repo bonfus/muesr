@@ -9,13 +9,23 @@ import unittest
 import os
 import numpy as np
 
+#check extension has been installed
+have_lfclib = False
+try:
+    import lfclib as lfcext
+    have_lfclib = True
+except:
+    pass
+
 from muesr.core.sample import Sample
 from muesr.core.magmodel import MM, have_sympy
 if have_sympy:
     from muesr.core.magmodel import SMM
 from muesr.i_o.xsf.xsf import load_xsf
 from muesr.i_o.cif.cif import load_mcif
-from muesr.engines.clfc import locfield
+
+if have_lfclib:
+    from muesr.engines.clfc import locfield
 from muesr.utilities.muon import muon_reset, muon_set_frac
 
 #from muesr.core.magmodel import MM
@@ -23,6 +33,7 @@ from muesr.utilities.muon import muon_reset, muon_set_frac
 class TestMuesr(unittest.TestCase):
  
     def setUp(self):
+        self.assertTrue(have_lfclib,"lfclib not found! Sorry, it's a mandatory")
         cdir = os.path.dirname(__file__)
         self._stdir = os.path.join(cdir,'structures')
         
