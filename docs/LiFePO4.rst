@@ -44,6 +44,7 @@ We can import these data from a CIF file using the function
    :language: python
    
    
+(make sure you give the correct path, the cif file is in the muer example directory tree). 
 The next step is the definition of the magnetic order. This 
 can be done interactively during the script execution or programmatically.
 
@@ -51,7 +52,7 @@ Let's discuss the former case first. The function :py:func:`~muesr.utilities.ms.
 will let you specify the Fourier components and the propagation vector.
 
 We want to describe LiFePo anti-ferromagnetic order in which the
-iron moments, 4.19 :math:`\mu_{\mathrm{B}}` in magnitude, lie along the :math:`y` axis. We do this by defining a `ferromagnetic order` (propagation vector **k** = 0), with a basis of four moments. If you run the code the full output below allows you to recognize the input that you have to provide fromthe function prompts.  
+iron moments, 4.19 :math:`\mu_{\mathrm{B}}` in magnitude, lie along the :math:`y` axis. We do this by defining a `ferromagnetic order` (propagation vector **k** = 0), with a basis of four moments. If you run the code the full output below allows you to recognize the input that you have to provide from the function prompts.  
 
 .. literalinclude:: ../examples/LiFePO4/run_example.py
    :lines: 43-61
