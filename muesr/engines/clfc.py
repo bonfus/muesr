@@ -1,17 +1,10 @@
 import os
 import numpy as np
-#import ctypes
-#from numpy.ctypeslib import ndpointer
 from copy import deepcopy
 
 from muesr.core.sample import Sample
 
-try:
-    import lfclib as lfcext
-    print("Using new LFC library")
-except:
-    import lfcext
-    print("Using internal LFC library")
+import lfclib as lfcext
 
 
 class LocalFields(object):

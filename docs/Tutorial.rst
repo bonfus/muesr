@@ -8,6 +8,8 @@ sample.
 To proficiently use :py:mod:`~muesr` a basic knowledge of python is
 strongly suggested. There are plenty of tutorial out there in the web, pick
 one and get familiar with the basic python syntax before going forward.
+<<<<<<< Temporary merge branch 1
+=======
 
 <<<<<<< HEAD
 To use :py:mod:`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can help a lot but it is not needed.
@@ -15,17 +17,16 @@ To use :py:mod:`~muesr` you must be familiar with python. An interactive shell l
 To be pedantic, you can
 
 1. Run the commands listed below in an ipython console
-2. Write these commands in a example.py file and run by the command ::
-  python example.py
-
+2. Write these commands in a example.py file and run it with python
 3. Use the muesr gui (which implies having what?)
 4. Use `Mantid <https://www.mantidproject.org/Main_Page>`_, that contains a muesr library
 
 
 
+
 First steps with muesr
 ---------------------------
-Find below a tutorial description of the main functions. An alternative way to familiarise with muer is to run directly the examples_ first and then come back here for a more systematic introduction.
+Find below a tutorial description of the main functions. An alternative way to familiarise with muer is to run directly the :ref:`examples` first and then come back here for a more systematic introduction.
 
 .. _examples: ../html/Examples.html
 
@@ -80,10 +81,6 @@ Here's an example:
     >>> load_cif(mysample, "/path/to/file.cif")
     >>> 
     >>> 
-    >>> # load data from .mcif file
-    >>> from muesr.i_o.cif.cif import load_mcif
-    >>> 
-    >>> load_mcif(mysample, "/path/to/file.mcif")
 
 
 The :py:func:`~muesr.i_o.cif.cif.load_cif` function will also load symmetry information. 
@@ -109,10 +106,17 @@ are needed, they can be specified as
 .. code-block:: python
     
     >>> mysample.add_muon([0.3,0,0], cartesian=True)
+<<<<<<< Temporary merge branch 1
 
 You can verify that the two positions are equivalent by printing them with
 the command
 
+=======
+
+You can verify that the two positions are equivalent by printing them with
+the command
+
+>>>>>>> Temporary merge branch 2
 .. code-block:: python
     
     >>> print(mysample.muons)
@@ -249,12 +253,21 @@ with the following command
 
 A detailed description of the possible computations is given in the 
 muLFC documentation.
+<<<<<<< Temporary merge branch 1
 
 Let's go straight to the local field evaluation which is obtained by 
 running the command: 
 
 .. code-block:: python
 
+=======
+
+Let's go straight to the local field evaluation which is obtained by 
+running the command: 
+
+.. code-block:: python
+
+>>>>>>> Temporary merge branch 2
     >>> results = locfield(mysample, 'sum', [30, 30, 30] , 40)
 
 The first argument is just the sample object that was just defined.
@@ -270,11 +283,12 @@ the muon is automatically placed in the center of the supercell.
    To get an estimate of the largest radius that you can use to avoid 
    sampling outside the supercell size you can use the python
    function `find_largest_sphere` in the LFC python package.
+<<<<<<< Temporary merge branch 1
+
 
 .. warning::
    If the Lorentz sphere does not fit into the supercell, the results 
    obtained with this function are not accurate!
-
 
 The `results` variable now contains a list of 
 :py:class:`~muesr.core.magmodel.LocalField` objects.
@@ -306,7 +320,6 @@ defined above. To access the various components you do:
 
 And you are done! Remember that all results are in Tesla units.
 
-In the next tutorial we will discuss the Hyperfine Contact Field.
 
 Saving for later use
 ++++++++++++++++++++

@@ -41,12 +41,14 @@ def show_structure(sample, supercell=[1,1,1], askConfirm=True, block=True):
     
     if ans:
         save_xsf(sample, os.path.join(config.XCrysTmp,'preview.xsf'),supercell=supercell)
-        run_xcrysden(os.path.join(config.XCrysTmp,'preview.xsf'),block)
+        return run_xcrysden(os.path.join(config.XCrysTmp,'preview.xsf'),block)
+    else:
+        return ans
 
 def run_xcrysden(fname, block=True):
     if config.XCrysExec == None:
         warnings.warn("XCrysDen executable not found. Check configs.")
-        return
+        return False
     
     
     spargs = dict(
@@ -66,4 +68,4 @@ def run_xcrysden(fname, block=True):
     
     if block:
         out, err = p.communicate()
-
+    return True

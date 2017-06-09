@@ -44,16 +44,18 @@ Compilation and installation
 
 This is the hard way. Make your git project muesr directory, move into it and use ::
 
-  git clone https://github.com/bonfus/muesr.git
+   git clone https://github.com/bonfus/muesr.git
+   cd muesr
 
 In order to compile the python extension you also need the build tools appropriate
 for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
 
-If you have all the prerequisites and you are in the muesr directory, type:: 
+If you have all the prerequisites and you are in the muesr directory, type
+(you'll probably need to be superuser) :: 
 
-   make clean
-   make all
-   make install
+   pip install -r requirements.txt
+   
+and finally run ::
 
 If you do not want to compile, you can use instead the following `wheels: <https://packaging.python.org/wheel_egg/>`_
 
@@ -82,21 +84,22 @@ To install Muesr in a virtualenv, first make sure that the command `virtualenv`
 is available on your system. If not, please check online what is the 
 recommended way of installing virtualenv in your os.
 
-To create the virualenv run in a terminal:
+To create the virualenv run in a terminal: ::
 
    virtualenv muesr-env
 
-and to activate the environment (linux and OsX)
+and to activate the environment (linux and OsX) ::
 
    cd muesr-env
    source bin/activate
    
-now you can install Muesr in the virtualenv with the command
+now you can install LFC and Muesr in the virtualenv with the commands ::
 
+   pip install https://github.com/bonfus/muLFC/archive/master.tar.gz
    pip install https://github.com/bonfus/muesr/archive/master.tar.gz
    
 this will only provide the minimal dependencies. To have access to all 
-Muesr functions you also need `spglib` and `PyYAML`
+Muesr functions you also need `spglib` and `PyYAML` ::
 
    pip install pyyaml spglib
    
@@ -104,10 +107,16 @@ If you get a `permission denied` error messages, try again the last commend as
 
    sudo pip install pyyaml spglib
 
-Now you are ready to go! Why not start with a look at the first paragraph of the Tutorial_ and then move directly to the Muesr Examples_?
+.. figure:: asciicast/install.png
+   :scale: 25 %
+   :target: https://asciinema.org/a/6xeplqujkfw71bldp171sjafs?speed=2
+   :alt: Asciicast link
 
-.. _Tutorial: ../html/Tutorial.html
-.. _Examples: ../html/Examples.html
+   Follow the installation procedure in asciicast (you can copy/paste from the video!).
+
+
+Now you are ready to go! Why not start with a look at the first paragraph of the :ref:`tutorial` and then move directly to the Muesr :ref:`examples`?
+
 
 
 
