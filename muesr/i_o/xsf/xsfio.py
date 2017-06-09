@@ -10,8 +10,8 @@ from muesr.core.parsers import mybool
 
 def write_xsf(fileobj, images, data=None):
     
-    # this won't work with unicode!!
-    if isinstance(fileobj, str):
+    # this should work with unicode too.
+    if not hasattr(fileobj, 'write'):
         fileobj = open(fileobj, 'w')
         
     if not isinstance(images, (list, tuple)):
@@ -156,8 +156,8 @@ def read_xsf_data(f):
 
 
 def read_xsf(fileobj, index=-1, read_data=False):
-    if isinstance(fileobj, str):
-        fileobj = open(fileobj)
+    if not hasattr(fileobj, 'read'):
+        fileobj = open(fileobj,'r')
 
     readline = fileobj.readline
     while True:
@@ -270,7 +270,9 @@ def read_xsf(fileobj, index=-1, read_data=False):
 
     
 def read_xsf_file(fp):
-   
+    """
+    THIS FUNCTION IS DEPRECATED AND WILL BE REMOVED
+    """   
     if type(fp) is not str:
         fp = str(fp[0])
     try:        
