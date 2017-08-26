@@ -37,6 +37,8 @@ def mago_set_k(sample, kvalue=None, mm=None):
             if isinstance(kvalue, np.ndarray) and ( kvalue.shape == (3,)):
                 smm.k = kvalue
                 return True
+            else:
+                raise TypeError("Invalid type for kvalue. Must be 3D vector defined as numpy array.")
         else:
             try:
                 if kvalue is None:
