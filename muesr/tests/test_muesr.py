@@ -36,7 +36,10 @@ class TestMuesr(unittest.TestCase):
         self.assertTrue(have_lfclib,"lfclib not found! Sorry, it's a mandatory")
         cdir = os.path.dirname(__file__)
         self._stdir = os.path.join(cdir,'structures')
-        
+    
+    def oom(self, v):
+        # returns order of magnitude
+        return int(np.max(np.log10(np.abs(v))))
  
     def test_one_dipole_outside(self):
         m = Sample()
@@ -255,14 +258,14 @@ class TestMuesr(unittest.TestCase):
         r2[1].ACont = 1.0
         r3[1].ACont = 1.0
         
-        np.testing.assert_array_almost_equal(r1[0].T,r2[0].T[0],decimal=7)
-        np.testing.assert_array_almost_equal(r1[1].T,r2[1].T[0],decimal=7)
+        np.testing.assert_array_almost_equal(r1[0].T,r2[0].T[0],decimal=7-self.oom(r2[0].T[0]))
+        np.testing.assert_array_almost_equal(r1[1].T,r2[1].T[0],decimal=7-self.oom(r2[1].T[0]))
         
         r2_norms = np.apply_along_axis(np.linalg.norm, 1, r2[0].D)
         r3_norms = np.apply_along_axis(np.linalg.norm, 1, r3[0].D)
-
-        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r3_norms),decimal=5)
-        np.testing.assert_array_almost_equal(np.min(r2_norms),np.min(r3_norms),decimal=5)
+        
+        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r3_norms),decimal=5-self.oom(r2_norms))
+        np.testing.assert_array_almost_equal(np.min(r2_norms),np.min(r3_norms),decimal=5-self.oom(r2_norms))
 
         r2_norms = np.apply_along_axis(np.linalg.norm, 1, r2[1].T)
         r3_norms = np.apply_along_axis(np.linalg.norm, 1, r3[1].T)
