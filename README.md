@@ -12,7 +12,7 @@ Muesr works with the following minimal requirements:
 |---------|------------|------------|
 | python  | 2.7+ or 3  | python.org |
 | numpy   | 1.6        | numpy.org  |
-
+| lfclib  | 0.1        | [muLFC](http://www.github.com/bonfus/muLFC) |
 
 Optional dependencies are:
 
@@ -28,6 +28,15 @@ Install and Usage
 
 See the documentation at http://muesr.readthedocs.io
 
+**News Linux users**: the easiest way to install `lfclib` is using pre-baked wheels:
+
+[packagecloud.io/muLFC/wheels](https://packagecloud.io/muLFC/wheels)
+
+You only have to choose the right one for you python installation. 
+For example, `LFC-0.1-cp36-cp36m-manylinux1_i686.whl` is compatible with
+Python 3.6 (cp36) and a 32 bit system, while `LFC-0.1-cp34-cp34m-manylinux1_x86_64.whl`
+is for Python 3.4 installed on a 64 bit system.
+
 Known problems
 --------------
 
@@ -39,10 +48,11 @@ Known problems
 Please note that the code is still under heavy development. 
 You'll probably find bugs so please report them!
 
-Authors
--------
+Authors & Contributors
+----------------------
 
-Pietro Bonfa', Ifeanyi John Onuorah and Roberto De Renzi.
+Pietro Bonfa', Ifeanyi John Onuorah, Anthony Lim and Roberto De Renzi.
+
 
 Notes
 -----
