@@ -1,4 +1,9 @@
-import readline, sys
+try:
+    import readline
+except:
+    nprint ("readline not present, using standard python input functions.\n",'warn')
+    
+import sys
 from muesr.core.nprint import nprint
 
 def ninput(message,parser = None):
