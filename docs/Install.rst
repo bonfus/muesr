@@ -42,7 +42,8 @@ XCrysDen  >= 1.0    :mod:`muesr.i_o.xsf.xsf.show_cell` ,            http://www.x
 Compilation and system-wide installation
 ----------------------------------------
 
-This is the hard way, and you'll need to be superuser.
+This is the hard way, but allows to custmize some parts of the installation.
+In order to complete all the following steps you'll need to be superuser.
 Use git to clone Muesr and muLFC projects.
 First install `muLFC` doing ::
 
@@ -74,6 +75,7 @@ It is possible to avoid the compilation of the C extension contained
 in `lfclib` by directly installing the compiled python wheels.
 
 A set of pre-compiled binaries is available in this repository:
+
 https://packagecloud.io/muLFC/wheels
 
 In order to select the correct package just do::
@@ -133,7 +135,46 @@ Muesr functions you also need `spglib` and `PyYAML` ::
    :target: https://asciinema.org/a/6xeplqujkfw71bldp171sjafs?speed=2
    :alt: Asciicast link
 
-   Follow the installation procedure in asciicast (you can copy/paste from the video!).
+Follow the installation procedure in asciicast (you can copy/paste from the video!).
+
+
+Installation on Windows
+-----------------------
+
+In order to install `muesr` on python you need a working python environment.
+In recent Windows versions the best experience is probably obtained with Anaconda, which provides a
+complete Python installation for scientific data analysis. The following steps assume 
+that a working version of `Anaconda <https://www.anaconda.com/download/>`_ is available
+on the target system.
+
+To install muesr first download a pre-compiled version of muLFC from github:
+
+* `LFC-0.1-cp36-cp36m-win32.whl <https://packagecloud.io/muLFC/wheels/packages/python/LFC-0.1-cp36-cp36m-win32.whl/download>`_ : Python 3.6, 32 bit system
+* `LFC-0.1-cp36-cp36m-win_amd64.whl <https://packagecloud.io/muLFC/wheels/packages/python/LFC-0.1-cp36-cp36m-win_amd64.whl/download>`_ : Python 3.6, 64 bit system
+* `LFC-0.1-cp27-cp27m-win32.whl <https://packagecloud.io/muLFC/wheels/packages/python/LFC-0.1-cp27-cp27m-win32.whl/download>`_ : Python 2.7, 32 bit system
+* `LFC-0.1-cp27-cp27m-win_amd64.whl <https://packagecloud.io/muLFC/wheels/packages/python/LFC-0.1-cp27-cp27m-win_amd64.whl/download>`_ : Python 2.7, 64 bit system
+
+
+Assuming that you have downloaded the correct package in the ``Downloads``
+directory, in order to install `muesr` start Anaconda navigator and open an
+interactive python terminal:
+
+.. image:: anaconda-navigator.png
+
+From within the interactive terminal do: ::
+
+    import pip, sys
+    from os.path import expanduser, join
+    
+    arch = 'amd64' if (sys.maxsize > 2*32) else '32'
+    name = "LFC-0.1-cp{0}{1}-cp{0}{1}m-win_{2}.whl".format(sys.version_info.major, sys.version_info.minor,arch)
+    
+    home = expanduser("~")
+    wheel_name = join ( join(home,"Downloads") , name )
+    
+    pip.main(["install",wheel_name])
+    pip.main(["install","https://github.com/bonfus/muesr/archive/master.zip"])
+
 
 
 Now you are ready to go! Why not start with a look at the first paragraph
