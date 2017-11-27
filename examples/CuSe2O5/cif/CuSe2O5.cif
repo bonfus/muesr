@@ -1,0 +1,138 @@
+data_CuSe2O5
+_audit_creation_method	'Created with CONVERT.DLL (www.crystalimpact.com)'
+_audit_creation_date	2010-08-31
+_audit_update_record	2010-08-31
+_chemical_formula_sum	'Cu4 Se8 O20'
+_chemical_formula_weight	1205.852
+_cell_length_a	12.2540
+_cell_length_b	 4.8580
+_cell_length_c	 7.9600
+_cell_angle_alpha	90.000
+_cell_angle_beta	110.700
+_cell_angle_gamma	90.000
+_cell_volume	443.3
+_symmetry_int_tables_number	15
+_symmetry_space_group_name_H-M	'C 1 2/c 1'
+_symmetry_space_group_name_Hall	'-C_2yc'
+
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 x,y,z
+2 -x,y,0.500-z
+3 -x,-y,-z
+4 x,-y,0.500+z
+5 0.500+x,0.500+y,z
+6 0.500-x,0.500+y,0.500-z
+7 0.500-x,0.500-y,-z
+8 0.500+x,0.500-y,0.500+z
+
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+_atom_type_radius_bond
+Cu	?	1.200
+Se	?	1.200
+O	?	1.200
+
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_attached_hydrogens
+_atom_site_calc_flag
+_atom_site_thermal_displace_type
+_atom_site_u_iso_or_equiv
+Cu1 Cu  0.0000  0.0000  0.0000  1.000 4 a ? d ? ?
+Se1 Se  0.1399 -0.4353  0.3299  1.000 8 f ? d ? ?
+O1 O  0.1258  0.2251 -0.0131  1.000 8 f ? d ? ?
+O2 O  0.1256 -0.2237  0.1584  1.000 8 f ? d ? ?
+O3 O  0.0000 -0.6168  0.2500  1.000 4 e ? d ? ?
+
+
+loop_
+_geom_bond_atom_site_label_1
+_geom_bond_atom_site_label_2
+_geom_bond_site_symmetry_1
+_geom_bond_site_symmetry_2
+_geom_bond_distance
+_geom_bond_publ_flag
+O1 O2 . 3  2.8826 no
+O1 O2 . 1_565  3.0060 no
+Cu1 O2 . 3  1.9411 no
+Cu1 O1 . 3  1.9227 no
+Cu1 O1 . .  1.9227 no
+Cu1 O2 . .  1.9411 no
+Cu1 O1 . 2_554  3.7907 no
+Se1 O2 . .  1.6679 no
+Se1 O1 . 4  1.6694 no
+Se1 O2 . 1_556  6.7377 no
+Se1 O1 . 4_556  9.3283 no
+Se1 O3 . 3_546  4.2706 no
+Se1 O3 . 3_545  4.3262 no
+O1 O2 . 4_554  2.6140 no
+Se1 O3 . 3_547 12.0201 no
+Se1 O3 . .  1.8303 no
+O2 O3 . .  2.7094 no
+O2 O3 . 1_554  7.1016 no
+O1 O3 . 4_554  2.7383 no
+Se1 O3 . 2  1.8303 no
+O1 O2 . .  2.5729 no
+Se1 O1 . 6_545  2.8315 no
+Se1 O2 . 6_545  3.1686 no
+O1 O3 . 3  2.7383 no
+Cu1 Cu1 . 1_545  4.8580 no
+Cu1 O3 . 3_545  2.7250 no
+Se1 O2 . 7_546  4.1437 no
+Se1 Se1 . 7_546  3.5623 no
+O1 O1 . 7  2.9864 no
+Se1 O2 . 1_545  4.0490 no
+Se1 O3 . 1_545  5.9596 no
+Se1 O2 . 6  4.4752 no
+Se1 O1 . 6  6.2601 no
+Se1 Se1 . 3_646  8.2897 no
+Se1 O2 . 4  4.1763 no
+Se1 O3 . 2_565  4.2876 no
+Se1 O3 . 2_545  5.9596 no
+Se1 O1 . 7  5.6236 no
+Se1 O2 . 1_565  6.0307 no
+Se1 O1 . 4_545  4.0578 no
+Se1 O3 . 1_565  4.2876 no
+Se1 O2 . 2_545  5.0475 no
+Se1 O1 . 1_545  3.1421 no
+Se1 O2 . 3_545  4.4155 no
+Se1 O3 . 4_545  4.2706 no
+Se1 O1 . .  4.1765 no
+O2 O3 . 3  5.1061 no
+Se1 O2 . 2  3.4445 no
+Se1 Se1 . 1_545  4.8580 no
+Se1 O2 . 2_565  6.7418 no
+Se1 Se1 . 4_454 12.2233 no
+O2 O2 . 1_545  4.8580 no
+Se1 O1 . 4_565  6.0257 no
+Se1 O1 . 3_545  5.0869 no
+Se1 O1 . 3_565  6.7617 no
+Se1 Se1 . 2  3.2079 no
+Se1 O1 . 3  3.4926 no
+Cu1 O3 . 3  3.5970 no
+
+loop_
+_geom_angle_atom_site_label_1
+_geom_angle_atom_site_label_2
+_geom_angle_atom_site_label_3
+_geom_angle_site_symmetry_1
+_geom_angle_site_symmetry_2
+_geom_angle_site_symmetry_3
+_geom_angle
+_geom_angle_publ_flag
+O1 O2 O1 . . 3 89.45 no
+O2 O1 O2 3 . . 90.55 no
+O1 Cu1 O2 . . 3 96.50 no
+O1 Cu1 O2 3 . 3 83.50 no
+Cu1 O2 O1 3 . 3 41.51 no
