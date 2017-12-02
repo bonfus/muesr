@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+
+install:
+  - pip install -U pip wheel numpy
+  - pip install --index-url https://testpypi.python.org/pypi mulfc
+
+script:
+  - pytest
+
