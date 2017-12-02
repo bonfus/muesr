@@ -26,13 +26,16 @@ Optional dependencies are:
 Install and Usage
 -----------------
 
-See the documentation at http://muesr.readthedocs.io
+For a detailed description see the [documentation](http://muesr.readthedocs.io/en/latest/Install.html).
 
-**News for linux users**: the easiest way to install `lfclib` is using pre-baked wheels:
+The easiest way to install `lfclib` is using pre-baked wheels.
+They are hosted in a test pip repository
 
-[packagecloud.io/muLFC/wheels](https://packagecloud.io/muLFC/wheels)
+    pip install --index-url https://testpypi.python.org/pypi mulfc
+    
+or at [packagecloud.io/muLFC/wheels](https://packagecloud.io/muLFC/wheels).
 
-You only have to choose the right one for you python installation. 
+In the latter case choose the right package for your python installation. 
 For example, `LFC-0.1-cp36-cp36m-manylinux1_i686.whl` is compatible with
 Python 3.6 (cp36) and a 32 bit system, while `LFC-0.1-cp34-cp34m-manylinux1_x86_64.whl`
 is for Python 3.4 installed on a 64 bit system.
