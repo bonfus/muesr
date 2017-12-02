@@ -1,11 +1,11 @@
 language: python
 python:
   - "2.7"
-  - "3.3"
   - "3.4"
+  - "3.6"
 
 install:
-  - pip install -U pip wheel numpy
+  - pip install -U pip wheel numpy spglib pyyaml
   - pip install --index-url https://testpypi.python.org/pypi mulfc
 
 script:
