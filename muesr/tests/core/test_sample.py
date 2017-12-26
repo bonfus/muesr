@@ -41,19 +41,14 @@ class TestSample(unittest.TestCase):
         
         self.assertEqual(self._sample.name,"test")
         
-        #must be str
+        #must be str or unicode
         with self.assertRaises(TypeError):
             self._sample.name = 1
             
         self.assertEqual(self._sample.name,"test")
         
         # test unicode
-        
-        if sys.version_info >= (3,0):
-            self._sample.name = u"àèé"
-        else:
-            with self.assertRaises(TypeError):
-                self._sample.name = u"àèé"
+        self._sample.name = u"àèé"
         
     
     def test_muons_property(self):
