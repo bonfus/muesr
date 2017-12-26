@@ -1,20 +1,22 @@
 from muesr.core.nprint  import nprint
+from muesr.core.isstr import isstr
 from re import split as resplit
 import numpy as np
 
 mybool = lambda x: x in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
 
-def parse_plotstr(arg):
-    plt_res_commands = ['list', 'set', 'show', 'ion', 'ioff', 'xlabel', 'ylabel', 'pylab', 'legend']
-    if arg not in plt_res_commands:
-        return arg.strip().replace(' ','_')
-    else:
-        raise ValueError
-
 def parse_int(arg):
-    'Convert a series of zero or more numbers to an argument tuple'
-    if type(arg) is str:
+    """Convert a series of zero or more numbers to an argument tuple
+    
+    >>> parse_int("1")
+    (1,)
+    
+    >>> parse_int("1 2 3")
+    (1,2,3)
+    
+    """
+    if isstr(arg):
         try:
             return tuple(map(int, arg.split() ))
         except:
@@ -34,7 +36,7 @@ def parse_int(arg):
 
 def parse_float(arg):
     'Convert a series of zero or more numbers to an argument tuple'
-    if type(arg) is str:
+    if isstr(arg):
         try:
             return tuple(map(float, arg.split() ))
         except:

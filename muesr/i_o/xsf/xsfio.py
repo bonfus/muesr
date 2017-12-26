@@ -268,17 +268,3 @@ def read_xsf(fileobj, index=-1, read_data=False):
     fileobj.close()
     return images[index]
 
-    
-def read_xsf_file(fp):
-    """
-    THIS FUNCTION IS DEPRECATED AND WILL BE REMOVED
-    """   
-    if type(fp) is not str:
-        fp = str(fp[0])
-    try:        
-        f = open(fp,'r')
-    except:
-        nprint ("Error opening xsf file.",'error')
-        return None
-    atoms = read_xsf(f)
-    return atoms

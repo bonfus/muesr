@@ -14,6 +14,7 @@ import numpy as np
 from muesr.core.magmodel import MM
 from muesr.core.spg import Spacegroup
 from muesr.core.nprint import nprint, nprintmsg
+from muesr.core.isstr import isstr
 
 from muesr.i_o.cif.crystal import crystal
 from muesr.core.spg import spacegroup_from_data
@@ -355,7 +356,7 @@ def parse_block(fileobj, line):
 def parse_cif(fileobj):
     """Parse a CIF file. Returns a list of blockname and tag
     pairs. All tag names are converted to lower case."""
-    if isinstance(fileobj, str):
+    if isstr(fileobj):
         fileobj = open(fileobj)
 
     blocks = []
@@ -500,7 +501,7 @@ def read_cif(fileobj, index=-1, store_tags=False, **kwargs):
 
 def write_cif(fileobj, images):
     """Write *images* to CIF file."""
-    if isinstance(fileobj, str):
+    if isstr(fileobj):
         fileobj = open(fileobj, 'w')
 
     if not isinstance(images, (list, tuple)):

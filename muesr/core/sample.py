@@ -8,7 +8,7 @@ from muesr.core.sampleErrors import *
 from muesr.core.nprint import cstring
 from muesr.core.spg  import Spacegroup
 from muesr.core.atoms  import Atoms
-
+from muesr.core.isstr  import isstr
 from muesr.core.magmodel  import MM, have_sympy
 
 
@@ -86,7 +86,7 @@ class Sample(object):
         
     @name.setter
     def name(self, value):
-        if type(value) is str:
+        if isstr(value):
             self._name = value
         else:
             raise TypeError('Invalid type for \'name\' property. Must be string.')
