@@ -248,8 +248,8 @@ class TestMuesr(unittest.TestCase):
         m.add_muon(np.random.rand(3))
         m.add_muon(np.random.rand(3))
         r1 = locfield(m, 's',[50,50,50],50)
-        r2 = locfield(m, 'r',[50,50,50],50,nangles=500,axis=rp1)
-        r3 = locfield(m, 'i',[50,50,50],50,nangles=500)
+        r2 = locfield(m, 'r',[50,50,50],50,nangles=900,axis=rp1)
+        r3 = locfield(m, 'i',[50,50,50],50,nangles=900)
 
         r1[0].ACont = 1.0
         r2[0].ACont = 1.0
