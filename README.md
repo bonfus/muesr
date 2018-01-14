@@ -26,30 +26,19 @@ Optional dependencies are:
 Install and Usage
 -----------------
 
+The easiest way to install `muesr` is using pip:
+
+    pip install -r requirements.txt muesr
+
 For a detailed description see the [documentation](http://muesr.readthedocs.io/en/latest/Install.html).
-
-The easiest way to install `lfclib` is using pre-baked wheels.
-They are hosted in a test pip repository
-
-    pip install --index-url https://testpypi.python.org/pypi mulfc
-    
-or at [packagecloud.io/muLFC/wheels](https://packagecloud.io/muLFC/wheels).
-
-In the latter case choose the right package for your python installation. 
-For example, `LFC-0.1-cp36-cp36m-manylinux1_i686.whl` is compatible with
-Python 3.6 (cp36) and a 32 bit system, while `LFC-0.1-cp34-cp34m-manylinux1_x86_64.whl`
-is for Python 3.4 installed on a 64 bit system.
-See [documentation](http://muesr.readthedocs.io/en/latest/Install.html#system-wide-installation-with-wheels) for further details.
 
 Known problems
 --------------
 
 - Non-standard spacegroup settings can cause some tedious problems when 
   using the spglib functions. Pay attention!
-- OpenMP implementation is EXPERIMENTAL (passes tests but needs more work)
 
-
-Please note that the code is still under heavy development. 
+Please note that the code is still under development. 
 You'll probably find bugs so please report them!
 
 Authors & Contributors

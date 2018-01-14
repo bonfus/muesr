@@ -37,51 +37,12 @@ XCrysDen  >= 1.0    :mod:`muesr.i_o.xsf.xsf.show_cell` ,            http://www.x
    however, may not be up to date.
 
 
-Compilation from source and system-wide installation
-----------------------------------------------------
-
-This is the hard way, but allows to custmize some parts of the installation.
-In order to compile the python extension you also need the build tools appropriate
-for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
-To install the packages you'll need to be superuser.
-
-Use git to clone Muesr and muLFC projects.
-First install `muLFC`  ::
-
-    git clone https://github.com/bonfus/muLFC.git
-    cd muLFC
-    python setup.py install
-
-
-Next install `muesr`  ::
-
-    git clone https://github.com/bonfus/muesr.git
-    cd muesr
-
-
-In order to install all optional requirements, from within the muesr directory, type :: 
-
-   pip install -r requirements.txt
-   
-and finally run ::
-
-   python setup.py install
-
-
 System-wide installation
 -------------------------
 
-It is possible to avoid the compilation of the C extension contained
-in `lfclib` by directly installing the pre-compiled python wheels.
+The installation with `pip` is as symple as ::
 
-The wheel can be obtained automatically with pip ::
-
-    pip install --index-url https://testpypi.python.org/pypi mulfc
-
-Finally install Muesr and optional packages ::
-
-    pip install pyyaml spglib
-    pip install https://github.com/bonfus/muesr/archive/master.tar.gz
+    pip install -r requirements.txt muesr
 
 
 Installation in virtualenv
@@ -108,12 +69,7 @@ and to activate the environment (Linux and OsX) ::
 now you can install mulfc and Muesr in the virtualenv with the same commands
 reported above ::
 
-    pip install --index-url https://testpypi.python.org/pypi mulfc
-    pip install https://github.com/bonfus/muesr/archive/master.tar.gz
-   
-The `spglib` and `PyYAML` are also recommended ::
-
-   pip install pyyaml spglib
+    pip install -r requirements.txt muesr
 
 
 A few notes for Windows users
@@ -132,15 +88,37 @@ Start Anaconda navigator and open an interactive python terminal:
 From within the interactive terminal do: ::
 
     import pip
-    
-    pip.main("install --index-url https://testpypi.python.org/pypi mulfc".split())
-    pip.main("install spglib".split())
-    pip.main("install https://github.com/bonfus/muesr/archive/master.zip".split())
-
+    pip.main("install mulfc spglib pyyaml muesr".split())
 
 
 Now you are ready to go! Why not start with a look at the first paragraph
 of the :ref:`tutorial` and then move directly to the Muesr :ref:`examples`?
+
+
+Compilation from source and system-wide installation
+----------------------------------------------------
+
+This is the hard way, but allows to custmize some parts of the installation.
+In order to compile the python extension you also need the build tools appropriate
+for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
+To install the packages you'll need to be superuser.
+
+Use git to clone Muesr and muLFC projects.
+First install `muLFC`  ::
+
+    git clone https://github.com/bonfus/muLFC.git
+    cd muLFC
+    python setup.py install
+
+
+Next install `muesr` (and possibly optional requirements) ::
+
+    # optional, but suggested:
+    pip install spglib pyyaml
+    #
+    pip install muesr
+    
+
 
 
 

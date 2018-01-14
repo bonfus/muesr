@@ -1,11 +1,11 @@
 #
 ####### muesr-requirements.txt #######
 #
-###### C Extension ######
-https://github.com/bonfus/muLFC/archive/master.tar.gz
+###### muLFC Extension from source ######
+# https://github.com/bonfus/muLFC/archive/v0.0.1.zip
 #
 ###### Requirements for complete functionality ######
 #   See https://www.python.org/dev/peps/pep-0440/#version-specifiers
 spglib >= 1.9
 pyyaml >= 3.0
-
+mulfc >= 0.0.1
