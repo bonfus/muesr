@@ -4,4 +4,3 @@ include requirements.txt
 include muesr/core/spacegroup.dat
 recursive-include muesr/tests/structures *
 recursive-include docs *
-recursive-include examples *
