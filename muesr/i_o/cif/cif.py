@@ -16,7 +16,7 @@ import numpy as np
 from muesr.core.magmodel import MM
 from muesr.core.spg import Spacegroup
 from muesr.core.nprint import nprint, nprintmsg
-from muesr.core.isstr import basestring
+from muesr.core.isstr import isstr
 
 from muesr.i_o.cif.crystal import crystal
 from muesr.core.spg import spacegroup_from_data
@@ -357,7 +357,7 @@ def parse_block(lines, line):
 def parse_cif(fileobj):
     """Parse a CIF file. Returns a list of blockname and tag
     pairs. All tag names are converted to lower case."""
-    if isinstance(fileobj, basestring):
+    if isstr(fileobj):
         fileobj = open(fileobj)
     lines = [''] + fileobj.readlines()[::-1]  # all lines (reversed)
     blocks = []
@@ -520,7 +520,7 @@ def split_chem_form(comp_name):
 
 def write_cif(fileobj, images, format='default'):
     """Write *images* to CIF file."""
-    if isinstance(fileobj, basestring):
+    if isstr(fileobj):
         fileobj = paropen(fileobj, 'w')
 
     if hasattr(images, 'get_positions'):
@@ -608,3 +608,73 @@ def write_cif(fileobj, images, format='default'):
                      'Biso',
                      1.0,
                      symbol))
+
+#### Addition for magnetic CIF files ####
+def parse_magn_operation_xyz_string(tag):
+    """ Parse the symmetry operations of the magnetic part of mcif """
+    # this could probably be used also for cif
+    r1,r2,r3,p=tag.split(',')
+    r = np.zeros([3,3]) # rotations
+    t = np.zeros([3])   # translations
+    
+    # compile traslation matrix
+    t[0] = convert_to_float(r1[-4:]) if '/' in r1 else 0.
+    t[1] = convert_to_float(r2[-4:]) if '/' in r2 else 0.
+    t[2] = convert_to_float(r3[-4:]) if '/' in r3 else 0.
+    
+    # compile rotation matrix
+    for i, line in enumerate([r1,r2,r3]):
+        x=y=z=0.
+        m = re.search(r'-?\d?x',line)
+        if m:
+            xs=m.group()
+            x = 1. if ('x' in xs and not '-' in xs) else -1.
+            m = re.search(r'\d',xs)
+            if m:
+                x *= float(m.group())
+
+        m = re.search(r'-?\d?y',line)
+        if m:
+            ys=m.group()
+            y = 1. if ('y' in ys and not '-' in ys) else -1.
+            m = re.search(r'\d',ys)
+            if m:
+                y *= float(m.group())
+                
+        m = re.search(r'-?\d?z',line)
+        if m:
+            zs=m.group()
+            z = 1. if ('z' in zs and not '-' in zs) else -1.
+            m = re.search(r'\d',zs)
+            if m:
+                z *= float(m.group())                            
+
+            
+        r[i,0] = x
+        r[i,1] = y
+        r[i,2] = z
+        
+    return (r,t,float(p))
+        
+        
+        
+
+
+def convert_to_float(frac_str):
+    "This function converts fractions to float, ex. -1/3 = -0.33333..."
+    try:
+        return float(frac_str)
+    except ValueError:
+        try:
+            num, denom = frac_str.split('/')
+        except ValueError:
+            return None
+        try:
+            leading, num = num.split(' ')
+        except ValueError:
+            return float(num) / float(denom)        
+        if float(leading) < 0:
+            sign_mult = -1
+        else:
+            sign_mult = 1
+        return float(leading) + sign_mult * (float(num) / float(denom))
