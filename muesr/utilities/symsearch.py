@@ -31,7 +31,7 @@ def symsearch(sample, precision=1e-4):
     :rtype: bool
     """
     
-    if sample._check_lattice():
+    if sample._check_lattice() and have_spg:
         # This may not identify rotation and translations correctly
         #sample.sym = spg.get_spacegroup(sample.cell, symprec=precision)
         
