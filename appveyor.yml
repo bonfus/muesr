@@ -76,7 +76,7 @@ install:
   # under control of '%CMD_IN_ENV%' (see above).
 
   # Upgrade to the latest pip.
-  - 'python -m pip install -U pip setuptools wheel'
+  - 'python -m pip install -U pip setuptools wheel pytest'
 
   # Install the muesr test dependencies.
   - 'pip install -U -r requirements.txt'
