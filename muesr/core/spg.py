@@ -7,6 +7,8 @@
 This module only depends on NumPy and the space group database.
 """
 
+from __future__ import print_function, division
+
 import os
 import warnings
 from functools import total_ordering
@@ -155,7 +157,6 @@ class Spacegroup(object):
         else:
             datafile = get_datafile()
             f = open(datafile, 'r')
-        
         try:
             _read_datafile(self, spacegroup, setting, f)
         finally:
@@ -666,8 +667,8 @@ def _read_datafile(spg, spacegroup, setting, f):
     if isinstance(spacegroup, int):
         pass
     elif isstr(spacegroup):
-        #spacegroup = ' '.join(spacegroup.strip().split())
-        spacegroup = format_symbol(spacegroup)
+        spacegroup = ' '.join(spacegroup.strip().split())
+        compact_spacegroup = ''.join(spacegroup.split())
     else:
         raise SpacegroupValueError('`spacegroup` must be of type int or str')
     while True:

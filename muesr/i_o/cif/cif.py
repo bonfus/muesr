@@ -67,6 +67,7 @@ def load_mcif(sample, filename, reset_muon=True, reset_sym=True):
     """
     Loads both the crystalline structure and the magnetic order from a
     mcif file.
+    N.B.: This function is EXPERIMENTAL.
     
     .. note::
        Only the first lattice and magnetic structure is loaded.
@@ -84,13 +85,9 @@ def load_mcif(sample, filename, reset_muon=True, reset_sym=True):
     # DEFINITION OF UNITS AND SETTINGS: http://cmswiki.byu.edu/wiki/Magnetic_Coordinates
     #   new link http://magcryst.org/resources/magnetic-coordinates/
     
-    try:
-        f = open(os.path.expanduser(filename),'r')
-    except:
-        nprintmsg('efile')
-        return False
+    f = open(os.path.expanduser(filename),'r')
     
-    data= parse_cif(f)
+    data = parse_cif(f)
     
     f.close()
     
@@ -196,7 +193,7 @@ def load_mcif(sample, filename, reset_muon=True, reset_sym=True):
     
     sample._reset(muon=reset_muon,sym=reset_sym)
     # symmetry is already introduced when parsing magnetism
-    sample.cell = crystal(symbols=symbols, basis=all_scaled_pos, cellpar=[a, b, c, alpha, beta, gamma])
+    sample.cell, _ = crystal(symbols=symbols, basis=all_scaled_pos, cellpar=[a, b, c, alpha, beta, gamma])
     
     # initialization needs the number of atoms in the unit cell
     nmm=MM(len(all_scaled_pos),sample._cell.get_cell())
@@ -459,10 +456,10 @@ def tags2atoms(tags, store_tags=False, primitive_cell=False,
     else:
         deuterium = False
 
-    atoms = crystal(symbols, basis=scaled_positions,
-                    cellpar=[a, b, c, alpha, beta, gamma],
-                    spacegroup=spacegroup, primitive_cell=primitive_cell,
-                    **kwargs)
+    atoms, spacegroup = crystal(symbols, basis=scaled_positions,
+                                cellpar=[a, b, c, alpha, beta, gamma],
+                                spacegroup=spacegroup, primitive_cell=primitive_cell,
+                                **kwargs)
     if deuterium:
         masses = atoms.get_masses()
         masses[atoms.numbers == 1] = 1.00783
