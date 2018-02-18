@@ -11,16 +11,16 @@ Muesr works with the following minimal requirements:
 | package | version    | url        |
 |---------|------------|------------|
 | python  | 2.7+ or 3  | python.org |
-| numpy   | 1.6        | numpy.org  |
+| numpy   | 1.6+       | numpy.org  |
 | lfclib  | 0.1        | [muLFC](http://www.github.com/bonfus/muLFC) |
 
 Optional dependencies are:
 
 | package  | version    | url        | provides |
 |----------|------------|------------|----------|
-| spglib   | 1.8        | [Spglib](http://atztogo.github.io/spglib) |  library for finding lattice structure symmetries |
+| spglib   | 1.8+       | [Spglib](http://atztogo.github.io/spglib) |  library for finding lattice structure symmetries |
 | XCrysden | any        | [XCrysden](http://www.xcrysden.org) | tool for showing lattice and magnetic structures |
-| sympy    | 1.0        | [Sympy](http://sympy.org) | for symbolic Fourier components definition |
+| sympy    | 1.0+       | [Sympy](http://sympy.org) | for symbolic Fourier components definition |
 
 
 Install and Usage
