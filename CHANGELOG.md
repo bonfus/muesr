@@ -2,14 +2,10 @@
 
 ## v0.1.1
 
-**Implemented enhancements:**
+Bugfixes:
 
-- Updated and corrected spacegroup data. Taken from last ASE release.
-
-**Fixed bugs:**
-
-- Issue CIF files on windows.
-
+  - Updated and corrected spacegroup data. Taken from the last release of ASE.
+  - Issue with CIF files on Windows fixed.
 
 ## v0.1
 
