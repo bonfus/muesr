@@ -22,7 +22,6 @@ Optional dependencies are:
 | XCrysden | any        | [XCrysden](http://www.xcrysden.org) | tool for showing lattice and magnetic structures |
 | sympy    | 1.0+       | [Sympy](http://sympy.org) | for symbolic Fourier components definition |
 
-
 Install and Usage
 -----------------
 
@@ -39,16 +38,15 @@ Known problems
   using the spglib functions. Pay attention!
 
 Please note that the code is still under development. 
-You'll probably find bugs so please report them!
+You'll probably find bugs, please report them.
 
 Authors & Contributors
 ----------------------
 
 Pietro Bonfa', Ifeanyi John Onuorah, Anthony Lim and Roberto De Renzi.
 
+Notes and License
+-----------------
 
-Notes
------
-
-Part of the code in this repository is from the ASE
-(https://wiki.fysik.dtu.dk/ase/index.html) project. 
+Part of the code in this repository comes from the [ASE](https://wiki.fysik.dtu.dk/ase/index.html) project.
+Where not differently specifies, the source code is provided under the GPLv3 license.
