@@ -248,8 +248,8 @@ class TestMuesr(unittest.TestCase):
         m.add_muon(np.random.rand(3))
         m.add_muon(np.random.rand(3))
         r1 = locfield(m, 's',[50,50,50],50)
-        r2 = locfield(m, 'r',[50,50,50],50,nangles=900,axis=rp1)
-        r3 = locfield(m, 'i',[50,50,50],50,nangles=900)
+        r2 = locfield(m, 'r',[50,50,50],50,nangles=1200,axis=rp1)
+        r3 = locfield(m, 'i',[50,50,50],50,nangles=1200)
 
         r1[0].ACont = 1.0
         r2[0].ACont = 1.0
@@ -264,8 +264,8 @@ class TestMuesr(unittest.TestCase):
         r2_norms = np.apply_along_axis(np.linalg.norm, 1, r2[0].D)
         r3_norms = np.apply_along_axis(np.linalg.norm, 1, r3[0].D)
         
-        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r3_norms),decimal=5-self.oom(r2_norms))
-        np.testing.assert_array_almost_equal(np.min(r2_norms),np.min(r3_norms),decimal=5-self.oom(r2_norms))
+        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r3_norms),decimal=4-self.oom(r2_norms))
+        np.testing.assert_array_almost_equal(np.min(r2_norms),np.min(r3_norms),decimal=4-self.oom(r2_norms))
 
         r2_norms = np.apply_along_axis(np.linalg.norm, 1, r2[1].T)
         r3_norms = np.apply_along_axis(np.linalg.norm, 1, r3[1].T)
