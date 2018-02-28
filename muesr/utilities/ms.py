@@ -37,6 +37,8 @@ def mago_set_k(sample, kvalue=None, mm=None):
             if isinstance(kvalue, np.ndarray) and ( kvalue.shape == (3,)):
                 smm.k = kvalue
                 return True
+            else:
+                raise TypeError("Invalid type for kvalue. Must be 3D vector defined as numpy array.")
         else:
             try:
                 if kvalue is None:
@@ -60,7 +62,15 @@ def mago_add(sample, coordinates='b-c', fcs=None, kvalue=None):
     The order is automatically selected if succesfully added.
     
     :param sample: A sample object.
-    :param string coordinates: coordinates of Fourier components
+    :param string coordinates: coordinates system and units of the Fourier components.
+                               Options are: 'b-c', 'b/a-l', 'b-l'.
+                               
+                               b-c  : Fourier components in Bohr magnetons and Cartesian coordinates.
+                               
+                               b/a-l: Fourier components in Bohr magnetons/Angstrom and lattice coordinates.
+                               
+                               b-l  : Fourier components in Bohr magnetons and in lattice coordinates.
+                               
     :param np.complex fcs: Fourier components in coordinate system 
                           (default: Bohr magnetoc/ Cartesian coordinates)
     :param np.ndarray kvalue: Propagation vector in r.l.u.
@@ -104,15 +114,15 @@ def mago_set_FC(sample, fcs = None, atoms_types = None, mm=None, inputConvention
     inputConvEnum = -1
         
     if inputConvention.lower() in ['bohr-cartesian', 'b-c']:
-        nprint('Magnetic moments in Bohr magnetons and cartesian coordinates.')
+        nprint('Fourier components in Bohr magnetons and Cartesian coordinates.')
         inputConvEnum = 0
         
     elif inputConvention.lower() in ['bohr/angstrom-lattice', 'b/a-l']:
-        nprint('Magnetic moments in Bohr magnetons/angstrom and lattice coordinates.')
+        nprint('Fourier components in Bohr magnetons/Angstrom and lattice coordinates.')
         inputConvEnum = 1
         
     elif inputConvention.lower() in ['bohr-lattice','b-l']:
-        nprint('Magnetic moments in Bohr magnetons and lattice coordinates.')
+        nprint('Fourier components in Bohr magnetons and lattice coordinates.')
         inputConvEnum = 2
         
     else:

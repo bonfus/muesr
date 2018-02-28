@@ -1,5 +1,11 @@
-import readline, sys
+import sys
 from muesr.core.nprint import nprint
+
+try:
+    import readline
+except:
+    nprint ("readline not present, using standard python input functions.\n",'warn')
+
 
 def ninput(message,parser = None):
     """

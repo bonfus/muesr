@@ -9,13 +9,23 @@ import unittest
 import os
 import numpy as np
 
+#check extension has been installed
+have_lfclib = False
+try:
+    import lfclib as lfcext
+    have_lfclib = True
+except:
+    pass
+
 from muesr.core.sample import Sample
 from muesr.core.magmodel import MM, have_sympy
 if have_sympy:
     from muesr.core.magmodel import SMM
 from muesr.i_o.xsf.xsf import load_xsf
 from muesr.i_o.cif.cif import load_mcif
-from muesr.engines.clfc import locfield
+
+if have_lfclib:
+    from muesr.engines.clfc import locfield
 from muesr.utilities.muon import muon_reset, muon_set_frac
 
 #from muesr.core.magmodel import MM
@@ -23,9 +33,13 @@ from muesr.utilities.muon import muon_reset, muon_set_frac
 class TestMuesr(unittest.TestCase):
  
     def setUp(self):
+        self.assertTrue(have_lfclib,"lfclib not found! Sorry, it's a mandatory")
         cdir = os.path.dirname(__file__)
         self._stdir = os.path.join(cdir,'structures')
-        
+    
+    def oom(self, v):
+        # returns order of magnitude
+        return int(np.max(np.log10(np.abs(v))))
  
     def test_one_dipole_outside(self):
         m = Sample()
@@ -206,8 +220,12 @@ class TestMuesr(unittest.TestCase):
         r2[0].ACont = 1.0
         r1[1].ACont = 1.0
         r2[1].ACont = 1.0
-        np.testing.assert_array_almost_equal(r1[0].T,r2[0].T[0],decimal=5)
-        np.testing.assert_array_almost_equal(r1[1].T,r2[1].T[0],decimal=5)
+        
+        min_oom = min(self.oom(r1[0].T), self.oom(r2[0].T[0]))
+        np.testing.assert_array_almost_equal(r1[0].T,r2[0].T[0],decimal=6-min_oom)
+        
+        min_oom = min(self.oom(r1[1].T), self.oom(r2[1].T[0]))
+        np.testing.assert_array_almost_equal(r1[1].T,r2[1].T[0],decimal=6-min_oom)
 		
     def test_compare_rass_and_incass(self):
         m = Sample()
@@ -234,8 +252,8 @@ class TestMuesr(unittest.TestCase):
         m.add_muon(np.random.rand(3))
         m.add_muon(np.random.rand(3))
         r1 = locfield(m, 's',[50,50,50],50)
-        r2 = locfield(m, 'r',[50,50,50],50,nangles=500,axis=rp1)
-        r3 = locfield(m, 'i',[50,50,50],50,nangles=500)
+        r2 = locfield(m, 'r',[50,50,50],50,nangles=1200,axis=rp1)
+        r3 = locfield(m, 'i',[50,50,50],50,nangles=1200)
 
         r1[0].ACont = 1.0
         r2[0].ACont = 1.0
@@ -244,20 +262,28 @@ class TestMuesr(unittest.TestCase):
         r2[1].ACont = 1.0
         r3[1].ACont = 1.0
         
-        np.testing.assert_array_almost_equal(r1[0].T,r2[0].T[0],decimal=7)
-        np.testing.assert_array_almost_equal(r1[1].T,r2[1].T[0],decimal=7)
+        min_oom = min(self.oom(r1[0].T), self.oom(r2[0].T[0]))
+        np.testing.assert_array_almost_equal(r1[0].T,r2[0].T[0],decimal=7-min_oom)
+        min_oom = min(self.oom(r1[1].T), self.oom(r2[1].T[0]))
+        np.testing.assert_array_almost_equal(r1[1].T,r2[1].T[0],decimal=7-min_oom)
         
         r2_norms = np.apply_along_axis(np.linalg.norm, 1, r2[0].D)
         r3_norms = np.apply_along_axis(np.linalg.norm, 1, r3[0].D)
-
-        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r3_norms),decimal=5)
-        np.testing.assert_array_almost_equal(np.min(r2_norms),np.min(r3_norms),decimal=5)
+        
+        min_oom=min(self.oom(np.max(r2_norms)), self.oom(np.max(r3_norms)))
+        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r3_norms),decimal=4-min_oom)
+        
+        min_oom=min(self.oom(np.min(r2_norms)), self.oom(np.min(r3_norms)))
+        np.testing.assert_array_almost_equal(np.min(r2_norms),np.min(r3_norms),decimal=4-min_oom)
 
         r2_norms = np.apply_along_axis(np.linalg.norm, 1, r2[1].T)
         r3_norms = np.apply_along_axis(np.linalg.norm, 1, r3[1].T)
         
-        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r2_norms),decimal=5)
-        np.testing.assert_array_almost_equal(np.min(r3_norms),np.min(r3_norms),decimal=5)
+        min_oom=min(self.oom(np.max(r2_norms)), self.oom(np.max(r3_norms)))
+        np.testing.assert_array_almost_equal(np.max(r2_norms),np.max(r2_norms),decimal=5-min_oom)
+        
+        min_oom=min(self.oom(np.min(r2_norms)), self.oom(np.min(r3_norms)))
+        np.testing.assert_array_almost_equal(np.min(r3_norms),np.min(r3_norms),decimal=5-min_oom)
 
 
     def test_magmodel_input(self):

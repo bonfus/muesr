@@ -1,0 +1,22 @@
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.6"
+
+install:
+  - pip install -U pip wheel numpy spglib pyyaml mulfc
+
+script:
+  - pytest
+
+deploy:
+  provider: pypi
+  user: pietro.bonfa
+  skip_cleanup: true
+  # server: https://test.pypi.org/legacy/ select PyPi repo
+  distributions: bdist_wheel
+  password:
+    secure: "MQDzt9Ef54zDFWnOl4calhErSyt99wT8RqIUW1otusAMxyk8JAmE1pTLgrcR24QhrTPtnUEA6TsBNpD3aEQgM4U9HEfBd4LNDHneSVoRUcdHY88C3id0YkJW2IfEDgEwJ+4rOL3fGOhBwtvC4D+SaMOF4yIAVj6eYiZSBvM2PRbCYq/f+xbLULtvPz/rNgG3YSWkG61RDMnwxBwCCEQ3b0HZ6HliTnjLukb1LSptwNunzwGuLqHfK386SN/7eh83PcH/5gCQcp37v0SVKEW5CdyzK95DxeoOgSKz+njDUV3i2PwwYjuV9C7EYgldlYggFJrd6aSm6sib7MqiVEyN5eGbDHEfm4q4jq8NuXgcIQ7HBGp8opxaIB77zhnBrH5NSG0w9JRK4Ze00Nptozi5xo7JO/6pK6641SbrfvcySUWvay4DHDF71qGlWC4AiwQdhv5L3TBzZU54uXjnYxbbwpXPIxlQ3VChsW2U6ZWN9N11QApmiFD4MLNgFY8J20wDWFLTmmE36U4TpfP/PucBUxRS3V30sTajCVQcXsOBn5jtlV9f9EDFuPTBkqXvIUlpbkjiCmKDo7EBxc+XtjUl3zuzgDSaeV46OMLqEc4SLgWW2kBpdUl7f/CjenJWw8kf/KxHoOe6iXfWorWEbbqE3vnl1gSk0apmz9fwxqUcDYE="
+  on:
+    tags: true

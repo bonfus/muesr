@@ -154,10 +154,13 @@ class TestMM(unittest.TestCase):
     def test_desc_property(self):
         self._mm.desc = "ciao"
         
+        #test unicode
+        self._mm.desc = u"ciao"
+        
+        
         self.assertEqual(self._mm.desc,"ciao")
         
         with self.assertRaises(TypeError):
-            
             self._mm.desc = 1
             
     def test_isSymbolic(self):
@@ -262,6 +265,9 @@ if have_sympy:
             
         def test_desc_property(self):
             self._smm.desc = "ciao"
+            
+            # unicode
+            self._smm.desc = u"ciao"
             
             self.assertEqual(self._smm.desc,"ciao")
             

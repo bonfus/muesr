@@ -36,7 +36,7 @@ def load_xsf(sample, filename):
     except:
         raise TypeError
         
-    atoms = read_xsf_file(fname)
+    atoms = read_xsf(fname)
     if atoms:
         sample._reset(cell=True,sym=True,magdefs=True,muon=True)
         sample.cell = atoms
@@ -81,7 +81,7 @@ def save_xsf(sample, filename, supercell=[1,1,1], addMuon=True):
         write_xsf(filename,sc)
         return True
     else:
-        nprintmsg('esupcell')
+        raise RuntimeError("Cannot build (super)cell for display.")
         return False
         
 

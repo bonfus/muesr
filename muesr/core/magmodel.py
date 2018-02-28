@@ -1,20 +1,8 @@
 # http://magcryst.org/resources/magnetic-coordinates/
 
 import numpy as np
-try:
-    from six import string_types
-    def isstr(s):
-        return isinstance(s, string_types)
-except ImportError:
-    try:
-       isinstance("", basestring)
-       def isstr(s):
-           return isinstance(s, basestring)
-    except NameError:
-       def isstr(s):
-           return isinstance(s, str)
-           
-from muesr.core.cells  import get_cell_parameters
+from muesr.core.cells import get_cell_parameters
+from muesr.core.isstr import isstr
 
 have_sympy = True
 try:
@@ -408,7 +396,7 @@ if have_sympy:
                 self._inputType = coord_system
 
             
-            if type(value) != str:
+            if not isstr(value):
                 raise TypeError("value type must be str")
            
             

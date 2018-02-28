@@ -3,6 +3,7 @@ import numpy as np
 from copy import deepcopy
 
 from muesr.core.sample import Sample
+from muesr.core.isstr import isstr
 
 import lfclib as lfcext
 
@@ -262,7 +263,7 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
         raise TypeError("sample must be a Sample instance.")
     
 
-    if type(ctype) != str:
+    if not isstr(ctype):
         raise TypeError("ctype must be a of type str")
         
     # validate input
