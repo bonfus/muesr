@@ -53,8 +53,14 @@ class Settings(object):
         #Name of xcrysden executable file
         self._XCRSEXEC = self._cfg.get('Executables', 'xcrysden_exec')
         self._XCRSEXEC = self._which(self._XCRSEXEC)
-        #Name of VESTA executable file
-        self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec', fallback="VESTA")
+        #Name of VESTA executable file.
+        # Set it if not found to keep compatibility with old log files.
+        try:
+            self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
+        except NoOptionError:
+            self._cfg.set('Executables', 'vesta_exec', 'VESTA')
+            self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
+            
         self._VESTAEXEC = self._which(self._VESTAEXEC)
 
         #Path for xcrysden temp files (with ending /!)
