@@ -57,7 +57,7 @@ class Settings(object):
         # Set it if not found to keep compatibility with old log files.
         try:
             self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
-        except NoOptionError:
+        except CP.NoOptionError:
             self._cfg.set('Executables', 'vesta_exec', 'VESTA')
             self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
             
