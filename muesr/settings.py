@@ -36,6 +36,7 @@ class Settings(object):
             self._need_config = True
             self._cfg.add_section('Executables')
             self._cfg.set('Executables', 'xcrysden_exec', 'xcrysden')
+            self._cfg.set('Executables', 'vesta_exec', 'VESTA')
 
         if not ('Numerical' in self._cfg.sections()):
             self._need_config = True
@@ -52,6 +53,9 @@ class Settings(object):
         #Name of xcrysden executable file
         self._XCRSEXEC = self._cfg.get('Executables', 'xcrysden_exec')
         self._XCRSEXEC = self._which(self._XCRSEXEC)
+        #Name of VESTA executable file
+        self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec', fallback="VESTA")
+        self._VESTAEXEC = self._which(self._VESTAEXEC)
 
         #Path for xcrysden temp files (with ending /!)
         self._XCRSTMP = self._cfg.get('Directories', 'xcrysden_tmp')
@@ -76,6 +80,10 @@ class Settings(object):
     @property
     def XCrysExec(self):
         return self._XCRSEXEC
+    
+    @property
+    def VESTAExec(self):
+        return self._VESTAEXEC
 
     @property
     def XCrysTmp(self):
