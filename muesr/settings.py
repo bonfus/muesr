@@ -135,7 +135,7 @@ class Settings(object):
 
         test_file = os.path.join(value, 'tmp.test')
         try:
-            open(config_path, 'a').close()
+            open(test_file, 'a').close()
         except:
             raise ValueError("Cannot write into '{}'".format(value))
         
