@@ -4,14 +4,14 @@
 
 
 import numpy as np
-from muesr.core.sample import Sample                   # Retains all the sample info.
-from muesr.i_o.cif.cif import load_cif                  # For loading the structure from cif files
-from muesr.i_o.xsf.xsf import load_xsf                  # For loading the structure from xsf files
-from muesr.i_o.xsf.xsf import show_supercell, show_cell # For visualisation with xcrysden (http://www.xcrysden.org/)
-from muesr.utilities.ms import mago_add                # For magnetic structure description
-from muesr.engines.clfc import locfield                # Does the sum and returns the local field in its diff. contributions
-from muesr.engines.clfc import find_largest_sphere     # Aids in the calculation of the sphere's radius for the lattice sum.
-from muesr.utilities.muon import muon_find_equiv       # For finding and including the symmetry equivalent muon positions in the calculation 
+from muesr.core import Sample                   # Retains all the sample info.
+from muesr.i_o import load_cif, load_xsf        # For loading the structure from cif and xsf files
+from muesr.utilities import show_structure      # For visualisation with xcrysden (http://www.xcrysden.org/) or VESTA
+from muesr.utilities import muon_find_equiv     # For finding and including the symmetry equivalent muon positions in the calculation 
+from muesr.utilities import mago_add            # For magnetic structure description
+from muesr.engines import locfield              # Does the sum and returns the local field in its diff. contributions
+from muesr.engines import find_largest_sphere   # Aids in the calculation of the sphere's radius for the lattice sum.
+
 
 #
 np.set_printoptions(suppress=True,precision=5)
@@ -67,8 +67,8 @@ mago_add(fe)
 - 2.22 is the Fe experimental magnetic moment in Bohr magneton
 
 -Both commands below can be used for visualization on interactive session with xcrysden 
-show_cell(fe)                        
-show_supercell(fe,[2,2,2]) 
+show_structure(fe)                        
+show_structure(fe,[2,2,2]) 
 
 """
 

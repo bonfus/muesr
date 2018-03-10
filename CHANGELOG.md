@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.2
+
+Features:
+
+  - Added option to use VESTA as visualization tool for lattice and magnetic structures.
+
 ## v0.1.1
 
 Bugfixes:

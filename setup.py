@@ -6,7 +6,7 @@ dipole-field and dipole-tensor sums using real space algorithms for
 Muon Spin Rotation and Relaxation Spectroscopy.
 """
 setup(name='muesr',
-      version='0.1.1',
+      version='0.1.2',
       description='Magnetic structure and mUon Embedding Site Refinement',
       long_description=long_description,
       author='Pietro Bonfa',

@@ -36,6 +36,7 @@ class Settings(object):
             self._need_config = True
             self._cfg.add_section('Executables')
             self._cfg.set('Executables', 'xcrysden_exec', 'xcrysden')
+            self._cfg.set('Executables', 'vesta_exec', 'VESTA')
 
         if not ('Numerical' in self._cfg.sections()):
             self._need_config = True
@@ -52,6 +53,15 @@ class Settings(object):
         #Name of xcrysden executable file
         self._XCRSEXEC = self._cfg.get('Executables', 'xcrysden_exec')
         self._XCRSEXEC = self._which(self._XCRSEXEC)
+        #Name of VESTA executable file.
+        # Set it if not found to keep compatibility with old log files.
+        try:
+            self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
+        except CP.NoOptionError:
+            self._cfg.set('Executables', 'vesta_exec', 'VESTA')
+            self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
+            
+        self._VESTAEXEC = self._which(self._VESTAEXEC)
 
         #Path for xcrysden temp files (with ending /!)
         self._XCRSTMP = self._cfg.get('Directories', 'xcrysden_tmp')
@@ -76,14 +86,84 @@ class Settings(object):
     @property
     def XCrysExec(self):
         return self._XCRSEXEC
+    
+    @XCrysExec.setter
+    def XCrysExec(self, value):
+        abs_path = self._which(value)
+        if abs_path:
+            self._XCRSEXEC = abs_path
+            self._cfg.set('Executables', 'xcrysden_exec', value)
+            self.store()
+        else:
+            raise ValueError("File '{}' not found or not in PATH.".format(value))
+    
+    @property
+    def VESTAExec(self):
+        return self._VESTAEXEC
+    
+    @VESTAExec.setter
+    def VESTAExec(self, value):
+        abs_path = self._which(value)
+        if abs_path:
+            self._VESTAEXEC = abs_path
+            self._cfg.set('Executables', 'vesta_exec', value)
+            self.store()
+        else:
+            raise ValueError("File '{}' not found or not in PATH.".format(value))
 
     @property
     def XCrysTmp(self):
+        """
+        This is the directory where temporary structure files in XCrysDen
+        format are stored.
+        """
+
         return self._XCRSTMP
+        
+    @XCrysTmp.setter
+    def XCrysTmp(self, value):
+        """
+        This is the directory where temporary structure files in XCrysDen
+        format are stored.
+        """
+
+        if not os.path.exists(value):
+            raise ValueError("Directory '{}' does not exists".format(value))
+
+        if not os.path.isdir(value):
+            raise ValueError("Path '{}' is not a directory".format(value))
+
+        test_file = os.path.join(value, 'tmp.test')
+        try:
+            open(test_file, 'a').close()
+        except:
+            raise ValueError("Cannot write into '{}'".format(value))
+        
+        self._XCRSTMP = value
+        self._cfg.set('Directories', 'xcrysden_tmp', value)
+        self.store()
 
     @property
     def FCRD(self):
+        """
+        Rounding used in parsing fractional coordinates.
+        """
         return self._FCRD
+    
+    @FCRD.setter
+    def FCRD(self, value):
+        """
+        Rounding used in parsing fractional coordinates.
+        """
+        # avoid problems with long type in python2
+        try:
+            v = value + 1
+            value = int(value)
+        except:
+            raise TypeError("Value must be int")
+        self._FCRD = value
+        self._cfg.set('Numerical', 'RoundingFractionalCoordinates', str(value))
+        self.store()
 
     # from http://stackoverflow.com/a/377028
     def _which(self, program):
