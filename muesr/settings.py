@@ -1,6 +1,7 @@
 ## GLOBAL SETTINGS ##
-import os
+import os, warnings
 import tempfile
+
 try:
     from appdirs import *
 except:
@@ -43,6 +44,11 @@ class Settings(object):
             self._cfg.add_section('Numerical')
             self._cfg.set('Numerical', 'RoundingFractionalCoordinates', '7')
 
+        if not ('Visualization' in self._cfg.sections()):
+            self._need_config = True
+            self._cfg.add_section('Visualization')
+            self._cfg.set('Visualization', 'DefaultApplication', 'xcrysden')
+
         #Fractiona coordinate rounding_decimals
         try:
             self._FCRD = int(self._cfg.get('Numerical',
@@ -67,8 +73,26 @@ class Settings(object):
         self._XCRSTMP = self._cfg.get('Directories', 'xcrysden_tmp')
         #check directory exists
         if not os.path.exists(self._XCRSTMP):
-            raise ValueError('Temp dir for XCrysDen does not exists.')
+            warnings.warn('Temp dir for XCrysDen files "' + self._XCRSTMP \
+                          + '" does not exists. Changing to ' + tempfile.gettempdir())
+            self._XCRSTMP = tempfile.gettempdir()
         #check is writable
+        test_file = os.path.join(self._XCRSTMP, 'tmp.test')
+        try:
+            open(test_file, 'a').close()
+        except:
+            raise ValueError("Cannot write into '{}'. Change TMP directory.".format(self._XCRSTMP))
+        
+        # Set default editor
+        try:
+            self._DEFAULTVISAPP = self._cfg.get('Visualization', 'DefaultApplication')
+        except CP.NoSectionError:
+            self._cfg.add_section('Visualization')
+            self._cfg.set('Visualization', 'DefaultApplication', 'xcrysden')
+        except CP.NoOptionError:
+            self._cfg.set('Visualization', 'DefaultApplication', 'xcrysden')
+        
+        self._DEFAULTVISAPP = self._cfg.get('Visualization', 'DefaultApplication')
 
     def store(self):
         d = user_config_dir('muesr')
@@ -141,6 +165,24 @@ class Settings(object):
         
         self._XCRSTMP = value
         self._cfg.set('Directories', 'xcrysden_tmp', value)
+        self.store()
+
+    @property
+    def DefaultVisualizationApp(self):
+        """
+        Default application for visualization
+        """
+        return self._DEFAULTVISAPP
+
+    @DefaultVisualizationApp.setter
+    def DefaultVisualizationApp(self, value):
+        """
+        Default application for visualization
+        """
+        try:
+            self._DEFAULTVISAPP = str(value).lower()
+        except:
+            raise TypeError("Cannot convert value to string")
         self.store()
 
     @property

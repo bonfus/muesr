@@ -3,7 +3,7 @@ from muesr.i_o.xsf import save_xsf
 import os, subprocess, warnings
 
 
-def show_structure(sample, supercell=[1,1,1], askConfirm=True, block=True, visualizationTool='XCrySDen'):
+def show_structure(sample, supercell=[1,1,1], askConfirm=True, block=True, visualizationTool=''):
     """
     Creates a supercell and shows it in XCrysDen or VESTA.
     This function only works interactively.
@@ -41,6 +41,9 @@ def show_structure(sample, supercell=[1,1,1], askConfirm=True, block=True, visua
         except EOFError:
             return False
     
+    if visualizationTool=='':
+        visualizationTool = config.DefaultVisualizationApp
+    
     if ans:
         save_xsf(sample, os.path.join(config.XCrysTmp,'preview.xsf'),supercell=supercell)
         
@@ -51,7 +54,7 @@ def show_structure(sample, supercell=[1,1,1], askConfirm=True, block=True, visua
             return True if run_vesta(os.path.join(config.XCrysTmp,'preview.xsf'),block) else \
                             run_xcrysden(os.path.join(config.XCrysTmp,'preview.xsf'),block)
         else:
-            warnings.warn("Option visualizationTool is invalid")
+            warnings.warn("Visualization tool not found.")
             return False
     else:
         return False
