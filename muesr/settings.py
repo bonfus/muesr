@@ -48,24 +48,34 @@ class Settings(object):
             self._need_config = True
             self._cfg.add_section('Visualization')
             self._cfg.set('Visualization', 'DefaultApplication', 'xcrysden')
+            self._cfg.set('Visualization', 'xcrysden', self._cfg.get('Executables', 'xcrysden_exec'))
+            self._cfg.set('Visualization', 'vesta', self._cfg.get('Executables', 'vesta_exec'))
+
 
         #Fractiona coordinate rounding_decimals
         try:
-            self._FCRD = int(self._cfg.get('Numerical',
-                                           'RoundingFractionalCoordinates'))
+            self._FCRD = self._cfg.getint('Numerical',
+                                           'RoundingFractionalCoordinates')
         except:
             raise ValueError('Cannot set value from config.')
 
         #Name of xcrysden executable file
-        self._XCRSEXEC = self._cfg.get('Executables', 'xcrysden_exec')
+        self._XCRSEXEC = ""
+        try:
+            self._XCRSEXEC = self._cfg.get('Visualization', 'xcrysden')
+        except CP.NoOptionError:
+            self._XCRSEXEC = self._cfg.get('Executables', 'xcrysden_exec')
+            self._cfg.set('Visualization', 'xcrysden', self._XCRSEXEC)
+            
         self._XCRSEXEC = self._which(self._XCRSEXEC)
         #Name of VESTA executable file.
         # Set it if not found to keep compatibility with old log files.
         try:
-            self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
+            self._VESTAEXEC = self._cfg.get('Visualization', 'vesta')
         except CP.NoOptionError:
             self._cfg.set('Executables', 'vesta_exec', 'VESTA')
-            self._VESTAEXEC = self._cfg.get('Executables', 'vesta_exec')
+            self._cfg.set('Visualization', 'vesta', 'VESTA')
+            self._VESTAEXEC = self._cfg.get('Visualization', 'vesta')
             
         self._VESTAEXEC = self._which(self._VESTAEXEC)
 
@@ -89,6 +99,8 @@ class Settings(object):
         except CP.NoSectionError:
             self._cfg.add_section('Visualization')
             self._cfg.set('Visualization', 'DefaultApplication', 'xcrysden')
+            self._cfg.set('Visualization', 'vesta', self._cfg.set('Executables', 'vesta_exec'))
+            self._cfg.set('Visualization', 'xcrysden', self._cfg.set('Executables', 'xcrysden_exec'))
         except CP.NoOptionError:
             self._cfg.set('Visualization', 'DefaultApplication', 'xcrysden')
         
@@ -116,7 +128,9 @@ class Settings(object):
         abs_path = self._which(value)
         if abs_path:
             self._XCRSEXEC = abs_path
+            # Supporting both old and new config. To be dropped soon.
             self._cfg.set('Executables', 'xcrysden_exec', value)
+            self._cfg.set('Visualization', 'xcrysden', value)
             self.store()
         else:
             raise ValueError("File '{}' not found or not in PATH.".format(value))
@@ -130,11 +144,28 @@ class Settings(object):
         abs_path = self._which(value)
         if abs_path:
             self._VESTAEXEC = abs_path
+            # Supporting both old and new config. To be dropped soon.
             self._cfg.set('Executables', 'vesta_exec', value)
+            self._cfg.set('Visualization', 'vesta', value)
             self.store()
         else:
             raise ValueError("File '{}' not found or not in PATH.".format(value))
-
+    
+    @property
+    def AllVisExecs(self):
+        apps = []
+        for k, v in self._cfg.items('Visualization'):
+            if k.lower() == 'defaultapplication':
+                continue
+            app_path = self._which(v)
+            if app_path:
+                if k.lower() == self._DEFAULTVISAPP.lower():
+                    apps.insert(0, app_path)
+                else:
+                    apps.append(app_path)
+        return apps
+            
+    
     @property
     def XCrysTmp(self):
         """
