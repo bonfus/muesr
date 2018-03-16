@@ -1,6 +1,3 @@
-..  _tutorial:
-
-
 Tutorial
 ========
 
@@ -11,7 +8,10 @@ sample.
 To proficiently use :py:mod:`~muesr` a basic knowledge of python is
 strongly suggested. There are plenty of tutorial out there in the web, pick
 one and get familiar with the basic python syntax before going forward.
+<<<<<<< Temporary merge branch 1
+=======
 
+<<<<<<< HEAD
 To use :py:mod:`~muesr` you must be familiar with python. An interactive shell like ipython or jupyter can help a lot but it is not needed.
 
 To be pedantic, you can
@@ -28,6 +28,7 @@ First steps with muesr
 ---------------------------
 Find below a tutorial description of the main functions. An alternative way to familiarise with muer is to run directly the :ref:`examples` first and then come back here for a more systematic introduction.
 
+.. _examples: ../html/Examples.html
 
 Defining the sample
 +++++++++++++++++++++++++++++++++
@@ -105,10 +106,17 @@ are needed, they can be specified as
 .. code-block:: python
     
     >>> mysample.add_muon([0.3,0,0], cartesian=True)
+<<<<<<< Temporary merge branch 1
 
 You can verify that the two positions are equivalent by printing them with
 the command
 
+=======
+
+You can verify that the two positions are equivalent by printing them with
+the command
+
+>>>>>>> Temporary merge branch 2
 .. code-block:: python
     
     >>> print(mysample.muons)
@@ -245,12 +253,21 @@ with the following command
 
 A detailed description of the possible computations is given in the 
 muLFC documentation.
+<<<<<<< Temporary merge branch 1
 
 Let's go straight to the local field evaluation which is obtained by 
 running the command: 
 
 .. code-block:: python
 
+=======
+
+Let's go straight to the local field evaluation which is obtained by 
+running the command: 
+
+.. code-block:: python
+
+>>>>>>> Temporary merge branch 2
     >>> results = locfield(mysample, 'sum', [30, 30, 30] , 40)
 
 The first argument is just the sample object that was just defined.
@@ -266,6 +283,7 @@ the muon is automatically placed in the center of the supercell.
    To get an estimate of the largest radius that you can use to avoid 
    sampling outside the supercell size you can use the python
    function `find_largest_sphere` in the LFC python package.
+<<<<<<< Temporary merge branch 1
 
 
 .. warning::

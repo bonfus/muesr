@@ -40,10 +40,26 @@ XCrysDen  >= 1.0    :mod:`muesr.i_o.xsf.xsf.show_cell` ,            http://www.x
 System-wide installation
 -------------------------
 
+<<<<<<< HEAD
+If you do not want to compile, you can use instead the following `wheels: <https://packaging.python.org/wheel_egg/>`_
+
+Direct installation
+-------------------
+Use the python way of installing the package. First, `download it <https://github.com/bonfus/muesr/archive/master.zip>`_ and unzip. Move to the muesr directory and simply type ::
+   
+   python setup.py test
+   python setup.py install
+
+You can also use pip ::
+=======
 The installation with `pip` is as symple as ::
 
     pip install -r requirements.txt muesr
+>>>>>>> pietro/master
 
+   pip install muesr-0.1.tar.gz
+
+(you'll probably need to be superuser)
 
 Installation in virtualenv
 --------------------------
@@ -103,12 +119,20 @@ In order to compile the python extension you also need the build tools appropria
 for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
 To install the packages you'll need to be superuser.
 
+<<<<<<< HEAD
+   pip install pyyaml spglib
+   
+If you get a `permission denied` error messages, try again the last commend as
+
+   sudo pip install pyyaml spglib
+=======
 Use git to clone Muesr and muLFC projects.
 First install `muLFC`  ::
 
     git clone https://github.com/bonfus/muLFC.git
     cd muLFC
     python setup.py install
+>>>>>>> pietro/master
 
 
 Next install `muesr` (and possibly optional requirements) ::
