@@ -117,39 +117,37 @@ Description of Magnetic Structures
 
 There are two possibilities to describe a magnetic structure: by using the
 color (Shubnikov) group theory or by defining one (or more) propagation vector(s) and using the Fourier 
-coefficients formalism. :mod:`muesr` opts for the latter, limited to single wavevector (1-k) structures for the time being.
-A magnetic structure is defined as
+coefficients formalism. :mod:`muesr` opts for the latter, and it is limited to single wavevector (1-k) structures for the time being. 
+
+Since local field are linear in the magnetic moment, the
+local muon field for multiple-k magnetic orders can be obtained by performing 
+independent simulations for each  k vector and by summing the results.
+
+In general a magnetic structure is defined as
 
 .. math::
 
-   \mathbf{\mu_{n \nu}} = \sum _{\mathbf{k}} \mathbf{m}_{\nu \mathbf{k}} e ^{- 2 \pi i \mathbf{k} \cdot \mathbf{R}_n}
+   \mathbf{m_{n \nu}} = \sum _{\mathbf{k}} \mathbf{S}_{\nu \mathbf{k}} e ^{- 2 \pi i \mathbf{k} \cdot \mathbf{R}_n+i\phi_{\nu,k}}
    
 where :math:`\nu` runs over the atoms of the unit cell and :math:`n` 
-identifies the n-th cell where atomic positions :math:`\mathbf{R}_{n\nu}` 
-are obtained according to
+identifies the n-th cell, with atomic positions :math:`\mathbf{R}_{n\nu}` 
+given by 
 
 .. math::
 
    \mathbf{R}_{n\nu} = \mathbf{R}_{n} + \mathbf{r_\nu}
    
-with :math:`\mathbf{R}_{n} = n_a \mathbf{a} + n_b \mathbf{b} + n_c \mathbf{c}` 
+Here :math:`\mathbf{R}_{n} = n_a \mathbf{a} + n_b \mathbf{b} + n_c \mathbf{c}` 
 and :math:`\mathbf{r}_\nu = x_\nu \mathbf{a} + y_\nu \mathbf{b} + z_\nu \mathbf{c}`.
 
-The fourier coefficients :math:`m_{\nu \mathbf{k}}` are three dimensional
+The Fourier coefficients :math:`\mathbf{S}_{\nu \mathbf{k}}` are three dimensional
 complex vectors. They are related to the  irreducible representations 
 of the so called "little groups" i.e. the subgroup of the crystallographic space 
 group formed by the operators leaving invariant the propagation vector.
 
-
+Many collinear magnetic structures may be represented by a single wavevector and require real cofficients: for instance in the standard collinear Néel antiferromagnet with two sublattices the coefficents correspond to the absolute moment and the complex factor alternates the sign at the two sublattices. 
 
 [TODO] Discuss the phase!
-
-
-As we said :mod:`muesr` can only handle 1-k magnetic structures.
-However, since local field are linear in the magnetic moment, the
-results for multiple-k magnetic orders can be obtained by performing 
-multiple simulations for each of the k vectors and Fourier components
-which describe the system and summing the results.
 
 Implementation details
 ----------------------------
