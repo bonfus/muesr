@@ -25,7 +25,7 @@ The dipolar field is given by
 
 .. math::
 
-   \mathbf{B_{\mathrm{dip}}^\prime} = \frac{\mu_0}{4 \pi} \sum _{i=1} ^N \left( -\frac{\mathbf{m}}{r^3 _i} + \frac{3 (\mathbf{m}_i \cdot \mathbf{r}_i)\mathbf{r}_i }{r^5 _i} \right)
+   \mathbf{B_{\mathrm{dip}}^\prime} = \frac{\mu_0}{4 \pi} \sum _{i=1} ^N \left( -\frac{\mathbf{m}_i}{r^3 _i} + \frac{3 (\mathbf{m}_i \cdot \mathbf{r}_i)\mathbf{r}_i }{r^5 _i} \right)
 
 where, from a quantum perspective, :math:`\mathbf{m}_i = -g_i \mu_\mathrm{B} \mathbf{J}_i`
 and :math:`\mathbf{J}_i` is the total angular momentum of the i-th atom.
@@ -46,7 +46,7 @@ radius :math:`R_\mathrm{sphere}`, i.e.:
 
 .. math::
 
-   \mathbf{B_{\mathrm{dip}}} = \frac{\mu_0}{4 \pi} \sum _{r_i<R_\mathrm{sphere}} \left( -\frac{\mathbf{m}}{r^3 _i} + \frac{3 (\mathbf{m}_i \cdot \mathbf{r}_i)\mathbf{r}_i }{r^5 _i} \right)
+   \mathbf{B_{\mathrm{dip}}} = \frac{\mu_0}{4 \pi} \sum _{r_i<R_\mathrm{sphere}} \left( -\frac{\mathbf{m}_i}{r^3 _i} + \frac{3 (\mathbf{m}_i \cdot \mathbf{r}_i)\mathbf{r}_i }{r^5 _i} \right)
 
 
 The second and the term originate from magnetic moments outside the
