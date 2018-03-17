@@ -153,3 +153,11 @@ Source documentation
    :members:
    :undoc-members:
    :show-inheritance:
+   
+:mod:`muesr.utilities.visualize` -- Interfaces to XCrysDen and VESTA
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. automodule:: muesr.utilities.visualize
+   :members:
+   :undoc-members:
+   :show-inheritance:

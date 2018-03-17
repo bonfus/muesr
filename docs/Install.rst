@@ -5,61 +5,47 @@ various target platforms.
 
 Prerequisites
 -------------
-Muesr relies on some 3rd party packages to be fully usable and to
-provide you full access to all of its features.
 
-You must have at least the following Python packages installed:
+You must have at least the following packages installed:
 
 * Python 2.7, 3.1+      (http://www.python.org)
-* Numpy 1.6.0+          (http://www.numpy.org)
+* Numpy 1.8.0+          (http://www.numpy.org)
 * mulfc                 (http://github.com/bonfus/muLFC)
 
 Other Python versions or Python implementations might work, but are
 (currently) not officially tested or supported.
 
 
-Additionally, you will need the following packages and libraries to be
-installed to use *all* features of Muesr:
+Additionally, you may consider installing the following packages or 
+libraries to use *all* features of Muesr:
 
 ========= ========= =============================================== =========================================
 Package   Version   Required for                                    Package URL
 ========= ========= =============================================== =========================================
-YAML      >= 2.0.0  :mod:`muesr.i_o.sampleIO`                       http://pyyaml.org/
+YAML      >= 2.0.0  :mod:`muesr.i_o`                                http://pyyaml.org/
 Spglib    >= 1.6    :mod:`muesr.utilities.symsearch`                http://atztogo.github.io/spglib/
 Sympy     >= 1.0    :mod:`muesr.core.magmodel.SMM`                  http://sympy.org
 appdirs   >= 1.1    :mod:`muesr.settings`               
-XCrysDen  >= 1.0    :mod:`muesr.i_o.xsf.xsf.show_cell` ,            http://www.xcrysden.org
-                    :mod:`muesr.i_o.xsf.xsf.show_supercell`          
+XCrysDen  >= 1.0    :mod:`muesr.utilities.visualize`                http://www.xcrysden.org
+VESTA     >= 3.4.0  :mod:`muesr.utilities.visualize`                http://www.xcrysden.org
 ========= ========= =============================================== =========================================
 
 .. note::
-   The muesr distribution ships with a internal version of appdirs which,
+   The muesr distribution ships with an internal version of appdirs which,
    however, may not be up to date.
 
 
 System-wide installation
 -------------------------
 
-<<<<<<< HEAD
-If you do not want to compile, you can use instead the following `wheels: <https://packaging.python.org/wheel_egg/>`_
-
-Direct installation
--------------------
-Use the python way of installing the package. First, `download it <https://github.com/bonfus/muesr/archive/master.zip>`_ and unzip. Move to the muesr directory and simply type ::
-   
-   python setup.py test
-   python setup.py install
-
-You can also use pip ::
-=======
 The installation with `pip` is as symple as ::
 
-    pip install -r requirements.txt muesr
->>>>>>> pietro/master
+    pip install mulfc muesr
 
-   pip install muesr-0.1.tar.gz
+Optionally also install ::
 
-(you'll probably need to be superuser)
+    pip install spglib pyyaml
+
 
 Installation in virtualenv
 --------------------------
@@ -69,13 +55,9 @@ This means that you can have a separate collection of python packages
 for running Muesr (and install Muesr itself) without affecting the Python
 installation system-wide.
 
-To install Muesr in a virtualenv, first make sure that the command `virtualenv`
-is available on your system. If not, please check online what is the 
-recommended way of installing virtualenv for your operation system.
-
 To create the virualenv run in a terminal: ::
 
-   virtualenv muesr-env
+   python -m virtualenv muesr-env
 
 and to activate the environment (Linux and OsX) ::
 
@@ -85,7 +67,7 @@ and to activate the environment (Linux and OsX) ::
 now you can install mulfc and Muesr in the virtualenv with the same commands
 reported above ::
 
-    pip install -r requirements.txt muesr
+    pip install mulfc muesr
 
 
 A few notes for Windows users
@@ -109,41 +91,3 @@ From within the interactive terminal do: ::
 
 Now you are ready to go! Why not start with a look at the first paragraph
 of the :ref:`tutorial` and then move directly to the Muesr :ref:`examples`?
-
-
-Compilation from source and system-wide installation
-----------------------------------------------------
-
-This is the hard way, but allows to custmize some parts of the installation.
-In order to compile the python extension you also need the build tools appropriate
-for your system (gcc on Linux, XCode on OS X, Visual Studio or gcc on Windows).
-To install the packages you'll need to be superuser.
-
-<<<<<<< HEAD
-   pip install pyyaml spglib
-   
-If you get a `permission denied` error messages, try again the last commend as
-
-   sudo pip install pyyaml spglib
-=======
-Use git to clone Muesr and muLFC projects.
-First install `muLFC`  ::
-
-    git clone https://github.com/bonfus/muLFC.git
-    cd muLFC
-    python setup.py install
->>>>>>> pietro/master
-
-
-Next install `muesr` (and possibly optional requirements) ::
-
-    # optional, but suggested:
-    pip install spglib pyyaml
-    #
-    pip install muesr
-    
-
-
-
-
-
