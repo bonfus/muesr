@@ -27,7 +27,7 @@ Spglib    >= 1.6    :mod:`muesr.utilities.symsearch`                http://atzto
 Sympy     >= 1.0    :mod:`muesr.core.magmodel.SMM`                  http://sympy.org
 appdirs   >= 1.1    :mod:`muesr.settings`               
 XCrysDen  >= 1.0    :mod:`muesr.utilities.visualize`                http://www.xcrysden.org
-VESTA     >= 3.4.0  :mod:`muesr.utilities.visualize`                http://www.xcrysden.org
+VESTA     >= 3.4.0  :mod:`muesr.utilities.visualize`                http://jp-minerals.org/vesta/en/
 ========= ========= =============================================== =========================================
 
 .. note::
@@ -46,6 +46,12 @@ Optionally also install ::
 
     pip install spglib pyyaml
 
+It is advisable to have a visualization tool, XCrysDen or VESTA. It must be already installed on your system. You can make muesr aware of the isntallation by running the following command :: 
+
+   python -m  from muesr.settings import config\
+   config.VESTAExec = "/path/to/VESTA"
+
+where you must substitute to :title:`/path/to/` the actual path on your computer. 
 
 Installation in virtualenv
 --------------------------
