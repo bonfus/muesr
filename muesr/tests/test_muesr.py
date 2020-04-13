@@ -147,7 +147,7 @@ class TestMuesr(unittest.TestCase):
         #
         # Opposite moments produce opposite fields. 150 is half of 300
         np.testing.assert_array_almost_equal(r.D[0],-r.D[150],decimal=7)
-        np.testing.assert_array_almost_equal(r.D[0],np.array([0., 1.8548018,0.]),decimal=7)
+        np.testing.assert_array_almost_equal(r.D[0],np.array([0., 1.8548018,0.]),decimal=6)
         np.testing.assert_array_almost_equal(r.D[75],np.array([0., 0,-0.9274009]),decimal=6)
         
         rnorms = np.apply_along_axis(np.linalg.norm,1,r.T-r.L)
@@ -156,7 +156,7 @@ class TestMuesr(unittest.TestCase):
 
         r = locfield(m, 'r',[5,1,1],1.5,nnn=0,nangles=300,axis=[1,0,0])[0]
         np.testing.assert_array_almost_equal(r.D[0],-r.D[150],decimal=7)
-        np.testing.assert_array_almost_equal(r.D[0],np.array([0., 2.18268753,0.]),decimal=7)
+        np.testing.assert_array_almost_equal(r.D[0],np.array([0., 2.18268753,0.]),decimal=6)
         np.testing.assert_array_almost_equal(r.D[75],np.array([0., 0,-1.58317237]),decimal=6)
         
         rnorms = np.apply_along_axis(np.linalg.norm,1,r.T-r.L)

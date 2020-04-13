@@ -241,7 +241,7 @@ class TestSample(unittest.TestCase):
         self._set_a_cell()
         self._sample.add_muon([0,1.,2])
         self._sample._reset(muon=True)
-        self.assertEqual(self._sample._muon, [])
+        np.testing.assert_array_equal(self._sample._muon, np.empty([0,3], dtype=np.float64))
         with self.assertRaises(MuonError):
             self._sample.muons
         
@@ -311,7 +311,7 @@ class TestSample(unittest.TestCase):
         self.assertTrue(self._sample._check_muon())
         
         self._sample.add_muon(np.zeros(3))
-        self._sample._muon[1] = 'a'
+        self._sample._muon = 'a'
         with self.assertRaises(MuonError):
             self._sample._check_muon()        
 

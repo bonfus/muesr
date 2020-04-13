@@ -45,12 +45,12 @@ class Sample(object):
     __isfrozen = False       # used to prevent adding stuff
 
     def __init__(self):
-        self._name    = "No name"     # description of the sample
-        self._muon    = []            # list containing the muon pos (frac. coord)
-        self._magdefs = []            # list containing MM objects
-        self._sym     = None          # contains symmetry object
-        self._cell    = None          # contains an Atoms object
-        self._selected_mm = -1        # the selected magnetic structure.        
+        self._name    = "No name"                           # description of the sample
+        self._muon    = np.empty([0,3], dtype=np.float64)   # list containing the muon pos (frac. coord)
+        self._magdefs = []                                  # list containing MM objects
+        self._sym     = None                                # contains symmetry object
+        self._cell    = None                                # contains an Atoms object
+        self._selected_mm = -1                              # the selected magnetic structure.
         self._freeze()
     
     def __setattr__(self, key, value):
@@ -99,7 +99,7 @@ class Sample(object):
         :getter: Returns a list of numpy array of shape (3,).
         """
         self._check_muon()
-        return deepcopy(self._muon)
+        return self._muon.copy()
         
     def add_muon(self, position, cartesian=False):
         """
@@ -120,21 +120,28 @@ class Sample(object):
         self._check_lattice()
         
         if (type(position) is list):
-            position = np.array(position)
+            position = np.array(position, dtype=np.float)
         
         if (type(position) is np.ndarray):
-            if not position.shape == (3,):
-                raise ValueError('Invalid shape for muon position. Must be 3D vector.')
+            if len(position.shape) == 1:
+                if not position.shape[0] == 3:
+                    raise ValueError('Invalid shape for muon position. Must be 3D vector or Nx3 matrix.')
+                position = position.reshape([1,3])
+            elif len(position.shape) == 2:
+                if not position.shape[1] == 3:
+                    raise ValueError('Invalid shape for muon position. Must be 3D vector or Nx3 matrix.')
+            else:
+                raise ValueError('Invalid shape for muon position. Must be 3D vector or Nx3 matrix.')
         else:
             raise TypeError('Invalid input for muon position. Must be list of numpy array.')
         
         
         if cartesian:
             #go to reduced lattice coordinates...check this
-            self._muon.append(np.dot(position,
-                                        np.linalg.inv(self._cell.cell)))
+            v = np.dot(position, np.linalg.inv(self._cell.cell))
+            self._muon = np.append(self._muon, v, axis=0)
         else:
-            self._muon.append(1.0*position) # make floats from ints
+            self._muon = np.append(self._muon, position, axis=0) # make floats from ints
     
     
     @property
@@ -303,10 +310,10 @@ class Sample(object):
 
         # Check muon position
         status += " Muon position(s):".ljust(30)
-        if not self._muon:
+        if self._muon.size == 0:
             status += cstring('No','warn')
         else:
-            status += cstring(str(len(self._muon))+' site(s)','ok')
+            status += cstring(str(self._muon.shape[0])+' site(s)','ok')
         status += '\n'
 
         # Check symmetry
@@ -380,7 +387,7 @@ class Sample(object):
             self._magdefs = []
             self._selected_mm = -1
         if muon:
-            self._muon = []
+            self._muon = np.empty([0,3], dtype=np.float64)
         if sym:
             self._sym = None
 
@@ -410,14 +417,12 @@ class Sample(object):
             raise MagDefError('Magnetic structure type is wrong!')
         
     def _check_muon(self):
-        if type(self._muon) is list:
-            if len(self._muon) > 0:
-                for e in self._muon:
-                    if not(type(e) is np.ndarray):
-                        raise MuonError('Muon position not defined or wrong type')
-                return True
-            else:
-                raise MuonError('Muon position not defined')
+        if type(self._muon) is np.ndarray:
+            if self._muon.shape[0] == 0:
+                raise MuonError('Muon position not defined or wrong type')
+            return True
+        else:
+            raise MuonError('Muon position not defined or wrong type')
 
 
         

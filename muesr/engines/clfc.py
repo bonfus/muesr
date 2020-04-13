@@ -3,10 +3,15 @@ import numpy as np
 from copy import deepcopy
 
 from muesr.core.sample import Sample
+from muesr.core.occupations import Occupations
 from muesr.core.isstr import isstr
 
 import lfclib as lfcext
-
+try:
+    from LFN import Simple
+except:
+    print("Numba version not available.")
+    pass
 
 class LocalFields(object):
     """
@@ -48,7 +53,7 @@ class LocalFields(object):
     def _freeze(self):
         self.__isfrozen = True
 
-    def __init__(self, BCont, BDip, BLor, ACont=0.):
+    def __init__(self, BCont, BDip, BLor, ACont=0., nMuons=1):
         
         try:
             assert(type(BLor) is np.ndarray)
@@ -68,14 +73,21 @@ class LocalFields(object):
         self._BCont = np.asarray(BCont,np.float)
         
         try:
-            self._ACont = np.float(ACont)
+            self._ACont = np.asarray(ACont,np.float)
         except:
             raise TypeError( "Cannot set value for ACont. Must be float." )
         
+        if (nMuons <= 0):
+            raise ValueError("At least one field must be set!")
+            
+        self._nMuons = nMuons
         self._freeze() # no new attributes after this point. 
         
     def __repr__(self):
-        return (self._BLor + self._BDip + self._ACont*self._BCont).__repr__()
+        return (self._BLor + self._BDip + self._scale(self._ACont,self._BCont)).__repr__()
+    
+    def _scale(self, alpha, V):
+        return (V.T * alpha).T
     
     @property
     def L(self):
@@ -114,7 +126,7 @@ class LocalFields(object):
         """
         Same as :py:attr:`~Contact`
         """
-        return self._ACont*self._BCont
+        return self._scale(self._ACont,self._BCont)
         
     @property
     def Contact(self):
@@ -123,14 +135,14 @@ class LocalFields(object):
         
         :getter: Returns a numpy ndarray containing the contact hyperfine field i.e. :math:`\\mathbf{B}_{Cont} = \\mathrm{ACont} \\cdot \\frac{2 \\mu_0}{3} \\sum_{r_{cont}} m`
         """
-        return self._ACont*self._BCont
+        return self._scale(self._ACont,self._BCont)
         
     @property
     def T(self):
         """
         Same as :py:attr:`~Total`
         """
-        return self._BLor + self._BDip + self._ACont*self._BCont
+        return self._BLor + self._BDip + self._scale(self._ACont,self._BCont)
         
     @property
     def Total(self):
@@ -139,7 +151,7 @@ class LocalFields(object):
         
         :getter: Returns a numpy ndarray containing the total field i.e. :math:`\\mathbf{B}_L + \\mathbf{B}_D + \\mathbf{B}_{Cont}`
         """        
-        return self._BLor + self._BDip + self._ACont*self._BCont
+        return self._BLor + self._BDip + self._scale(self._ACont,self._BCont)
         
     @property
     def ACont(self):
@@ -151,15 +163,22 @@ class LocalFields(object):
         :type: float
         """
         return self._ACont
+
     @ACont.setter
     def ACont(self,value):
+        
         try:
-            self._ACont = np.float(value)
+            v = np.asarray(value)
         except:
             raise TypeError( "Cannot set value for ACont" )
-
-
-
+        if (self._nMuons == 1):
+            if not (v.shape == () or v.shape == (1,)):
+                raise ValueError("ACont must be set for "+str(self._nMuons)+ " fields")
+        else:
+            if not (v.shape == (self._nMuons,)):
+                raise ValueError("ACont must be set for "+str(self._nMuons)+ " fields")
+        
+        self._ACont = v
 
 
 def find_largest_sphere(sample, supercell):
@@ -231,7 +250,7 @@ def find_largest_sphere(sample, supercell):
     #nprint("WARNING: this is and experimental function!",'warn')
     return np.min(distances)
     
-def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangles = None, axis = None):
+def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangles = None, axis = None, constraints=None, backend='available'):
     """
     Evaluates local fields at the muon site.
     
@@ -269,7 +288,8 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
     # validate input
     if ctype != 's' and ctype != 'sum' and \
         ctype != 'r' and ctype != 'rotate' and  \
-        ctype != 'i' and ctype != 'incommmensurate':
+        ctype != 'i' and ctype != 'incommmensurate' and\
+        ctype != 'rnd' and ctype != 'random' :
         raise ValueError("Invalid calculation type.")
     
     # if 'i', nangles must be defined
@@ -289,6 +309,24 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
             axis = axis/np.linalg.norm(axis)
         except:
             raise ValueError("Cannot convert axis for rotation to np.ndarray.")
+
+    if ctype == 'rnd' or ctype == 'random':
+        if constraints is None:
+            raise ValueError("constraints must be specified.")
+        if True:
+            constr = np.zeros([len(constraints),2], dtype=np.float)
+            constr_grp = np.zeros([len(constraints),sample.cell.get_number_of_atoms()], dtype=np.int32)
+            for i, c in enumerate(constraints):
+                constr_grp[i, c[0]] = 1
+                constr[i,0] = c[1][0]
+                constr[i,1] = c[1][1]
+        #except:
+        #    raise ValueError("Cannot convert constraints to np.ndarray.")
+    else:
+        if constraints is None:
+            constraints = 0.
+        else:
+            constraints = float(constraints)
     
     try:
         sc = np.array(supercellsize, dtype=np.int32)
@@ -328,36 +366,51 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
     sample._check_lattice()
     sample._check_magdefs()
     
-    # Remove non magnetic atoms from list
-
+    # Prepare input for C extension
     unitcell = sample._cell
-    positions = unitcell.get_scaled_positions()
+    p = unitcell.get_scaled_positions()
+    if isinstance(unitcell, Occupations):
+        occ  = unitcell.get_occupations()
+        occg = unitcell.get_occupations_groups()
+        corr = unitcell.get_sites_correlation()
+    else:
+        occ  = np.ones(len(p))
+        occg = np.arange(len(p), dtype=np.int32)
+        corr = np.zeros([len(p), len(p)])
+        
     latpar = unitcell.get_cell()
-    
-    ufc = sample.mm.fc
-    
-    
-    magnetic_atoms=[]
-    for i, e in enumerate(ufc):
-        if not np.allclose(e,np.zeros(3,dtype=np.complex)):
-            magnetic_atoms.append(i)
+    fc = sample.mm.fc   # Fourier components in Bohr Cartesian
+    phi = sample.mm.phi # phase in magnetic order definition
+    k = sample.mm.k
 
-    p = positions[magnetic_atoms,:]
-    fc = ufc[magnetic_atoms,:]
-    phi = sample.mm.phi[magnetic_atoms] # phase in magnetic order definition
-    k = sample.mm.k  
-    
+    if backend == 'available':
+        backend = 'clfc2' if lfcext.__version__ == '0.0.3' else 'clfc'
 
-    
-    res = []
-    # if is outside for (minimal) sake of performances
-    for mu in sample.muons:
+    # Use Numba backend
+    if backend == 'nlfc':
+        res = []
+        
         if ctype == 's' or ctype == 'sum':
-            res.append(LocalFields(*lfcext.Fields(ctype, p,fc,k,phi,mu,sc,latpar,r,nnn,rc)))
-        elif ctype == 'i' or ctype == 'incommensurate':
-            res.append(LocalFields(*lfcext.Fields(ctype, p,fc,k,phi,mu,sc,latpar,r,nnn,rc,nangles)))
-        elif ctype == 'r' or ctype == 'rotate':
-            res.append(LocalFields(*lfcext.Fields(ctype, p,fc,k,phi,mu,sc,latpar,r,nnn,rc,nangles,axis)))
+            for mu in sample.muons:
+                res.append(LocalFields(*Simple(p, fc,k,phi,mu,sc,latpar,r,nnn,rc, occ, rmin=constraints)))
+        else:
+            raise NotImplemented("Calculation "+ctype+" not implemented by numba backend")
+        return res
+    
+    if backend == 'clfc2':
+        res = LocalFields(*lfcext.Fields('s', p, fc, k,phi,sample.muons,sc,latpar,r,nnn,rc), nMuons=len(sample.muons))
+    
+    else:
+        res = []
+        # Use CLFC backend
+        for mu in sample.muons:
+            if ctype == 's' or ctype == 'sum':
+                #res.append(LocalFields(*lfcext.Fields(ctype, p,fc,k,phi,mu,sc,latpar,r,nnn,rc)))
+                res.append(LocalFields(*lfcext.Simple(p, fc,k,phi,mu,sc,latpar,r,nnn,rc, occ, occg, corr)))
+            elif ctype == 'i' or ctype == 'incommensurate':
+                res.append(LocalFields(*lfcext.Fields(ctype, p,fc,k,phi,mu,sc,latpar,r,nnn,rc,nangles)))
+            elif ctype == 'r' or ctype == 'rotate':
+                res.append(LocalFields(*lfcext.Fields(ctype, p,fc,k,phi,mu,sc,latpar,r,nnn,rc,nangles,axis)))
     
     return res
     
