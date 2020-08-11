@@ -679,7 +679,7 @@ def _read_datafile(spg, spacegroup, setting, f):
         _setting = int(line2.strip().split()[1])
         _no = int(_no)
         if ((isinstance(spacegroup, int) and _no == spacegroup) or
-            (isstr(spacegroup) and 
+            (isstr(spacegroup) and
              compact_symbol == compact_spacegroup)) and _setting == setting:
             _read_datafile_entry(spg, _no, _symbol, _setting, f)
             break

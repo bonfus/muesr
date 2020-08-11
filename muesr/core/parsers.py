@@ -8,13 +8,13 @@ mybool = lambda x: x in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly
 
 def parse_int(arg):
     """Convert a series of zero or more numbers to an argument tuple
-    
+
     >>> parse_int("1")
     (1,)
-    
+
     >>> parse_int("1 2 3")
     (1,2,3)
-    
+
     """
     if isstr(arg):
         try:
@@ -25,7 +25,7 @@ def parse_int(arg):
         try:
             return tuple([int(x) for x in arg])
         except:
-            raise ValueError            
+            raise ValueError
     elif type(arg) is list:
         try:
             return tuple([int(x) for x in arg])
@@ -45,7 +45,7 @@ def parse_float(arg):
         try:
             return tuple([float(x) for x in arg])
         except:
-            raise ValueError            
+            raise ValueError
     elif type(arg) is list:
         try:
             return tuple([float(x) for x in arg])
@@ -57,7 +57,7 @@ def parse_float(arg):
 def parse_vector(arg, dimension = 3):
 
     choice = parse_float(arg)
-        
+
     if len(choice) == 1 and choice[0] == 0:
         return ([0]*dimension)
 
@@ -65,11 +65,11 @@ def parse_vector(arg, dimension = 3):
         return choice
     else:
         raise ValueError
-        
+
 def parse_complex_vector(arg, dimension = 6):
 
     choice = parse_float(arg)
-        
+
     if len(choice) == 1 and choice[0] == 0:
         return ([0]*dimension)
 

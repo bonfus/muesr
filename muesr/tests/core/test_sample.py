@@ -10,12 +10,12 @@ import warnings
 from muesr.core.sample import Sample
 
 from muesr.core.sampleErrors import *
-from muesr.core.atoms import Atoms
+from ase.atoms import Atoms
 from muesr.core.magmodel import MM, have_sympy
 if have_sympy:
     from muesr.core.magmodel import SMM
 
-from muesr.core.spg import Spacegroup
+from ase.spacegroup import Spacegroup
 
 class TestSample(unittest.TestCase):
  
@@ -89,7 +89,7 @@ class TestSample(unittest.TestCase):
         a = 4.0  # some lattice constant
         b = a / 2
         self._sample.cell = Atoms(symbols=['Au'],
-                                  positions=[0,0,0],
+                                  positions=[[0,0,0]],
                                   cell=[(0, b, b), (b, 0, b), (b, b, 0)],
                                   pbc=True)
         

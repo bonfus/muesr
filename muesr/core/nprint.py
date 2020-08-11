@@ -16,7 +16,7 @@ messages = {'ecrystal': [ 'No lattice structure in workspace!','warn'], \
             'emag'    : [ 'No magnetic structures defined!','warn'], \
             'ema'     : [ 'Command argument missing/invalid!','warn'], \
             'efile'   : [ 'Error opening file!','warn'], \
-            'NS'      : [ 'Nothing set!','warn'] 
+            'NS'      : [ 'Nothing set!','warn']
             }
 
 
@@ -26,7 +26,7 @@ def cstring(stri,c):
         return bcolors[c] + stri + bcolors['end']
     else:
         raise RuntimeWarning("Color not defined")
-        
+
 
 def nprint(arg, color = None):
     if type(arg) != str:
@@ -42,8 +42,8 @@ def nprinttab(arg, header):
     for line in arg:
         x.add_row(line)
     print(x)
-    
-    
+
+
 
 def nprintmsg(arg):
     if arg in messages.keys():
@@ -55,11 +55,15 @@ def nprintmsg(arg):
 def print_cell(cell, atom_type = None):
     # cell: cell to print
     # atomtype: function to select which atom to print
-    
+
     symbols = cell.get_chemical_symbols()
     masses = cell.get_masses()
-    magmoms = cell.get_magnetic_moments()
-    lattice = cell.get_cell()
+    try:
+        magmoms = cell.get_magnetic_moments()
+    except RuntimeError:
+        magmoms = None
+
+    lattice = cell.cell.array
     nprint ("Lattice vectors:")
     nprint ("  a %20.15f %20.15f %20.15f" % tuple( lattice[0] ),'ok')
     nprint ("  b %20.15f %20.15f %20.15f" % tuple( lattice[1] ),'ok')
@@ -67,7 +71,7 @@ def print_cell(cell, atom_type = None):
     nprint ("Atomic positions (fractional):")
     if atom_type == None:
         atom_type = lambda x: True
-        
+
     for i, v in enumerate(cell.get_scaled_positions()):
         if atom_type(symbols[i]):
             # we should print this atom

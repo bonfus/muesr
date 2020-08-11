@@ -6,10 +6,12 @@ except ImportError:
 import unittest
 import numpy as np
 
+from ase.spacegroup import get_spacegroup
+from ase.io import read
+
 from muesr.core.sampleErrors import CellError, MuonError
 from muesr.core.sample import Sample
 from muesr.utilities import muon_set_frac, muon_find_equiv, muon_reset
-from muesr.i_o.cif.cif import read_cif
 
 co_lattice = StringIO("""
 #------------------------------------------------------------------------------
@@ -280,12 +282,12 @@ class TestMuon(unittest.TestCase):
         
         # ugly way to load a lattice with its symetry
         co_lattice.seek(0)
-        atoms, sym = read_cif(co_lattice,0) # selectd index 0
+        atoms = read(co_lattice,format='cif')
     
         if atoms:
             self._sample._reset(muon=True,sym=True)
             self._sample.cell = atoms
-            self._sample.sym = sym
+            self._sample.sym = get_spacegroup(atoms)
         else:
             raise RuntimeError
             
@@ -302,12 +304,12 @@ class TestMuon(unittest.TestCase):
     def test_muon_reset(self):
         # ugly way to load a lattice with its symetry
         co_lattice.seek(0)
-        atoms, sym = read_cif(co_lattice,0) # selectd index 0
+        atoms = read(co_lattice,format='cif')
     
         if atoms:
             self._sample._reset(muon=True,sym=True)
             self._sample.cell = atoms
-            self._sample.sym = sym
+            self._sample.sym = get_spacegroup(atoms)
         else:
             raise RuntimeError
             
@@ -320,12 +322,12 @@ class TestMuon(unittest.TestCase):
     def test_find_equiv(self):
         # ugly way to load a lattice with its symetry
         co_lattice.seek(0)
-        atoms, sym = read_cif(co_lattice,0) # selectd index 0
+        atoms = read(co_lattice,format='cif')
     
         if atoms:
             self._sample._reset(cell=True, muon=True, sym=True, magdefs=True)
             self._sample.cell = atoms
-            self._sample.sym = sym
+            self._sample.sym = get_spacegroup(atoms)
         else:
             raise RuntimeError        
         
@@ -339,8 +341,8 @@ class TestMuon(unittest.TestCase):
         muon_positions = self._sample.muons
         
         self.assertEqual(len(muon_positions),atoms.get_number_of_atoms())
-        for atm in atoms:
-            self.assertTrue(np.any(np.all((muon_positions-atm[2])==0, axis=1)))
+        for atm in atoms.get_scaled_positions():
+            self.assertTrue(np.any(np.all((muon_positions-atm)==0, axis=1)))
         
         self._sample._reset(muon=True)
         

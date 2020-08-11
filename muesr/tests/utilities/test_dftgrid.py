@@ -9,7 +9,9 @@ import numpy as np
 from muesr.core.sampleErrors import CellError, MuonError
 from muesr.core.sample import Sample
 from muesr.utilities.dft_grid import build_uniform_grid
-from muesr.i_o.cif.cif import read_cif
+from ase.io import read
+from ase.spacegroup import get_spacegroup
+
 
 co_lattice = StringIO("""
 #------------------------------------------------------------------------------
@@ -273,12 +275,12 @@ class TestMuon(unittest.TestCase):
         self._sample._reset(cell=True,sym=True,magdefs=True,muon=True)
         
         co_lattice.seek(0)
-        atoms, sym = read_cif(co_lattice,0) # selectd index 0
+        atoms = read(co_lattice,format='cif')
     
         if atoms:
             self._sample._reset(muon=True,sym=True)
             self._sample.cell = atoms
-            self._sample.sym = sym
+            self._sample.sym = get_spacegroup(atoms)
         else:
             raise RuntimeError
     

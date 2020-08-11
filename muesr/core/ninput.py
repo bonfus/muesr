@@ -28,9 +28,9 @@ def ninput(message,parser = None):
 def ninput_mt(message, parser = None, emessage = 'Parser could not parse your input or invalid input.'):
     """
     Nice input multiple trials function
-    """    
+    """
 
-    
+
     while True:
         try:
             ui = ninput(message)
@@ -39,5 +39,5 @@ def ninput_mt(message, parser = None, emessage = 'Parser could not parse your in
             return ui
         except ValueError:  # tries again if parser fails
             nprint(emessage,'warn')
-            
+
 

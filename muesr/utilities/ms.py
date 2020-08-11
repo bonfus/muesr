@@ -7,7 +7,6 @@ if have_sympy:
 from muesr.core.parsers import *
 from muesr.core.nprint  import nprint, nprintmsg, print_cell
 from muesr.core.ninput  import *
-from muesr.core.cells  import get_cell_parameters
 
 
 import numpy as np
@@ -29,8 +28,6 @@ def mago_set_k(sample, kvalue=None, mm=None):
         smm = sample.mm
     else:
         smm = mm
-        
-        
     
     if sample._check_lattice():
         if not kvalue is None:
@@ -79,7 +76,7 @@ def mago_add(sample, coordinates='b-c', fcs=None, kvalue=None):
     
     """        
     
-    nmm = MM(sample.cell.get_number_of_atoms(),sample.cell.get_cell())
+    nmm = MM(sample.cell.get_number_of_atoms(),sample.cell.cell.array)
     
     ret = mago_set_k(sample, mm=nmm, kvalue=kvalue)
     if not ret:
@@ -139,7 +136,7 @@ def mago_set_FC(sample, fcs = None, atoms_types = None, mm=None, inputConvention
 
 
     unit_cell = sample._cell    
-    lattice = unit_cell.get_cell()
+    lattice = unit_cell.cell.array
     
     
     if atoms_types is None:
@@ -161,8 +158,8 @@ def mago_set_FC(sample, fcs = None, atoms_types = None, mm=None, inputConvention
     gotEOS = False
     for i, atom in enumerate(unit_cell):                
         try:
-            if set_this_fc(atom[0]): # check if we should set this fc
-                FCin = ninput_mt("FC for atom %i %s (3 real, [3 imag]): " % (i+1,atom[0]), parse_complex_vector)
+            if set_this_fc(atom.symbol): # check if we should set this fc
+                FCin = ninput_mt("FC for atom %i %s (3 real, [3 imag]): " % (i+1,atom.symbol), parse_complex_vector)
                 fcs[i]=[FCin[j]+1.j*FCin[j+3] for j in range(3)]
                     
             else:

@@ -4,7 +4,7 @@
 import unittest
 import numpy as np
 
-from muesr.core.atoms import Atoms
+from ase.atoms import Atoms
 from muesr.core.sample import Sample
 from muesr.core.sampleErrors import *
 from muesr.core.magmodel import MM, have_sympy
@@ -165,7 +165,7 @@ class TestCLFC(unittest.TestCase):
             locfield(self.sample, 'a', [2,2,2], 3.)
             
         with self.assertRaises(ValueError):
-            locfield(self.sample, 'i', [2,2,2], 3.)
+            locfield(self.sample, 'i', [2,2,2], 3., nangles = 0)
 
         with self.assertRaises(ValueError):
             locfield(self.sample, 's', [0,2,2], 3.)
@@ -219,24 +219,24 @@ class TestLFCExtension(unittest.TestCase):
         c,d,l = lfcext.Fields('s', p,fc,k,phi,mu,sc,latpar,r,nnn,rc)
         
         # zero hyperfine field since zero nnn
-        np.testing.assert_array_equal(c,np.zeros(3))
+        np.testing.assert_array_equal(c,np.zeros([1,3]))
         
         # this is 0.3333333333⋅magnetic_constant⋅(1 bohr_magneton/(4/3⋅pi⋅(10 angstrom)^3))=9.2740095E-4 tesla
-        np.testing.assert_array_almost_equal(l,np.array([0,0,9.2740095E-4]))
+        np.testing.assert_array_almost_equal(l,np.array([[0,0,9.2740095E-4]]))
         
         mu = np.array([0.5,0.,0.])
         
         c,d,l = lfcext.Fields('s', p,fc,k,phi,mu,sc,latpar,r,nnn,rc)
         
         # (1/(4pi))magnetic_constant⋅(1 bohr_magneton/(1 angstrom^3)) = 0.92740095 tesla
-        np.testing.assert_array_almost_equal(d, np.array([0,0,-0.92740095]) )
+        np.testing.assert_array_almost_equal(d, np.array([[0,0,-0.92740095]]) )
         
         mu2 = np.array([0.654,0.,0.])
 
         c,d2,l = lfcext.Fields('s', p,fc,k,phi,mu2,sc,latpar,r,nnn,rc)
         
         # ratios must be like 1/r^3
-        np.testing.assert_array_almost_equal(d2, np.array([0,0,-0.92740095])*(1./(np.linalg.norm(mu2*2.))**3) )
+        np.testing.assert_array_almost_equal(d2, np.array([[0,0,-0.92740095]])*(1./(np.linalg.norm(mu2*2.))**3) )
         
     
     def test_rotation_of_cart_coord(self):
@@ -276,9 +276,9 @@ class TestLFCExtension(unittest.TestCase):
         
         cr,dr,lr = lfcext.Fields('s', p,rfc,k,phi,mu,sc,rlatpar,r,nnn,rc)
 
-        np.testing.assert_array_almost_equal(c,np.dot(mrmat,cr))
-        np.testing.assert_array_almost_equal(d,np.dot(mrmat,dr))
-        np.testing.assert_array_almost_equal(l,np.dot(mrmat,lr))
+        np.testing.assert_array_almost_equal(c,np.dot(mrmat,cr[0]).reshape(1,3))
+        np.testing.assert_array_almost_equal(d,np.dot(mrmat,dr[0]).reshape(1,3))
+        np.testing.assert_array_almost_equal(l,np.dot(mrmat,lr[0]).reshape(1,3))
         
     
     def test_rotate1(self):
@@ -381,9 +381,9 @@ class TestLFCExtension(unittest.TestCase):
         
         c,d,l = lfcext.Fields('s', p,fc,k,phi,mu,sc,latpar,r,nnn,rc)
         
-        np.testing.assert_array_almost_equal(c, np.zeros(3))
-        np.testing.assert_array_almost_equal(d, np.zeros(3))
-        np.testing.assert_array_almost_equal(l, np.zeros(3))
+        np.testing.assert_array_almost_equal(c, np.zeros([1,3]))
+        np.testing.assert_array_almost_equal(d, np.zeros([1,3]))
+        np.testing.assert_array_almost_equal(l, np.zeros([1,3]))
 
         c,d,l = lfcext.Fields('r', p,fc,k,phi,mu,sc,latpar,r,nnn,rc,10,np.array([0,1.,0]))
         
@@ -488,7 +488,7 @@ class TestLFCExtension(unittest.TestCase):
         
         #### simple tests with phase
         c,d,l = lfcext.Fields('s', p,fc,k,phi,mu,sc,latpar,r,nnn,rc)
-        np.testing.assert_array_almost_equal(d, np.zeros(3))
+        np.testing.assert_array_almost_equal(d, np.zeros([1,3]))
         
         # this works with a large grid but then unit testing is slow!
         #  by the way, 1.9098593 is the ratio between cube and sphere
@@ -497,13 +497,13 @@ class TestLFCExtension(unittest.TestCase):
         #
         # the comparison done below is with the unconverged results that 
         # is obtained in the 10x10x10 supercell
-        np.testing.assert_array_almost_equal(l, np.array([0.,0.,0.46741]),decimal=4)
+        np.testing.assert_array_almost_equal(l, np.array([[0.,0.,0.46741]]),decimal=4)
         
         # (2 magnetic_constant/3)⋅1bohr_magneton   = ((2 ⋅ magnetic_constant) ∕ 3) ⋅ (1 ⋅ bohr_magneton)
         # ≈ 7.769376E-27((g⋅m^3) ∕ (A⋅s^2))
         # ≈ 7.769376 T⋅Å^3
         #
-        np.testing.assert_array_almost_equal(c, np.array([0,0,7.769376]))
+        np.testing.assert_array_almost_equal(c, np.array([[0,0,7.769376]]))
         
         
         

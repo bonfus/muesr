@@ -9,21 +9,21 @@ from muesr.core.parsers import mybool
 
 
 def write_xsf(fileobj, images, data=None):
-    
+
     # this should work with unicode too.
     if not hasattr(fileobj, 'write'):
         fileobj = open(fileobj, 'w')
-        
+
     if not isinstance(images, (list, tuple)):
         images = [images]
 
     #fileobj.write('ANIMSTEPS %d\n' % len(images))
 
     numbers = images[0].get_atomic_numbers()
-    
+
     #pbc = images[0].get_pbc()
     pbc = (True,True,True)
-    
+
     if pbc[2]:
         fileobj.write('CRYSTAL\n')
     elif pbc[1]:
@@ -45,7 +45,7 @@ def write_xsf(fileobj, images, data=None):
         # Write magnetic moments as forces for xcrysden
 
         forces = atoms.get_magnetic_moments()
-        
+
         if not forces is None:
             # reduce absolute value for nice plotting
             forces *= 0.01
@@ -60,7 +60,7 @@ def write_xsf(fileobj, images, data=None):
                 fileobj.write('\n')
             else:
                 fileobj.write(' %20.14f %20.14f %20.14f\n' % tuple(forces[a]))
-            
+
     if data is None:
         fileobj.close()
         return
@@ -98,59 +98,59 @@ def write_xsf(fileobj, images, data=None):
     fileobj.write('END_BLOCK_DATAGRID_3D\n')
     fileobj.close()
     return
-    
+
 def read_xsf_data(f):
-    
+
     found_data = False
-    
+
     def search_data_block(f):
         while f.readline().find("BEGIN_BLOCK_DATAGRID_3D") == -1:
             continue
         return True
-        
+
     while search_data_block(f):
         nprint ("Found data block:")
         nprint("Desc" + f.readline())
         nprint("type" + f.readline())
         if ninput_mt("Use this? ", mybool):
             found_data = True
-            break 
-        
+            break
+
     if not found_data:
         nprint ("No data found, exiting...", 'warn')
         return None
-    
+
     grid = map(int, f.readline().split())
-    
+
     # Lattice vectors along lines
     orig = np.array(map(float, f.readline().split()), dtype=object)
     v1 = np.array(map(float, f.readline().split()), dtype=object)
     v2 = np.array(map(float, f.readline().split()), dtype=object)
     v3 = np.array(map(float, f.readline().split()), dtype=object)
-    
+
     v1n = v1/grid[0]
     v2n = v2/grid[1]
     v3n = v3/grid[2]
-    
+
     sdata = np.zeros(np.prod(grid))
-    
+
     data_buffer = []
-    
+
     nprint("Grid has " + str(np.prod(grid)) + " points.")
-    
+
     #grid_steps = [int(x/10) for x in grid]
     #nprint("Setting steps throught grid to %i %i %i." % tuple(grid_steps) )
 
-    
+
     nprint ("Parsing data...")
-    
+
     for k in range(0, grid[2]):
         for j in range(0,grid[1]):
             for i in range(0, grid[0]):
                 if data_buffer == []:
                     data_buffer = [float(x) for x in f.readline().split()] # a random number of data may be on the line
 
-                sdata[i+grid[0]*j+grid[1]*grid[0]*k] = data_buffer[0] 
+                sdata[i+grid[0]*j+grid[1]*grid[0]*k] = data_buffer[0]
                 data_buffer.pop(0) #empty the buffer
     return [sdata, [grid, orig, [v1n,v2n,v3n]]]
 
@@ -165,14 +165,14 @@ def read_xsf(fileobj, index=-1, read_data=False):
         if line != '':
             if line[0] != '#':
                 break
-    
+
     if 'INFO' in line:
         while True:
             line = readline().strip()
             if line != '':
                 if line[0] != '#':
                     if 'END_INFO' in line:
-                        break    
+                        break
 
         line = readline().strip()
 
@@ -194,7 +194,7 @@ def read_xsf(fileobj, index=-1, read_data=False):
             pbc = True
         else:
             nprint ("WARNING: I'm missing something in your XCrysDen file.",'warn')
-            pbc = False            
+            pbc = False
     else:
         nprint ("WARNING: I'm missing something in your XCrysDen file.",'warn')
         pbc = False
@@ -256,7 +256,7 @@ def read_xsf(fileobj, index=-1, read_data=False):
         #
         #for i in range(3):
         #    readline()
-        #    
+        #
         #n_data = shape[0]*shape[1]*shape[2]
         #data = np.array([float(readline())
         #                 for s in range(n_data)]).reshape(shape[::-1])
@@ -264,7 +264,7 @@ def read_xsf(fileobj, index=-1, read_data=False):
         #
         fileobj.close()
         return images[index], data
-        
+
     fileobj.close()
     return images[index]
 

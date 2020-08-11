@@ -121,10 +121,10 @@ class PrettyTable(object):
         self._vertical_char = kwargs["vertical_char"] or "|"
         self._horizontal_char = kwargs["horizontal_char"] or "-"
         self._junction_char = kwargs["junction_char"] or "+"
-        
+
         self._format = kwargs["format"] or False
         self._attributes = kwargs["attributes"] or {}
-   
+
     def __getattr__(self, name):
 
         if name == "rowcount":
@@ -133,7 +133,7 @@ class PrettyTable(object):
             return len(self._field_names)
         else:
             raise AttributeError ( name) #from
- 
+
     def __getslice__(self, i, j):
 
         """Return a new PrettyTable whose data rows are a slice of this one's
@@ -820,7 +820,7 @@ class PrettyTable(object):
         start - index of first data row to include in output
         end - index of last data row to include in output PLUS ONE (list slice style)
         fields - names of fields (columns) to include
-        sortby - name of 
+        sortby - name of
         border - should be True or False to print or not print borders
         format - should be True or False to attempt to format alignmet, padding, etc. or not
         header - should be True or False to print a header showing field names or not

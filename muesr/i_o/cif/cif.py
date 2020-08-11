@@ -14,13 +14,17 @@ import warnings
 import numpy as np
 
 from muesr.core.magmodel import MM
-from muesr.core.spg import Spacegroup
+#from muesr.core.spg import Spacegroup
 from muesr.core.nprint import nprint, nprintmsg
 from muesr.core.isstr import isstr
 
-from muesr.i_o.cif.crystal import crystal
-from muesr.core.spg import spacegroup_from_data
-from muesr.i_o.cif.cell import cellpar_to_cell
+from ase.spacegroup import get_spacegroup
+
+#from muesr.i_o.cif.crystal import crystal
+from ase.spacegroup import crystal
+from ase.spacegroup.spacegroup import spacegroup_from_data
+#from muesr.i_o.cif.cell import cellpar_to_cell
+from ase.io import read
 
 # Old conventions:
 old_spacegroup_names = {'Abm2': 'Aem2',
@@ -46,18 +50,21 @@ def load_cif(sample, filename, reset_muon=True, reset_sym=True):
 
     filename = str(filename)
     
-    f = open(os.path.expanduser(filename),'r')
+    filename = os.path.expanduser(filename)
     
         #nprint ("Problems with file name...file not found!", 'warn')
         #return False
     
     #print(read_cif(f,0))
-    atoms, sym = read_cif(f,0) # selectd index 0
-    f.close()
+    atoms = read(filename) # selectd index 0
+    #f.close()
     if atoms:
         sample._reset(cell=True,sym=True,magdefs=True,muon=reset_muon)
         sample.cell = atoms
-        sample.sym = sym
+        #try:
+        sample.sym = get_spacegroup(atoms)
+        #except:
+        #    nprint ("Symmetry not loaded!", 'warn')
         return True
     else:
         nprint ("Atoms not loaded!", 'warn')
@@ -80,115 +87,7 @@ def load_mcif(sample, filename, reset_muon=True, reset_sym=True):
     :returns: True if succesfull, false otherwise
     :rtype: bool
     """
-    
-    
-    # DEFINITION OF UNITS AND SETTINGS: http://cmswiki.byu.edu/wiki/Magnetic_Coordinates
-    #   new link http://magcryst.org/resources/magnetic-coordinates/
-    
-    f = open(os.path.expanduser(filename),'r')
-    
-    data = parse_cif(f)
-    
-    f.close()
-    
-    #print('Parsing data from: ' + data[0][0])
-    
-    tags = data[0][1]
-    
-    # Load symmetry
-    #sym = tags2spacegroup(tags)
-    
-    # load cell info
-    a = tags['_cell_length_a']
-    b = tags['_cell_length_b']
-    c = tags['_cell_length_c']
-    alpha = tags['_cell_angle_alpha']
-    beta = tags['_cell_angle_beta']
-    gamma = tags['_cell_angle_gamma']
-
-    
-    # Find magnetic atoms
-    mag_atoms_labels = tags['_atom_site_moment_label']
-    # load mag moments
-    mag_atoms_moments = np.zeros([len(mag_atoms_labels),3],dtype=np.complex)
-
-    scaled_positions = np.array([tags['_atom_site_fract_x'], 
-                                tags['_atom_site_fract_y'], 
-                                tags['_atom_site_fract_z']]).T
-    
-    scaled_positions = np.mod(scaled_positions, 1.)
-    
-    all_scaled_pos = np.copy(scaled_positions)
-    
-
-    
-    symbols = []
-    if '_atom_site_type_symbol' in tags:
-        labels = tags['_atom_site_type_symbol']
-    else:
-        labels = tags['_atom_site_label']
-    for s in labels:
-        # Strip off additional labeling on chemical symbols
-        m = re.search(r'([A-Z][a-z]?)', s)  
-        symbol = m.group(0)
-        symbols.append(symbol)
-    
-    
-    
-    fcs = np.zeros_like(all_scaled_pos,dtype=np.complex)
-    
-    for i, al in enumerate(tags['_atom_site_label']):
-        if al in tags['_atom_site_moment_label']:
-            mi = tags['_atom_site_moment_label'].index(al)
-            fcs[i] = [complex(tags['_atom_site_moment_crystalaxis_x'][mi]),
-                        complex(tags['_atom_site_moment_crystalaxis_y'][mi]),  
-                        complex(tags['_atom_site_moment_crystalaxis_z'][mi])
-                        ]
-    # THESE ARE IN CRYSTAL AXIS COORDINATE SYSTEM!!!
-    # bohr magneton units are used
-    # the magnetic metric tensor is M = L.G.L^(-1), which is unitless. 
-    # NOW GO TO REDUCED LATTICE COORDINATE SYSTEM TO DO THE SYMMETRY
-    L = np.diag([1./a,1./b,1./c])
-    fcs = np.dot(fcs,L)
-    
-    # we copy the fourier components that were present in the mcif.
-    # the others will be obtained from symmetry operations
-    all_fcs = np.copy(fcs)
-    
-    for j, m_a_p in enumerate(scaled_positions):
-        for cent in tags['_space_group_symop.magn_centering_xyz']: # magn_centering_xyz
-            rc,tc,trc = parse_magn_operation_xyz_string(cent)
-            # apply centering and go back to the unit cell
-            cm_a_p = (np.dot(rc,m_a_p)+tc)%1.
-            
-            #print ('cmap is :' + str(cm_a_p))
-            for s in tags['_space_group_symop.magn_operation_xyz']: # magn_operation_xyz
-                
-                r,t,tr = parse_magn_operation_xyz_string(s)
-                
-                symp = (np.dot(r,cm_a_p)+t)%1.
-                
-                #print('Symp is: '+ str(symp))
-                # check if this position was already present
-                for l, pp in enumerate(all_scaled_pos):
-                    if np.allclose(symp,pp,rtol=1e-3):
-                        break
-                else:
-                    # Append position just found with symmetry
-                    symbols.append(symbols[j])
-                    all_scaled_pos = np.append(all_scaled_pos,[symp],axis=0)
-                    
-                    # go to crystal units
-                    crysfc = trc*np.linalg.det(rc)*tr*np.linalg.det(r)*np.dot(r, np.dot(rc,fcs[j]))                   
-                    
-                    all_fcs = np.append(all_fcs ,[crysfc],axis=0)
-    
-
-
-    # 
-    mag_crys2car = cellpar_to_cell([a, b, c, alpha, beta, gamma], (0,0,1), None)
-    # go to cartesian coordinates
-    cartfc = np.dot(all_fcs,mag_crys2car)
+    import pymatgen
 
     
     sample._reset(muon=reset_muon,sym=reset_sym)

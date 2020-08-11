@@ -1,5 +1,4 @@
 from muesr.core.parsers import *
-from muesr.core.cells import get_reduced_bases
 from muesr.settings import config
 
 import numpy as np
@@ -90,7 +89,7 @@ def build_uniform_grid(sample, size, min_distance_from_atoms=1.0):
 
     
     
-    reduced_bases = sample.cell.get_cell()
+    reduced_bases = sample.cell.cell.array
     scaled_pos = sample.cell.get_scaled_positions()
                         
     positions = []
