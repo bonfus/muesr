@@ -6,6 +6,7 @@
 #
 ###### Requirements for complete functionality ######
 #   See https://www.python.org/dev/peps/pep-0440/#version-specifiers
+ase >= 3.0
 spglib >= 1.9
 pyyaml >= 3.0
 mulfc >= 0.0.1
