@@ -31,8 +31,8 @@ for mcif in mcifs:
     muon_find_equiv(m)
     res=locfield(m, 's',[100,100,50],200)
     print('Structure in file: '+mcif)
-    for e in res:
-        print(e.T*0.66, "Norm {: 0.4f}".format(np.linalg.norm(e.T*0.66)))
+    for i in range(res._nMuons):
+        print(res.T[i]*0.66, "Norm {: 0.4f}".format(np.linalg.norm(res.T[i]*0.66)))
 
 print('\n --> According to PhysRevB 80 094524, the local field at the muon site is about 1700 G')
 print('\n --> So long range order is either bcs_file_22902c.mcif or ./bcs_file_22902d.mcif \n')
