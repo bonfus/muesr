@@ -51,7 +51,13 @@ It is advisable to have a visualization tool, XCrysDen or VESTA. It must be alre
    python -m  from muesr.settings import config\
    config.VESTAExec = "/path/to/VESTA"
 
-where you must substitute to :title:`/path/to/` the actual path on your computer. 
+where you must substitute to :title:`/path/to/` the actual path to the executable file on your computer. 
+
+You can do the same in your code ::
+
+    from muesr.settings import config
+    config.VESTAExec =  = "/path/to/VESTA"
+
 
 Installation in virtualenv
 --------------------------
@@ -74,6 +80,13 @@ now you can install mulfc and Muesr in the virtualenv with the same commands
 reported above ::
 
     pip install mulfc muesr
+
+A few notes for Mac users
+-----------------------------
+
+The VESTA executable will usually be found in ::
+
+    "/Applications/VESTA.app/Contents/MacOS/VESTA"
 
 
 A few notes for Windows users
