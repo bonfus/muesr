@@ -4,7 +4,7 @@ from warnings import warn
 from copy import deepcopy
 
 from muesr.settings import config
-from ase.io import read
+from ase.io import read, write
 from ase.build import make_supercell
 
 from muesr.core.sampleErrors import MuonError
@@ -55,15 +55,13 @@ def save_xsf(sample, filename, supercell=[1,1,1], addMuon=True):
     :raises: CellError, TypeError
     """
 
-    if type(supercell) != list:
-        raise TypeError("supercell must be a list")
 
     if len(filename) == 0:
         raise ValueError("Invalid filename.")
 
     sample._check_lattice()
 
-    sc = make_supercell(sample._cell, supercell)
+    sc = make_supercell(sample._cell, np.diag(supercell))
 
     if (not sc is None) and addMuon:
         try:
@@ -71,7 +69,8 @@ def save_xsf(sample, filename, supercell=[1,1,1], addMuon=True):
                 spos_m = [ (m[0] + int(supercell[0]/2)) / supercell[0],
                                                 (m[1] + int(supercell[1]/2)) / supercell[1],
                                                 (m[2] + int(supercell[2]/2)) / supercell[2] ]
-                sc.extend(symbol="mu",scaled_position=(spos_m))
+                sc.append('H')
+                sc.positions[-1] = sc.cell.cartesian_positions(spos_m)
         except MuonError:
             pass
 

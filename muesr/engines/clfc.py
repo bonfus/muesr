@@ -53,7 +53,7 @@ class LocalFields(object):
     def _freeze(self):
         self.__isfrozen = True
 
-    def __init__(self, BCont, BDip, BLor, ACont=0., nMuons=1, reshape=True):
+    def __init__(self, BCont, BDip, BLor, ACont=0., nMuons=1, reshape=False):
 
         try:
             assert(type(BLor) is np.ndarray)
@@ -260,7 +260,7 @@ def find_largest_sphere(sample, supercell):
     #nprint("WARNING: this is and experimental function!",'warn')
     return np.min(distances)
 
-def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangles = 1, axis = np.zeros(3), constraints=None, backend='available'):
+def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangles = 1, axis = np.zeros(3), constraints=None, backend='any'):
     """
     Evaluates local fields at the muon site.
 
@@ -393,8 +393,8 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
     phi = sample.mm.phi # phase in magnetic order definition
     k = sample.mm.k
 
-    if backend == 'available':
-        backend = 'clfc2' if lfcext.__version__ == '0.0.3' else 'clfc'
+    if backend == 'any':
+        backend = 'clfc2' if lfcext.__version__ == '0.0.4' else 'clfc'
 
     # Use Numba backend
     if backend == 'nlfc':
@@ -413,7 +413,7 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
 
     else:
         res = []
-        # Use CLFC backend
+        # Use legacy CLFC backend
         for mu in sample.muons:
             if ctype == 's' or ctype == 'sum':
                 #res.append(LocalFields(*lfcext.Fields(ctype, p,fc,k,phi,mu,sc,latpar,r,nnn,rc)))
