@@ -55,14 +55,12 @@ def load_cif(sample, filename, reset_muon=True, reset_sym=True):
         #nprint ("Problems with file name...file not found!", 'warn')
         #return False
 
-    #print(read_cif(f,0))
     atoms = read(filename) # selectd index 0
-    #f.close()
     if atoms:
         sample._reset(cell=True,sym=True,magdefs=True,muon=reset_muon)
         sample.cell = atoms
         #try:
-        sample.sym = get_spacegroup(atoms)
+        sample.sym = get_spacegroup(atoms,  symprec=1e-04)
         #except:
         #    nprint ("Symmetry not loaded!", 'warn')
         return True
@@ -100,7 +98,7 @@ def load_mcif(sample, filename, reset_muon=True, reset_sym=True):
     nmm=MM(len(s),sample._cell.cell.array)
     # magnetic moments are specified in cartesian coordinates.
     # position in crystal coordinates...not nice but simple!
-    nmm.fc_set(np.array([x.moment for x in s.site_properties['magmom']], dtype=np.complex))
+    nmm.fc_set(np.array([x.moment for x in s.site_properties['magmom']], dtype=complex))
     # propagation vector is 0 since the cell "contains" the magnetic
     #   structure, no incommensurate structures, sorry!
     nmm.k=np.array([0.,0.,0.])
