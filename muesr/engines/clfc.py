@@ -3,6 +3,7 @@ import numpy as np
 from copy import deepcopy
 
 from muesr.core.sample import Sample
+from muesr.core.sampleErrors import MuonError, MagDefError
 from muesr.core.occupations import Occupations
 from muesr.core.isstr import isstr
 
@@ -73,12 +74,12 @@ class LocalFields(object):
         else:
             raise ValueError("Something went horribly wrong!")
 
-        self._BLor = np.asarray(BLor,np.float).reshape(nMuons, nAngs, 3)
-        self._BDip = np.asarray(BDip,np.float).reshape(nMuons, nAngs, 3)
-        self._BCont = np.asarray(BCont,np.float).reshape(nMuons, nAngs, 3)
+        self._BLor = np.asarray(BLor,float).reshape(nMuons, nAngs, 3)
+        self._BDip = np.asarray(BDip,float).reshape(nMuons, nAngs, 3)
+        self._BCont = np.asarray(BCont,float).reshape(nMuons, nAngs, 3)
 
         try:
-            self._ACont = np.asarray(ACont,np.float)
+            self._ACont = np.asarray(ACont,float)
         except:
             raise TypeError( "Cannot set value for ACont. Must be float." )
 
@@ -324,7 +325,7 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
         if constraints is None:
             raise ValueError("constraints must be specified.")
         if True:
-            constr = np.zeros([len(constraints),2], dtype=np.float)
+            constr = np.zeros([len(constraints),2], dtype=float)
             constr_grp = np.zeros([len(constraints),sample.cell.get_number_of_atoms()], dtype=np.int32)
             for i, c in enumerate(constraints):
                 constr_grp[i, c[0]] = 1
@@ -481,7 +482,7 @@ def dipten(sample, supercellsize, radius):
 
     magnetic_atoms=[]
     for i, e in enumerate(ufc):
-        if not np.allclose(e,np.zeros(3,dtype=np.complex)):
+        if not np.allclose(e,np.zeros(3,dtype=complex)):
             magnetic_atoms.append(i)
 
     p = positions[magnetic_atoms,:]
@@ -492,3 +493,53 @@ def dipten(sample, supercellsize, radius):
 
     return res
 
+
+def moments(s, sc, rsc=np.array([0,0,0],dtype=np.int32),
+                    nangles=1,
+                    axis=np.array([0.0,0.0,1.]),
+                    muon_as_atom = 'H',
+                    muon_local_field = None):
+    from lfclib import Moments
+    from ase.atoms import Atoms
+
+    inp = s.cell.get_scaled_positions()
+    chems = s.cell.get_chemical_symbols()
+    latpar = s._cell.cell.array
+
+    scale = 1.
+
+    try:
+        fc = s.mm.fc
+        k =  s.mm.k
+        phi = s.mm.phi
+    except MagDefError:
+        fc = np.zeros_like(inp)+0.001
+        k = np.zeros(3)
+        phi = np.zeros(len(chems))
+        scale = 0. # no arrows if no magnetic order
+
+    aid, p, m = Moments(inp, fc, k, phi ,sc , rsc, latpar,  nangles, axis)
+
+    sc_array = np.dot(latpar, np.diag(sc))
+
+    try:
+        for i, muon in enumerate(s.muons):
+            muon_frac = [ (muon[0] + int(sc[0]/2)) / sc[0],
+                       (muon[1] + int(sc[1]/2)) / sc[1],
+                       (muon[2] + int(sc[2]/2)) / sc[2] ]
+
+            muon_cart = muon_frac @ sc_array
+
+            aid = np.append(aid, -1)
+            p = np.append(p,[muon_cart],axis=0)
+            if muon_local_field is None:
+                m = np.append(m, [[0.,0.,0.]],axis=0)
+            else:
+                m = np.append(m, [muon_local_field[i]],axis=0)
+    except MuonError:
+        pass
+
+    # index returned by Moments refer to original lattice, we add the muon as -1 above
+    sc_symbols = [chems[i] if i >= 0 else muon_as_atom for i in aid]
+
+    return sc_array, p, sc_symbols, m*scale
