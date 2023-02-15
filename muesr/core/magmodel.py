@@ -63,9 +63,9 @@ class MM(object):
             raise TypeError("Lattice vectors must be numpy array.")
 
 
-        self._fc = np.zeros([cell_size,3],dtype=np.complex)
+        self._fc = np.zeros([cell_size,3],dtype=complex)
         self._k = np.array([0,0,0])
-        self._phi = np.zeros(cell_size,dtype=np.float)
+        self._phi = np.zeros(cell_size,dtype=float)
 
         self._freeze() # no new attributes after this point.
 
@@ -110,7 +110,7 @@ class MM(object):
 
         elif isinstance(value, np.ndarray):
             if value.shape == (3,):
-                self._k=np.asarray(value,np.float)
+                self._k=np.asarray(value, float)
             else:
                 raise ValueError('Array must be a single 3D vector.')
         else:
@@ -229,7 +229,7 @@ class MM(object):
         # validate FCs
         if isinstance(value, np.ndarray):
 
-            if value.dtype != np.complex:
+            if value.dtype != complex:
                 raise ValueError("Fourier components must be a complex array!")
 
             #check that number of FCs is the same as atoms

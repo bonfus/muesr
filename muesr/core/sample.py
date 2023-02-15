@@ -120,7 +120,7 @@ class Sample(object):
         self._check_lattice()
 
         if (type(position) is list):
-            position = np.array(position, dtype=np.float)
+            position = np.array(position, dtype=float)
 
         if (type(position) is np.ndarray):
             if len(position.shape) == 1:
