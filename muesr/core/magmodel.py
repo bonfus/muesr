@@ -63,9 +63,9 @@ class MM(object):
             raise TypeError("Lattice vectors must be numpy array.")
         
         
-        self._fc = np.zeros([cell_size,3],dtype=np.complex)
+        self._fc = np.zeros([cell_size,3],dtype=np.complex_)
         self._k = np.array([0,0,0])
-        self._phi = np.zeros(cell_size,dtype=np.float)
+        self._phi = np.zeros(cell_size,dtype=np.float_)
         
         self._freeze() # no new attributes after this point. 
 
@@ -273,7 +273,7 @@ class MM(object):
     @phi.setter
     def phi(self, value):
         if isinstance(value, list):
-            value = np.array(value,dtype=np.float)
+            value = np.array(value,dtype=np.float_)
         
         if isinstance(value, np.ndarray):
            
@@ -433,7 +433,7 @@ if have_sympy:
             
             if self._symFClambda != None:
                 self.fc_set( np.array(self._symFClambda(*values), \
-                                      dtype=np.complex), \
+                                      dtype=np.complex_), \
                              self._inputType)
             else:
                 raise RuntimeError("Symbolic FC not defined!")

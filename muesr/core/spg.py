@@ -640,26 +640,26 @@ def _read_datafile_entry(spg, no, symbol, setting, f):
     spg._scaled_primitive_cell = np.array([[float(floats.get(s, s))
                                             for s in f.readline().split()]
                                            for i in range(3)],
-                                          dtype=np.float)
+                                          dtype=np.float_)
     # primitive reciprocal vectors
     f.readline()
     spg._reciprocal_cell = np.array([[int(i)
                                       for i in f.readline().split()]
                                      for i in range(3)],
-                                    dtype=np.int)
+                                    dtype=np.int_)
     # subtranslations
     spg._nsubtrans = int(f.readline().split()[0])
     spg._subtrans = np.array([[float(floats.get(t, t))
                                for t in f.readline().split()]
                               for i in range(spg._nsubtrans)],
-                             dtype=np.float)
+                             dtype=np.float_)
     # symmetry operations
     nsym = int(f.readline().split()[0])
     symop = np.array([[float(floats.get(s, s)) for s in f.readline().split()]
                       for i in range(nsym)],
-                     dtype=np.float)
+                     dtype=np.float_)
     spg._nsymop = nsym
-    spg._rotations = np.array(symop[:, :9].reshape((nsym, 3, 3)), dtype=np.int)
+    spg._rotations = np.array(symop[:, :9].reshape((nsym, 3, 3)), dtype=np.int_)
     spg._translations = symop[:, 9:]
 
 

@@ -52,7 +52,7 @@ def mago_set_k(sample, kvalue=None, mm=None):
             except TypeError:
                 nprint("Cannot parse position.",'warn')
                 return
-            smm.k=np.array(kval,dtype=np.float)
+            smm.k=np.array(kval,dtype=np.float_)
             return True
 
 
@@ -156,7 +156,7 @@ def mago_set_FC(sample, fcs = None, atoms_types = None, mm=None, inputConvention
     
 
     
-    fcs = np.zeros([unit_cell.get_number_of_atoms(),3],dtype=np.complex)
+    fcs = np.zeros([unit_cell.get_number_of_atoms(),3],dtype=np.complex_)
     
     gotEOS = False
     for i, atom in enumerate(unit_cell):                

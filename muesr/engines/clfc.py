@@ -339,7 +339,7 @@ def locfield(sample, ctype, supercellsize, radius, nnn = 2, rcont = 10.0, nangle
     
     magnetic_atoms=[]
     for i, e in enumerate(ufc):
-        if not np.allclose(e,np.zeros(3,dtype=np.complex)):
+        if not np.allclose(e,np.zeros(3,dtype=np.complex_)):
             magnetic_atoms.append(i)
 
     p = positions[magnetic_atoms,:]
@@ -417,7 +417,7 @@ def dipten(sample, supercellsize, radius):
     
     magnetic_atoms=[]
     for i, e in enumerate(ufc):
-        if not np.allclose(e,np.zeros(3,dtype=np.complex)):
+        if not np.allclose(e,np.zeros(3,dtype=np.complex_)):
             magnetic_atoms.append(i)
 
     p = positions[magnetic_atoms,:]
