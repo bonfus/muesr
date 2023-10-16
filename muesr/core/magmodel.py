@@ -229,7 +229,7 @@ class MM(object):
         # validate FCs
         if isinstance(value, np.ndarray):
            
-            if value.dtype != np.complex:
+            if value.dtype != np.complex_:
                 raise ValueError("Fourier components must be a complex array!")
             
             #check that number of FCs is the same as atoms

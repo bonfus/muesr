@@ -71,7 +71,7 @@ def mago_add(sample, coordinates='b-c', fcs=None, kvalue=None):
                                
                                b-l  : Fourier components in Bohr magnetons and in lattice coordinates.
                                
-    :param np.complex fcs: Fourier components in coordinate system 
+    :param np.complex_ fcs: Fourier components in coordinate system 
                           (default: Bohr magnetoc/ Cartesian coordinates)
     :param np.ndarray kvalue: Propagation vector in r.l.u.
     :returns: True if successful, False otherwise.

@@ -68,7 +68,7 @@ class LocalFields(object):
         self._BCont = np.asarray(BCont,np.float_)
         
         try:
-            self._ACont = np.float(ACont)
+            self._ACont = np.float_(ACont)
         except:
             raise TypeError( "Cannot set value for ACont. Must be float." )
         
@@ -154,7 +154,7 @@ class LocalFields(object):
     @ACont.setter
     def ACont(self,value):
         try:
-            self._ACont = np.float(value)
+            self._ACont = np.float_(value)
         except:
             raise TypeError( "Cannot set value for ACont" )
 
