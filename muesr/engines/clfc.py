@@ -63,9 +63,9 @@ class LocalFields(object):
             raise ValueError("Must have the same shape!")
         
         
-        self._BLor = np.asarray(BLor,np.float)
-        self._BDip = np.asarray(BDip,np.float)
-        self._BCont = np.asarray(BCont,np.float)
+        self._BLor = np.asarray(BLor,np.float_)
+        self._BDip = np.asarray(BDip,np.float_)
+        self._BCont = np.asarray(BCont,np.float_)
         
         try:
             self._ACont = np.float(ACont)

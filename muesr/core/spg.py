@@ -479,7 +479,7 @@ class Spacegroup(object):
                [ 0.,  0.,  0.]])
         """
         scaled = np.array(scaled_positions, ndmin=2)
-        normalised = np.empty(scaled.shape, np.float)
+        normalised = np.empty(scaled.shape, np.float_)
         rot, trans = self.get_op()
         for i, pos in enumerate(scaled):
             sympos = np.dot(rot, pos) + trans

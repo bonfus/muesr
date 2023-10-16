@@ -100,7 +100,7 @@ class MM(object):
     def k(self, value):
         if isinstance(value, list):
             try:
-                value = np.asarray(value,np.float)
+                value = np.asarray(value,np.float_)
                 if value.shape == (3,):
                     self._k=value
                 else:
@@ -110,7 +110,7 @@ class MM(object):
                 
         elif isinstance(value, np.ndarray):
             if value.shape == (3,):
-                self._k=np.asarray(value,np.float)
+                self._k=np.asarray(value,np.float_)
             else:
                 raise ValueError('Array must be a single 3D vector.')
         else:
@@ -278,7 +278,7 @@ class MM(object):
         if isinstance(value, np.ndarray):
            
             if value.shape == self._phi.shape:
-                self._phi=np.asarray(value,np.float)
+                self._phi=np.asarray(value,np.float_)
             else:
                 raise ValueError("Incorrect size of array/list. Must " +
                                   "be a 1D list of " + str(self._size) + 
