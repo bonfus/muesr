@@ -51,7 +51,7 @@ APP_FCs = 0.001*np.array([[0,0,1],
                           [0,0,0],
                           [0,0,0],
                           [0,0,0],
-                          [0,0,0]], dtype=np.complex)
+                          [0,0,0]], dtype=np.complex_)
 
 
 s.new_mm()
