@@ -109,16 +109,16 @@ class TestMM(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._mm.fcLattBM = np.zeros(3)
         with self.assertRaises(ValueError):
-            self._mm.fcLattBM = np.zeros(3,dtype=np.complex_)
+            self._mm.fcLattBM = np.zeros(3,dtype=np.complex128)
         with self.assertRaises(ValueError):
-            self._mm.fcLattBM = np.zeros(3,dtype=np.complex_)
+            self._mm.fcLattBM = np.zeros(3,dtype=np.complex128)
             
         with self.assertRaises(TypeError):
-            self._mm.fc_set(np.zeros([2,3],dtype=np.complex_),'cart') #must be int
+            self._mm.fc_set(np.zeros([2,3],dtype=np.complex128),'cart') #must be int
         
         
         with self.assertRaises(ValueError):
-            self._mm.fc_set(np.zeros([2,3],dtype=np.complex_),4) #must 0,1,2
+            self._mm.fc_set(np.zeros([2,3],dtype=np.complex128),4) #must 0,1,2
         
         with self.assertRaises(TypeError):
             self._mm.fc_set('a',1) #must 0,1,2

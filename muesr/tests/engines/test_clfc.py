@@ -202,7 +202,7 @@ class TestLFCExtension(unittest.TestCase):
     def test_one_over_r_cube(self):
         
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,0.,1.]],dtype=np.complex_)
+        fc = np.array([[0.,0.,1.]],dtype=np.complex128)
         k  = np.array([0.,0.,0.])
         
         phi= np.array([0.,])
@@ -242,7 +242,7 @@ class TestLFCExtension(unittest.TestCase):
     def test_rotation_of_cart_coord(self):
         
         p  = np.array([[0.1,0.2,0.3]])
-        fc = np.array([[0.2,0.4,1.]],dtype=np.complex_)
+        fc = np.array([[0.2,0.4,1.]],dtype=np.complex128)
         k  = np.array([0.2,0.3,0.4])
         
         phi= np.array([0.,])
@@ -283,7 +283,7 @@ class TestLFCExtension(unittest.TestCase):
     
     def test_rotate1(self):
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,0.,1.]],dtype=np.complex_)
+        fc = np.array([[0.,0.,1.]],dtype=np.complex128)
         k  = np.array([0.,0.,0.])
         
         phi= np.array([0.,])
@@ -325,7 +325,7 @@ class TestLFCExtension(unittest.TestCase):
     
     def test_icommensurate(self):
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,1.j,1.]],dtype=np.complex_)
+        fc = np.array([[0.,1.j,1.]],dtype=np.complex128)
         k  = np.array([0.,0.,0.0])
         
         phi= np.array([0.,])
@@ -358,7 +358,7 @@ class TestLFCExtension(unittest.TestCase):
     
     def test_phase(self):
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,0.,1.]],dtype=np.complex_)
+        fc = np.array([[0.,0.,1.]],dtype=np.complex128)
         k  = np.array([0.,0.,0.0])
         
         phi= np.array([0.,])
@@ -414,7 +414,7 @@ class TestLFCExtension(unittest.TestCase):
         ##   + 0 - 0     or    + + - - 
         
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,0.,1.j]],dtype=np.complex_)
+        fc = np.array([[0.,0.,1.j]],dtype=np.complex128)
         k  = np.array([0.,0.,0.0])
         
         phi= np.array([0.125,])
@@ -433,7 +433,7 @@ class TestLFCExtension(unittest.TestCase):
         # no use the equivalent order without phase
         phi= np.array([0.,])
         #pi/4 is sqrt(2)/2
-        fc = np.array([[0.,0.,np.sqrt(2.)/2.]],dtype=np.complex_)
+        fc = np.array([[0.,0.,np.sqrt(2.)/2.]],dtype=np.complex128)
         
         c,d,l = lfcext.Fields('s', p,fc,k,phi,mu,sc,latpar,r,nnn,rc)
         
@@ -443,7 +443,7 @@ class TestLFCExtension(unittest.TestCase):
         
         #### now test incommensurate function
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,1.j,1.]],dtype=np.complex_)
+        fc = np.array([[0.,1.j,1.]],dtype=np.complex128)
         k  = np.array([0.1,0.,0.0])
         
         phi= np.array([0.125,])
@@ -472,7 +472,7 @@ class TestLFCExtension(unittest.TestCase):
 
     def test_null_by_symmetry(self):
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,0.,1.]],dtype=np.complex_)
+        fc = np.array([[0.,0.,1.]],dtype=np.complex128)
         k  = np.array([0.,0.,0.0])
         
         phi= np.array([0.,])
@@ -511,7 +511,7 @@ class TestLFCExtension(unittest.TestCase):
         # initial stupid test...
         ###### TODO : do a reasonable test!!!  ######
         p  = np.array([[0.,0.,0.]])
-        fc = np.array([[0.,0.,1.]],dtype=np.complex_)
+        fc = np.array([[0.,0.,1.]],dtype=np.complex128)
         k  = np.array([0.,0.,0.0])
         
         phi= np.array([0.,])

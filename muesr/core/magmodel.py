@@ -63,9 +63,9 @@ class MM(object):
             raise TypeError("Lattice vectors must be numpy array.")
         
         
-        self._fc = np.zeros([cell_size,3],dtype=np.complex_)
+        self._fc = np.zeros([cell_size,3],dtype=np.complex128)
         self._k = np.array([0,0,0])
-        self._phi = np.zeros(cell_size,dtype=np.float_)
+        self._phi = np.zeros(cell_size,dtype=np.float64)
         
         self._freeze() # no new attributes after this point. 
 
@@ -100,7 +100,7 @@ class MM(object):
     def k(self, value):
         if isinstance(value, list):
             try:
-                value = np.asarray(value,np.float_)
+                value = np.asarray(value,np.float64)
                 if value.shape == (3,):
                     self._k=value
                 else:
@@ -110,7 +110,7 @@ class MM(object):
                 
         elif isinstance(value, np.ndarray):
             if value.shape == (3,):
-                self._k=np.asarray(value,np.float_)
+                self._k=np.asarray(value,np.float64)
             else:
                 raise ValueError('Array must be a single 3D vector.')
         else:
@@ -229,7 +229,7 @@ class MM(object):
         # validate FCs
         if isinstance(value, np.ndarray):
            
-            if value.dtype != np.complex_:
+            if value.dtype != np.complex128:
                 raise ValueError("Fourier components must be a complex array!")
             
             #check that number of FCs is the same as atoms
@@ -273,12 +273,12 @@ class MM(object):
     @phi.setter
     def phi(self, value):
         if isinstance(value, list):
-            value = np.array(value,dtype=np.float_)
+            value = np.array(value,dtype=np.float64)
         
         if isinstance(value, np.ndarray):
            
             if value.shape == self._phi.shape:
-                self._phi=np.asarray(value,np.float_)
+                self._phi=np.asarray(value,np.float64)
             else:
                 raise ValueError("Incorrect size of array/list. Must " +
                                   "be a 1D list of " + str(self._size) + 
@@ -433,7 +433,7 @@ if have_sympy:
             
             if self._symFClambda != None:
                 self.fc_set( np.array(self._symFClambda(*values), \
-                                      dtype=np.complex_), \
+                                      dtype=np.complex128), \
                              self._inputType)
             else:
                 raise RuntimeError("Symbolic FC not defined!")

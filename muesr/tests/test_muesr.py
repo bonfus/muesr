@@ -295,7 +295,7 @@ class TestMuesr(unittest.TestCase):
         
         nmm = MM(m._cell.get_number_of_atoms(),m._cell.get_cell())
         
-        fcs = np.zeros([m.cell.get_number_of_atoms(), 3],dtype=np.complex_)
+        fcs = np.zeros([m.cell.get_number_of_atoms(), 3],dtype=np.complex128)
         fcs[1:3] = np.array([[0.166987,-0.248559,0.188134],
                         [-0.166987,0.248559,-0.188134]])
         fcs[16:18] = np.array([[0.166987,-0.248559,0.188134],
@@ -312,7 +312,7 @@ class TestMuesr(unittest.TestCase):
 
         np.testing.assert_array_almost_equal(m.mm.fc,fcs_mcif,decimal=4)
         
-        fcs = np.zeros([m.cell.get_number_of_atoms(), 3],dtype=np.complex_)
+        fcs = np.zeros([m.cell.get_number_of_atoms(), 3],dtype=np.complex128)
         fcs[1:3] = np.array([[1.73,-2.73,1.36],
                         [-1.73,2.73,-1.36]])
         fcs[16:18] = np.array([[1.73,-2.73,1.36],

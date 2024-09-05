@@ -66,7 +66,7 @@ s.mm.fc=1.*np.array([   [0.0,0.0,0.0],
                         [0.0,0.0,0.0],
                         [0.0,0.0,0.0],
                         [0.0,0.0,0.0],
-                        [0.0,0.0,0.0]], dtype=np.complex_)
+                        [0.0,0.0,0.0]], dtype=np.complex128)
 #mago_add(s)    # interactive magnetic structure definition
 
 

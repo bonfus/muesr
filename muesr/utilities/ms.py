@@ -52,7 +52,7 @@ def mago_set_k(sample, kvalue=None, mm=None):
             except TypeError:
                 nprint("Cannot parse position.",'warn')
                 return
-            smm.k=np.array(kval,dtype=np.float_)
+            smm.k=np.array(kval,dtype=np.float64)
             return True
 
 
@@ -71,7 +71,7 @@ def mago_add(sample, coordinates='b-c', fcs=None, kvalue=None):
                                
                                b-l  : Fourier components in Bohr magnetons and in lattice coordinates.
                                
-    :param np.complex_ fcs: Fourier components in coordinate system 
+    :param np.complex128 fcs: Fourier components in coordinate system
                           (default: Bohr magnetoc/ Cartesian coordinates)
     :param np.ndarray kvalue: Propagation vector in r.l.u.
     :returns: True if successful, False otherwise.
@@ -156,7 +156,7 @@ def mago_set_FC(sample, fcs = None, atoms_types = None, mm=None, inputConvention
     
 
     
-    fcs = np.zeros([unit_cell.get_number_of_atoms(),3],dtype=np.complex_)
+    fcs = np.zeros([unit_cell.get_number_of_atoms(),3],dtype=np.complex128)
     
     gotEOS = False
     for i, atom in enumerate(unit_cell):                

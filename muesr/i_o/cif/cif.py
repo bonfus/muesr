@@ -110,7 +110,7 @@ def load_mcif(sample, filename, reset_muon=True, reset_sym=True):
     # Find magnetic atoms
     mag_atoms_labels = tags['_atom_site_moment_label']
     # load mag moments
-    mag_atoms_moments = np.zeros([len(mag_atoms_labels),3],dtype=np.complex_)
+    mag_atoms_moments = np.zeros([len(mag_atoms_labels),3],dtype=np.complex128)
 
     scaled_positions = np.array([tags['_atom_site_fract_x'], 
                                 tags['_atom_site_fract_y'], 
@@ -135,7 +135,7 @@ def load_mcif(sample, filename, reset_muon=True, reset_sym=True):
     
     
     
-    fcs = np.zeros_like(all_scaled_pos,dtype=np.complex_)
+    fcs = np.zeros_like(all_scaled_pos,dtype=np.complex128)
     
     for i, al in enumerate(tags['_atom_site_label']):
         if al in tags['_atom_site_moment_label']:
